@@ -5,6 +5,7 @@ const AllResources = (props) => {
 
     if (!sections || sections.length === 0) return <p>Упс, здесь пока что ничего нет.</p>
     //TODO: Создать универсальный компонент обёртки, принимающий в пропсы children разметку с целью универсанализации окон.
+    //TODO: Сделать капсом либа на фоне ресурсов в светло - сером цвете.
     return (
         <div className='allResources__wrapper'>
             {

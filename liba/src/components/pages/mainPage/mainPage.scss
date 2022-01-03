@@ -7,29 +7,65 @@
     }
     &__middleside {
         width: 60%;
+        height: calc(100vh - 30px);
         position: relative;
         &_top {
-            height: calc(100vh - 400px);
+            height: 50%;
             overflow-y: scroll;
             position: relative;
             padding: 0 35px;
         }
         &_bottom {
-
+            max-height: 42%;
+            padding: 0 50px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            position: relative;
+            overflow-y: auto;
+            padding-top: 15px;
+            .links-wrapper {
+                width: 48%;
+                max-height: 120px;
+                margin-bottom: 20px;
+                .links-content {
+                    width: 100%;
+                    height: 100px;
+                    padding: 15px;
+                    box-shadow: -8px -8px 12px 0 rgba(255, 255, 255, 1), 12px 12px 16px 0 rgba(210, 218, 230, 1);
+                    background: #ecf0f3;
+                    min-height: 120px;
+                    border-radius: 20px;
+                }
+            }
+        }
+        .devider {
+            width: 100%;
+            height: 2px;
+            background: rgb(187, 187, 187);
+            margin: 30px 0 15px 0;
+        }
+        .middleside-top-title {
+            transform: rotate(270deg);
+            position: absolute;
+            left: -70px;
+            top: 105px;
+            font-size: 30px;
+            text-transform: uppercase;
+        }
+        .middleside-bottom-title {
+            transform: rotate(270deg);
+            position: absolute;
+            left: -67px;
+            top: 105px;
+            font-size: 30px;
+            text-transform: uppercase;
         }
     }
     &__rightside {
         width: 20%;
         // background: #000;
     }
-}
-
-.middleside-top-title {
-    transform: rotate(270deg);
-    position: absolute;
-    left: -90px;
-    top: 125px;
-    font-size: 30px;
 }
 
 .allResources__wrapper {
@@ -43,7 +79,6 @@
 .section__wrapper {
     width: 100%;
     min-height: 120px;
-    background: #fff;
     border-radius: 20px;
     margin-bottom: 20px;
     display: flex;
@@ -57,6 +92,7 @@
         justify-content: space-between;
         width: 60%;
         &_name {
+            // Сделать миксин для шрифтов, разны миксины для заголовков, категорий и т.д.
             font-weight: 700;
             text-transform: uppercase;
             margin-bottom: 5px;
@@ -80,10 +116,10 @@
     }
 }
 
-.devider {
-    width: 100%;
-    height: 2px;
-    background: rgb(187, 187, 187);
-    margin: 15px 0;
+.links-content__category_name {
+    // Сделать миксин для шрифтов, разны миксины для заголовков, категорий и т.д.
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+    font-size: 20px;
 }
-

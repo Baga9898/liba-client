@@ -29,16 +29,38 @@ const MainPage = () => {
                     leftside section
                 </div>
                 <div className='mainPage-content__middleside'>
-                    <h1 className='middleside-top-title'>Latest resources</h1>
+                    {/* TODO: Создать универсальный компонент, принимающий объект с именем секции и ресурсами. */}
+                    <h1 className='middleside-top-title'>Last added</h1>
                         <div className='mainPage-content__middleside_top'>
                             {/* TODO: Выгружать заключительные добавленный двадцать ресурсов. */}
                             <AllResources sections={allResources.sections}/>
                         </div>
                     <div className='devider'></div>
                     <div className='mainPage-content__middleside_bottom'>
+                        <h1 className='middleside-bottom-title'>Categories</h1>
                         {/* TODO: Создать универсальный компонент. */}
-                        
-                        <Link to="/all-resources">all</Link>
+                        {/* TODO: Также перебирать категории из бд. */}
+                        <div className='links-wrapper'>
+                            <Link to="/all-resources">
+                                <div className='links-content'>
+                                    <div className='links-content__category_name'>All resources</div>
+                                </div>
+                            </Link>
+                        </div>
+                        <div className='links-wrapper'>
+                            <Link to="/all-resources">
+                                <div className='links-content'>
+                                    <div className='links-content__category_name'>Books</div>
+                                </div>
+                            </Link>
+                        </div>
+                        <div className='links-wrapper'>
+                            <Link to="/all-resources">
+                                <div className='links-content'>
+                                    <div className='links-content__category_name'>Posts</div>
+                                </div>
+                            </Link>
+                        </div>
                     </div>
                 </div>
                 <div className='mainPage-content__rightside'>

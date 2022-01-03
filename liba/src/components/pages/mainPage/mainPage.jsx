@@ -1,33 +1,50 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import { Link } from 'react-router-dom';
+import AllResources from '../allResources/allResources';
 
 import './mainPage.scss';
 
-const MainPage = (props) => {
-    const { sections } = props;
-
-    if (!sections || sections.length === 0) return <p>Упс, здесь пока что ничего нет.</p>
+const MainPage = () => {
+    const [allResources, setAllResources] = useState(
+        {
+            sections: null,
+        }
+        );
+    
+        useEffect(() => {
+            const apiUrl = 'https://61c03bd033f24c00178231de.mockapi.io/resources';
+            axios.get(apiUrl)
+            .then((response) => {
+                const allSections = response.data;
+                setAllResources({
+                sections: allSections
+                });
+            });
+        }, [setAllResources]);
 
     return (
-        <div className='mainPage-content'>
-                {
-                    sections.map((section) =>
-                        <div key={section.id} className='section__wrapper'>
-                            <div className='section__leftside'>
-                                <div className='section__leftside_top'>
-                                    <div className='section__leftside_name'>{section.name}</div>
-                                    <div className='section__leftside_link'>{section.link}</div>
-                                </div>
-                                <div className='section__leftside_down'>
-                                    <div className='section__leftside_date'>{section.date}</div>
-                                </div>
-                            </div>
-                            <div className='section__rightside'>
-                                <div className='section__rightside_category'>{section.category}</div>
-                            </div>
+            <div className='mainPage-content'>
+                <div className='mainPage-content__leftside'>
+                    leftside section
+                </div>
+                <div className='mainPage-content__middleside'>
+                    <h1 className='middleside-top-title'>Latest resources</h1>
+                        <div className='mainPage-content__middleside_top'>
+                            {/* TODO: Выгружать заключительные добавленный двадцать ресурсов. */}
+                            <AllResources sections={allResources.sections}/>
                         </div>
-                    )
-                }
-        </div>
+                    <div className='devider'></div>
+                    <div className='mainPage-content__middleside_bottom'>
+                        {/* TODO: Создать универсальный компонент. */}
+                        
+                        <Link to="/all-resources">all</Link>
+                    </div>
+                </div>
+                <div className='mainPage-content__rightside'>
+                    rightside section
+                </div>
+            </div>
     )
 }
 

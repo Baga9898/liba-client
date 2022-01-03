@@ -7,6 +7,11 @@ body {
   background: #ecf0f3;
 }
 
+.App {
+  max-height: 100vh;
+  height: 100vh;
+}
+
 .container {
   width: 1200px;
   margin: 0 auto;
@@ -88,4 +93,38 @@ li {
 
 img {
   vertical-align: top;
+}
+
+/*Scrollbar*/
+
+::-webkit-scrollbar-button {
+  background-image: url('');
+  background-repeat: no-repeat;
+  width: 5px;
+  height: 0px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #ffffff00;
+}
+
+::-webkit-scrollbar-thumb {
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+  background-color: #383838c5;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #000000;
+}
+
+::-webkit-resizer {
+  background-image: url('');
+  background-repeat: no-repeat;
+  width: 4px;
+  height: 0px
+}
+
+::-webkit-scrollbar {
+  width: 4px;
 }

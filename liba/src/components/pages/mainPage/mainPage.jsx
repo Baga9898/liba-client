@@ -6,15 +6,11 @@ import AllResources from '../allResources/allResources';
 import './mainPage.scss';
 
 const MainPage = () => {
-    const [allResources, setAllResources] = useState(
-        {
-            sections: null,
-        }
-        );
+    const [allResources, setAllResources] = useState({sections: null,});
     
         useEffect(() => {
             const apiUrl = 'https://61c03bd033f24c00178231de.mockapi.io/resources';
-            axios.get(apiUrl)
+            axios.get(apiUrl) //{params: {category: "books"}}
             .then((response) => {
                 const allSections = response.data;
                 setAllResources({
@@ -48,14 +44,14 @@ const MainPage = () => {
                             </Link>
                         </div>
                         <div className='links-wrapper'>
-                            <Link to="/all-resources">
+                            <Link to="/books">
                                 <div className='links-content'>
                                     <div className='links-content__category_name'>Books</div>
                                 </div>
                             </Link>
                         </div>
                         <div className='links-wrapper'>
-                            <Link to="/all-resources">
+                            <Link to="/posts">
                                 <div className='links-content'>
                                     <div className='links-content__category_name'>Posts</div>
                                 </div>

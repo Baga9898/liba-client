@@ -1,25 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
-const AllResources = () => {
-    const [allResources, setAllResources] = useState(null);
+const Books = () => {
+    const [booksResources, setBooksResources] = useState(null);
 
     const baseURL = "https://61c03bd033f24c00178231de.mockapi.io/resources";
 
     useEffect(() => {
-        axios.get(baseURL).then((response) => {
-        setAllResources(response.data);
+        axios.get(baseURL, {params: {category: "books"}}).then((response) => {
+        setBooksResources(response.data);
         });
     }, []);
 
-    if (!allResources || allResources.length === 0) return <p>Упс, здесь пока что ничего нет.</p>
-    //TODO: Создать универсальный компонент обёртки, принимающий в пропсы children разметку с целью универсанализации окон.
-    //TODO: Сделать капсом либа на фоне ресурсов в светло - сером цвете.
+    if (!booksResources || booksResources.length === 0) return <p>Упс, здесь пока что ничего нет.</p>
+
     return (
-        // TODO: Сделать универсальный компонент.
         <div className='allResources__wrapper'>
             {
-                allResources.map((resource) =>
+                booksResources.map((resource) =>
                     <div key={resource.id} className='section__wrapper'>
                         <div className='section__leftside'>
                             <div className='section__leftside_top'>
@@ -40,4 +38,4 @@ const AllResources = () => {
     )
 }
 
-export default AllResources;
+export default Books;

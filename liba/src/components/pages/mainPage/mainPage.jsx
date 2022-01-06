@@ -1,24 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import AllResources from '../allResources/allResources';
 
 import './mainPage.scss';
 
 const MainPage = () => {
-    const [allResources, setAllResources] = useState({sections: null,});
-    
-        useEffect(() => {
-            const apiUrl = 'https://61c03bd033f24c00178231de.mockapi.io/resources';
-            axios.get(apiUrl) //{params: {category: "books"}}
-            .then((response) => {
-                const allSections = response.data;
-                setAllResources({
-                sections: allSections
-                });
-            });
-        }, [setAllResources]);
-
     return (
             <div className='mainPage-content'>
                 <div className='mainPage-content__leftside'>
@@ -28,8 +14,8 @@ const MainPage = () => {
                     {/* TODO: Создать универсальный компонент, принимающий объект с именем секции и ресурсами. */}
                     <h1 className='middleside-top-title'>Last added</h1>
                         <div className='mainPage-content__middleside_top'>
-                            {/* TODO: Выгружать заключительные добавленный двадцать ресурсов. */}
-                            <AllResources sections={allResources.sections}/>
+                            {/* TODO: Выгружать заключительные добавленные двадцать ресурсов. */}
+                            <AllResources/>
                         </div>
                     <div className='devider'></div>
                     <div className='mainPage-content__middleside_bottom'>
@@ -40,6 +26,13 @@ const MainPage = () => {
                             <Link to="/all-resources">
                                 <div className='links-content'>
                                     <div className='links-content__category_name'>All resources</div>
+                                </div>
+                            </Link>
+                        </div>
+                        <div className='links-wrapper'>
+                            <Link to="/websites">
+                                <div className='links-content'>
+                                    <div className='links-content__category_name'>Websites</div>
                                 </div>
                             </Link>
                         </div>

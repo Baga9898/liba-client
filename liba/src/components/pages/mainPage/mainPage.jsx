@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import AllResources from '../allResources/allResources';
+import CookieClicker from '../../cookieClicker/cookieClicker';
 
 import './mainPage.scss';
 
@@ -8,14 +9,14 @@ const MainPage = () => {
     return (
             <div className='mainPage-content'>
                 <div className='mainPage-content__leftside'>
-                    leftside section
+                    <CookieClicker/>
                 </div>
                 <div className='mainPage-content__middleside'>
                     {/* TODO: Создать универсальный компонент, принимающий объект с именем секции и ресурсами. */}
                     <h1 className='middleside-top-title'>Last added</h1>
                         <div className='mainPage-content__middleside_top'>
                             {/* TODO: Выгружать заключительные добавленные двадцать ресурсов. */}
-                            <AllResources/>
+                            <AllResources actionSection={false}/>
                         </div>
                     <div className='devider'></div>
                     <div className='mainPage-content__middleside_bottom'>
@@ -52,9 +53,9 @@ const MainPage = () => {
                         </div>
                     </div>
                 </div>
-                <div className='mainPage-content__rightside'>
+                {/* <div className='mainPage-content__rightside'>
                     rightside section
-                </div>
+                </div> */}
             </div>
     )
 }

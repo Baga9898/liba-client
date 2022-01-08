@@ -2,11 +2,11 @@
     // width: 100%;
     display: flex;
     &__leftside {
-        width: 20%;
-        // background: #000;
+        width: 25%;
+        padding: 15px 15px 0 15px;
     }
     &__middleside {
-        width: 60%;
+        width: 75%;
         height: calc(100vh - 30px);
         position: relative;
         &_top {
@@ -25,7 +25,7 @@
             overflow-y: auto;
             padding-top: 15px;
             .links-wrapper {
-                width: 48%;
+                width: 31%;
                 max-height: 120px;
                 margin-bottom: 20px;
                 .links-content {
@@ -62,10 +62,14 @@
             text-transform: uppercase;
         }
     }
-    &__rightside {
-        width: 20%;
-        // background: #000;
-    }
+    // &__rightside {
+    //     width: 25%;
+    //     // background: #000;
+    // }
+}
+
+.action-info-wrapper {
+    display: flex;
 }
 
 .allResources__wrapper {
@@ -122,4 +126,14 @@
     text-transform: uppercase;
     margin-bottom: 5px;
     font-size: 20px;
+}
+
+.countOfResources {
+    font-weight: 500;
+    font-size: 200px;
+    transform: rotate(270deg);
+    margin: 25px 0 0 -35px;
+    font-family: 'Rubik', sans-serif;
+    // font-family: 'Press Start 2P', cursive; Битный шрифт.
+    // font-family: 'Libre Barcode 39', cursive; Баркодный шрифт.
 }

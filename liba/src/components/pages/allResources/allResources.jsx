@@ -13,14 +13,14 @@ const AllResources = ({actionSection=true}) => {
     }, []);
 
     function createPost() {
-        axios
-            .post(baseURL, {
+        axios.post(baseURL, {
                 name: "12345",
                 category: "12345",
             })
-            //     .then((response) => {
-            //     setAllResources(...allResources, response.data);
-            // });
+                .then((response) => {
+                    console.log(response.data);
+                // setAllResources(...allResources, response.data);
+            });
         }
 
     if (!allResources || allResources.length === 0) return <p>Упс, здесь пока что ничего нет.</p>

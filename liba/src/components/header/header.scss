@@ -1,0 +1,14 @@
+.header {
+    height: 40px;
+    position: relative;
+    margin-bottom: 10px;
+    &::after {
+        content: "";
+        position: absolute;
+        width: 1400px;
+        height: 2px;
+        background: #bbb;
+        bottom: 0;
+        left: calc(50% - 700px);
+    }
+}

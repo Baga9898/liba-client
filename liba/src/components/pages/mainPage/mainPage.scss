@@ -1,6 +1,8 @@
 .mainPage-content {
     // width: 100%;
     display: flex;
+    max-height: calc(100vh - 66px);
+    overflow: hidden;
     &__leftside {
         width: 25%;
         padding: 15px 15px 0 15px;

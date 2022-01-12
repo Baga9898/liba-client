@@ -17,26 +17,32 @@ const AllResources = ({actionSection=true}) => {
 
     function createResource() {
         axios.post(baseURL, {
-                name: "any program",
+                name: "for delete",
                 category: "soft",
                 link: "qwerty",
                 date: Date.now,
             })
                 .then((response) => {
-                    console.log(allResources);
                     setAllResources([...allResources, response.data]);
             });
         }
 
-    function editResourse() {
-        axios.put(baseURL, {
-            id: "",
+    function editResourse(resourceId) {
+        axios.put(`${baseURL}/${resourceId}`, {
+            name: "for change",
+            category: "12345",
+            link: "qwerty12345",
+            date: Date.now,
         })
+        .then((response) => {
+            
+        });
     }
 
-    function deleteResourse() {
-        axios.delete(baseURL, {
-            id: "",
+    function deleteResourse(resourceId) {
+        axios.delete(`${baseURL}/${resourceId}`)
+        .then(() => {
+            setAllResources();
         })
     }
 
@@ -64,10 +70,12 @@ const AllResources = ({actionSection=true}) => {
                                 <div className="section__rightside_top">
                                     <div className='section__rightside_category'>{resource.category}</div>
                                 </div>
-                                <div className="section__rightside_bottom">
-                                    <FontAwesomeIcon icon={faPen} className="edit-section-icon" onClick={editResourse}/>
-                                    <FontAwesomeIcon icon={faTrashAlt} className="delete-section-icon" onClick={deleteResourse}/>
-                                </div>
+                                {actionSection &&
+                                    <div className="section__rightside_bottom">
+                                        <FontAwesomeIcon icon={faPen} className="edit-section-icon" onClick={editResourse}/>
+                                        <FontAwesomeIcon icon={faTrashAlt} className="delete-section-icon" onClick={deleteResourse}/>
+                                    </div>
+                                }
                             </div>
                         </div>
                     )

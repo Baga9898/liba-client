@@ -35,28 +35,28 @@ const AllResources = ({actionSection=true}) => {
             date: Date.now,
         })
         .then((response) => {
-            
+            console.log(response);
         });
     }
 
     function deleteResourse(resourceId) {
         axios.delete(`${baseURL}/${resourceId}`)
-        .then(() => {
-            setAllResources();
+        .then((response) => {
+            console.log(response.data);
         })
     }
+
 
     if (!allResources || allResources.length === 0) return <p>Упс, здесь пока что ничего нет.</p>
     //TODO: Создать универсальный компонент обёртки, принимающий в пропсы children разметку с целью универсанализации окон.
     //TODO: Сделать капсом либа на фоне ресурсов в светло - сером цвете.
     return (
         // TODO: Сделать универсальный компонент.
-        // TODO: При наведении на ресурс появляются кнопки: редактировать, удалить, при наведении на которые они становятся чёрными. (Работает только при истинном значении).
         <div className='action-info-wrapper'>
             <div className='allResources__wrapper'>
                 {
                     allResources.map((resource) =>
-                        <div key={resource.id} className='section__wrapper'>
+                        <div key={resource.link} className='section__wrapper'>
                             <div className='section__leftside'>
                                 <div className='section__leftside_top'>
                                     <div className='section__leftside_name'>{resource.name}</div>
@@ -72,8 +72,8 @@ const AllResources = ({actionSection=true}) => {
                                 </div>
                                 {actionSection &&
                                     <div className="section__rightside_bottom">
-                                        <FontAwesomeIcon icon={faPen} className="edit-section-icon" onClick={editResourse}/>
-                                        <FontAwesomeIcon icon={faTrashAlt} className="delete-section-icon" onClick={deleteResourse}/>
+                                        <FontAwesomeIcon icon={faPen} className="edit-section-icon" onClick={() => editResourse(resource.id)}/>
+                                        <FontAwesomeIcon icon={faTrashAlt} className="delete-section-icon" onClick={() => deleteResourse(resource.id)}/>
                                     </div>
                                 }
                             </div>

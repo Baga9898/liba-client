@@ -29,20 +29,24 @@ const AllResources = ({actionSection=true}) => {
 
     function editResourse(resourceId) {
         axios.put(`${baseURL}/${resourceId}`, {
-            name: "for change",
-            category: "12345",
-            link: "qwerty12345",
+            name: "Test",
+            category: "Test",
+            link: "Test",
             date: Date.now,
         })
         .then((response) => {
-            console.log(response);
+            const indexOfChangedResource = allResources.findIndex((resource) => resource.id === response.data.id);
+            const newArray = [...allResources];
+            newArray[indexOfChangedResource] = response.data;
+            setAllResources(newArray);
         });
     }
 
     function deleteResourse(resourceId) {
         axios.delete(`${baseURL}/${resourceId}`)
         .then((response) => {
-            console.log(response.data);
+            const newResourcesArray = allResources.filter((resource) => resource.id !== response.data.id);
+            setAllResources(newResourcesArray);
         })
     }
 
@@ -56,7 +60,7 @@ const AllResources = ({actionSection=true}) => {
             <div className='allResources__wrapper'>
                 {
                     allResources.map((resource) =>
-                        <div key={resource.link} className='section__wrapper'>
+                        <div key={resource.date} className='section__wrapper'>
                             <div className='section__leftside'>
                                 <div className='section__leftside_top'>
                                     <div className='section__leftside_name'>{resource.name}</div>

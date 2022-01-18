@@ -1,0 +1,16 @@
+.allResources__actions_wrapper {
+    padding: 15px;
+}
+
+.addResourse__button {
+    height: 45px;
+    width: 250px;
+    color: rgb(133, 133, 133);
+    text-transform: uppercase;
+    font-size: 18px;
+    font-weight: 600;
+    transition: 0.5s;
+    &:hover {
+        color: #000;
+    }
+}

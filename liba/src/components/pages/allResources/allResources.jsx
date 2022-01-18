@@ -3,6 +3,7 @@ import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { faPen } from '@fortawesome/free-solid-svg-icons';
+import './allResources.scss'
 
 const AllResources = ({actionSection=true}) => {
     const [allResources, setAllResources] = useState([]);
@@ -88,12 +89,14 @@ const AllResources = ({actionSection=true}) => {
             <div>
                 {
                     actionSection && 
-                    <div>
+                    <div className='allResources__actions_wrapper'>
                         {/* TODO: Выести в отдельный компонент. */}
-                        <div className='countOfResources'>{allResources.length}</div>
+                        {/* <div className='countOfResources'>{allResources.length}</div> */}
                         {/* TODO: Сделать форму для создания ресурса.
                         Выести в отдельный компонент. */}
-                        <button onClick={createResource}>create new resourse</button>
+                        <div className='addResourse__wrapper section__wrapper'>
+                            <button className='addResourse__button' onClick={createResource}>create new resourse</button>
+                        </div>
                     </div>
                 }
             </div>

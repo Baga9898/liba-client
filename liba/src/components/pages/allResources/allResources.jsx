@@ -16,7 +16,7 @@ const AllResources = ({actionSection=true}) => {
         });
     }, []);
 
-    function createResource() {
+    const createResource = () => {
         axios.post(baseURL, {
                 name: "for delete",
                 category: "soft",
@@ -28,10 +28,10 @@ const AllResources = ({actionSection=true}) => {
             });
         }
 
-    function editResourse(resourceId) {
+    const editResourse = (resourceId) => {
         axios.put(`${baseURL}/${resourceId}`, {
             name: "Test",
-            category: "Test",
+            category: "Books",
             link: "Test",
             date: Date.now,
         })
@@ -43,7 +43,7 @@ const AllResources = ({actionSection=true}) => {
         });
     }
 
-    function deleteResourse(resourceId) {
+    const deleteResourse = (resourceId) => {
         axios.delete(`${baseURL}/${resourceId}`)
         .then((response) => {
             const newResourcesArray = allResources.filter((resource) => resource.id !== response.data.id);

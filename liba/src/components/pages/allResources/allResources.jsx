@@ -5,20 +5,30 @@ import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { faPen } from '@fortawesome/free-solid-svg-icons';
 import './allResources.scss'
 
-const AllResources = ({actionSection=true}) => {
+const AllResources = ({actionSection=true, itemsToShow}) => {
     const [allResources, setAllResources] = useState([]);
 
     const baseURL = "https://61c03bd033f24c00178231de.mockapi.io/resources";
 
     useEffect(() => {
-        axios.get(baseURL).then((response) => {
-        setAllResources(response.data);
-        });
+        if (itemsToShow) {
+            axios.get(baseURL).then((response) => {
+                const newArray = response.data;
+                const reverseArray = newArray.reverse().slice(0, itemsToShow);
+                setAllResources(reverseArray);
+            });
+        } else {
+            axios.get(baseURL).then((response) => {
+                const newArray = response.data;
+                const reverseArray = newArray.reverse();
+                setAllResources(reverseArray);
+            });
+        }
     }, []);
 
     const createResource = () => {
         axios.post(baseURL, {
-                name: "for delete",
+                name: "For test the reverse array",
                 category: "soft",
                 link: "qwerty",
                 date: Date.now,

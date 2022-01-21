@@ -15,8 +15,7 @@ const MainPage = () => {
                     {/* TODO: Создать универсальный компонент, принимающий объект с именем секции и ресурсами. */}
                     <h1 className='middleside-top-title'>Last added</h1>
                         <div className='mainPage-content__middleside_top'>
-                            {/* TODO: Выгружать заключительные добавленные двадцать ресурсов. */}
-                            <AllResources actionSection={false}/>
+                            <AllResources actionSection={false} itemsToShow={10}/>
                         </div>
                     <div className='devider'></div>
                     <div className='mainPage-content__middleside_bottom'>

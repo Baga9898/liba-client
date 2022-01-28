@@ -1,0 +1,51 @@
+.clickerBlockWrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    height: 320px;
+}
+
+.cookie {
+    cursor: pointer;
+    width: 200px;
+    height: 200px;
+    margin-bottom: 20px;
+}
+
+.cookie:active {
+    cursor: pointer;
+    width: 195px;
+    height: 195px;
+    margin-bottom: 20px;
+}
+
+.clickerCount {
+    color: #aaa;
+    font-weight: bold;
+    font-size: 32px;
+    margin-bottom: 10px;
+}
+
+.cookie.rotation {
+    animation: 20s linear 0s normal none infinite running rotation;
+    -webkit-animation: 20s linear 0s normal none infinite running rotation;
+}
+
+@keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@-webkit-keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}

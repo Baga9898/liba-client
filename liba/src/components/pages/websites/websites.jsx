@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import Preloader from '../../preloader/preloader';
+import Preloader from '../../utils/preloader/preloader';
 
 
 const Websites = () => {

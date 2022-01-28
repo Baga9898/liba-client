@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import AllResources from '../allResources/allResources';
-import CookieClicker from '../../cookieClicker/cookieClicker';
+import CookieClicker from '../../utils/cookieClicker/cookieClicker';
 
 import './mainPage.scss';
 

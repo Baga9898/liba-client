@@ -7,6 +7,11 @@ import './allResources.scss'
 
 const AllResources = ({actionSection=true, itemsToShow}) => {
     const [allResources, setAllResources] = useState([]);
+    const [editModal, setEditModal] = useState(false);
+
+    const [resourceName, setResourceName] = useState("");
+    const [resourceLink, setResourceLink] = useState("");
+    const [resourceCategory, setResourceCategory] = useState("");
 
     const baseURL = "https://61c03bd033f24c00178231de.mockapi.io/resources";
 
@@ -24,18 +29,21 @@ const AllResources = ({actionSection=true, itemsToShow}) => {
                 setAllResources(reverseArray);
             });
         }
-    }, []);
+    }, [itemsToShow]);
 
     const createResource = () => {
         axios.post(baseURL, {
-                name: "For test the reverse array",
-                category: "soft",
-                link: "qwerty",
-                date: Date.now,
+                name: resourceName,
+                link: resourceLink,
+                category: resourceCategory,
+                date: "date",
             })
                 .then((response) => {
-                    setAllResources([...allResources, response.data]);
+                    setAllResources([response.data, ...allResources]);
             });
+            setResourceName("");
+            setResourceLink("");
+            setResourceCategory("");
         }
 
     const editResourse = (resourceId) => {
@@ -71,7 +79,7 @@ const AllResources = ({actionSection=true, itemsToShow}) => {
             <div className='allResources__wrapper'>
                 {
                     allResources.map((resource) =>
-                        <div key={resource.date} className='section__wrapper'>
+                        <div key={resource.id} className='section__wrapper'>
                             <div className='section__leftside'>
                                 <div className='section__leftside_top'>
                                     <div className='section__leftside_name'>{resource.name}</div>
@@ -97,19 +105,26 @@ const AllResources = ({actionSection=true, itemsToShow}) => {
                 }
             </div>
             <div>
-                {
-                    actionSection && 
+                {actionSection && 
                     <div className='allResources__actions_wrapper'>
                         {/* TODO: Выести в отдельный компонент. */}
                         {/* <div className='countOfResources'>{allResources.length}</div> */}
                         {/* TODO: Сделать форму для создания ресурса.
                         Выести в отдельный компонент. */}
                         <div className='addResourse__wrapper section__wrapper'>
+                            <input className='addResourse__input' type="text" placeholder='Name' value={resourceName} onChange={e => setResourceName(e.target.value)}/>
+                            <input className='addResourse__input' type="text" placeholder='Link' value={resourceLink} onChange={e => setResourceLink(e.target.value)}/>
+                            <input className='addResourse__input' type="text" placeholder='Category' value={resourceCategory} onChange={e => setResourceCategory(e.target.value)}/>
                             <button className='addResourse__button' onClick={createResource}>create new resourse</button>
                         </div>
                     </div>
                 }
             </div>
+            {editModal &&
+                <div className="editModal-wrapper">
+
+                </div>
+            }
         </div>
     )
 }

@@ -2,6 +2,23 @@
     padding: 15px;
 }
 
+.addResourse__wrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.addResourse__input {
+    font-size: 22px;
+    margin-bottom: 20px;
+    border-bottom: 2px solid rgb(187, 187, 187);
+    background: transparent;
+    transition: 0.5s;
+    &:hover,
+    &:focus {
+        border-bottom: 2px solid #000;
+    }
+}
+
 .addResourse__button {
     height: 45px;
     width: 250px;
@@ -13,4 +30,13 @@
     &:hover {
         color: #000;
     }
+}
+
+.editModal-wrapper {
+    width: 400px;
+    min-height: 300px;
+    position: absolute;
+    top: 200px;
+    left: calc(50% - 200px);
+    background: #ecf0f3;
 }

@@ -76,14 +76,10 @@ const AllResources = ({actionSection=true, itemsToShow}) => {
         })
     }
 
-
     if (!allResources || allResources.length === 0) return (
-        <div>
-            {isLoading ? <Preloader/> : <p className='oops'>Упс, здесь пока что<br/>ничего нет.</p>}
-        </div>
-    )
-    //TODO: Создать универсальный компонент обёртки, принимающий в пропсы children разметку с целью универсанализации окон.
-    //TODO: Сделать капсом либа на фоне ресурсов в светло - сером цвете.
+            <div>{isLoading ? <Preloader/> : <p className='oops'>Oops, there's nothing<br/>here yet</p>}</div>
+        )
+
     return (
         // TODO: Сделать универсальный компонент.
         <div className='action-info-wrapper'>

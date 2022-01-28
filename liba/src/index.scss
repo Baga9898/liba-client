@@ -96,16 +96,24 @@ img {
   vertical-align: top;
 }
 
+.oops {
+  position: absolute;
+  top: calc(50% - 50px);
+  left: calc(50% - 290px);
+  text-align: center;
+  font-size: 50px;
+  font-weight: 900;
+  text-transform: uppercase;
+  color: #ccc;
+}
+
 .preloader {
-  border: 8px solid #ccc;
-  border-top: 8px solid #000;
-  border-radius: 50%;
-  width: 60px;
-  height: 60px;
+  width: 120px;
+  height: 120px;
   animation: spin 2s linear infinite;
   position: absolute;
   top: 35%;
-  left: calc(50% - 30px);
+  left: calc(50% - 60px);
   z-index: 999;
 }
 

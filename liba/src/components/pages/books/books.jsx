@@ -1,18 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import Preloader from '../../preloader/preloader';
+
 
 const Books = () => {
-    const [booksResources, setBooksResources] = useState(null);
+    const [booksResources, setBooksResources] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
 
     const baseURL = "https://61c03bd033f24c00178231de.mockapi.io/resources";
 
     useEffect(() => {
-        axios.get(baseURL, {params: {category: "books"}}).then((response) => {
-        setBooksResources(response.data);
+        axios.get(baseURL, {params: {category: "books"}})
+            .then((response) => {
+            setBooksResources(response.data);
+            setIsLoading(false);
         });
     }, []);
 
-    if (!booksResources || booksResources.length === 0) return <p className='oops'>Упс, здесь пока что<br/>ничего нет.</p>
+    if (!booksResources || booksResources.length === 0) return (
+            <div>{isLoading ? <Preloader/> : <p className='oops'>Oops, there's nothing<br/>here yet</p>}</div>
+        )
 
     return (
         <div className='allResources__wrapper'>

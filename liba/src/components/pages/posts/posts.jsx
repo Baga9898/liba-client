@@ -12,7 +12,7 @@ const Posts = () => {
         });
     }, []);
 
-    if (!postsResources || postsResources.length === 0) return <p>Упс, здесь пока что ничего нет.</p>
+    if (!postsResources || postsResources.length === 0) return <p className='oops'>Упс, здесь пока что<br/>ничего нет.</p>
 
     return (
         <div className='allResources__wrapper'>

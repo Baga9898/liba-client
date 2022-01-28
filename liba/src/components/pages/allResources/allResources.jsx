@@ -4,10 +4,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { faPen } from '@fortawesome/free-solid-svg-icons';
 import './allResources.scss'
+import Preloader from '../../preloader/preloader';
 
 const AllResources = ({actionSection=true, itemsToShow}) => {
     const [allResources, setAllResources] = useState([]);
     const [editModal, setEditModal] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
 
     const [resourceName, setResourceName] = useState("");
     const [resourceLink, setResourceLink] = useState("");
@@ -17,18 +19,23 @@ const AllResources = ({actionSection=true, itemsToShow}) => {
 
     useEffect(() => {
         if (itemsToShow) {
-            axios.get(baseURL).then((response) => {
+            axios.get(baseURL)
+            .then((response) => {
                 const newArray = response.data;
                 const reverseArray = newArray.reverse().slice(0, itemsToShow);
                 setAllResources(reverseArray);
+                setIsLoading(false);
             });
         } else {
-            axios.get(baseURL).then((response) => {
+            axios.get(baseURL)
+            .then((response) => {
                 const newArray = response.data;
                 const reverseArray = newArray.reverse();
                 setAllResources(reverseArray);
+                setIsLoading(false);
             });
         }
+        
     }, [itemsToShow]);
 
     const createResource = () => {
@@ -70,7 +77,11 @@ const AllResources = ({actionSection=true, itemsToShow}) => {
     }
 
 
-    if (!allResources || allResources.length === 0) return <p>Упс, здесь пока что ничего нет.</p>
+    if (!allResources || allResources.length === 0) return (
+        <div>
+            {isLoading ? <Preloader/> : <p className='oops'>Упс, здесь пока что<br/>ничего нет.</p>}
+        </div>
+    )
     //TODO: Создать универсальный компонент обёртки, принимающий в пропсы children разметку с целью универсанализации окон.
     //TODO: Сделать капсом либа на фоне ресурсов в светло - сером цвете.
     return (

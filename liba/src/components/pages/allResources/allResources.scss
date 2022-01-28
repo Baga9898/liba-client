@@ -40,3 +40,13 @@
     left: calc(50% - 200px);
     background: #ecf0f3;
 }
+
+.oops {
+    position: absolute;
+    top: calc(50% - 50px);
+    left: calc(50% - 290px);
+    text-align: center;
+    font-size: 50px;
+    font-weight: 900;
+    text-transform: uppercase;
+}

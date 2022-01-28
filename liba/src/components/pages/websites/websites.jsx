@@ -7,12 +7,13 @@ const Websites = () => {
     const baseURL = "https://61c03bd033f24c00178231de.mockapi.io/resources";
 
     useEffect(() => {
-        axios.get(baseURL, {params: {category: "websites"}}).then((response) => {
+        axios.get(baseURL, {params: {category: "websites"}})
+        .then((response) => {
         setWebsitesResources(response.data);
         });
     }, []);
 
-    if (!websitesResources || websitesResources.length === 0) return <p>Упс, здесь пока что ничего нет.</p>
+    if (!websitesResources || websitesResources.length === 0) return <p className='oops'>Упс, здесь пока что<br/>ничего нет.</p>
 
     return (
         <div className='allResources__wrapper'>

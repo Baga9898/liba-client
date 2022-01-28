@@ -6,7 +6,7 @@ import { faPen } from '@fortawesome/free-solid-svg-icons';
 import Preloader from '../../utils/preloader/preloader';
 import '../../pages/allResources/allResources.scss'
 
-const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSections, actionSection, itemsToShow }) => {
+const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSections=false, actionSection=false, itemsToShow }) => {
     const [allResources, setAllResources] = useState([]);
     // const [editModal, setEditModal] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
@@ -35,7 +35,7 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
             });
         }
         
-    }, [itemsToShow, baseURL]);
+    }, [itemsToShow, baseURL, getParams]);
 
     const createResource = () => {
         axios.post(baseURL, {

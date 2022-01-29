@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
@@ -8,12 +8,21 @@ import '../../pages/allResources/allResources.scss'
 
 const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSections=false, actionSection=false, itemsToShow }) => {
     const [allResources, setAllResources] = useState([]);
-    // const [editModal, setEditModal] = useState(false);
+    const [editModal, setEditModal] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
+    const [idOfResource, setIdOfResource] = useState("");
 
     const [resourceName, setResourceName] = useState("");
     const [resourceLink, setResourceLink] = useState("");
     const [resourceCategory, setResourceCategory] = useState("");
+
+    const [editResourceName, setEditResourceName] = useState("");
+    const [editResourceLink, setEditResourceLink] = useState("");
+    const [editResourceCategory, setEditResourceCategory] = useState("");
+
+    const refEditName = useRef("");
+    const refEditLink = useRef("");
+    const refEditCategory = useRef("");
 
 
     useEffect(() => {
@@ -52,11 +61,16 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
             setResourceCategory("");
         }
 
-    const editResourse = (resourceId) => {
+    const modalEditResourse = (resourceId) => {
+        setEditModal(true);
+        setIdOfResource(resourceId)
+    }
+
+    const editResource = (resourceId) => {
         axios.put(`${baseURL}/${resourceId}`, {
-            name: "Test",
-            category: "Books",
-            link: "Test",
+            name: refEditName.current.value,
+            link: refEditLink.current.value,
+            category: refEditCategory.current.value,
             date: Date.now,
         })
         .then((response) => {
@@ -65,6 +79,10 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
             newArray[indexOfChangedResource] = response.data;
             setAllResources(newArray);
         });
+        setEditResourceName("");
+        setEditResourceLink("");
+        setEditResourceCategory("");
+        setEditModal(false);
     }
 
     const deleteResourse = (resourceId) => {
@@ -100,7 +118,7 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
                                 </div>
                                 {actionSection &&
                                     <div className="section__rightside_bottom">
-                                        <FontAwesomeIcon icon={faPen} className="edit-section-icon" onClick={() => editResourse(resource.id)}/>
+                                        <FontAwesomeIcon icon={faPen} className="edit-section-icon" onClick={() => modalEditResourse(resource.id)}/>  
                                         <FontAwesomeIcon icon={faTrashAlt} className="delete-section-icon" onClick={() => deleteResourse(resource.id)}/>
                                     </div>
                                 }
@@ -114,22 +132,27 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
                     <div className='allResources__actions_wrapper'>
                         {/* TODO: Выести в отдельный компонент. */}
                         {/* <div className='countOfResources'>{allResources.length}</div> */}
-                        {/* TODO: Сделать форму для создания ресурса.
-                        Выести в отдельный компонент. */}
+                        {/* TODO: Выести в отдельный компонент. */}
                         <div className='addResourse__wrapper section__wrapper'>
                             <input className='addResourse__input' type="text" placeholder='Name' value={resourceName} onChange={e => setResourceName(e.target.value)}/>
                             <input className='addResourse__input' type="text" placeholder='Link' value={resourceLink} onChange={e => setResourceLink(e.target.value)}/>
                             <input className='addResourse__input' type="text" placeholder='Category' value={resourceCategory} onChange={e => setResourceCategory(e.target.value)}/>
-                            <button className='addResourse__button' onClick={createResource}>create new resourse</button>
+                            <button className='addResourse__button' onClick={createResource}>Create new resourse</button>
                         </div>
                     </div>
                 }
             </div>
-            {/* {editModal &&
-                <div className="editModal-wrapper">
-
+            {/* TODO: Вынести в отдельный компонент. */}
+            {editModal &&
+                <div className='editModal-overlay'>
+                    <div className="editModal-wrapper">
+                        <input ref={refEditName} className='addResourse__input' type="text" placeholder='Name' value={editResourceName} onChange={e => setEditResourceName(e.target.value)}/>
+                        <input ref={refEditLink} className='addResourse__input' type="text" placeholder='Link' value={editResourceLink} onChange={e => setEditResourceLink(e.target.value)}/>
+                        <input ref={refEditCategory} className='addResourse__input' type="text" placeholder='Category' value={editResourceCategory} onChange={e => setEditResourceCategory(e.target.value)}/>
+                        <button className='addResourse__button' onClick={() => editResource(idOfResource)}>Edit resourse</button>
+                    </div>
                 </div>
-            } */}
+            }
         </div>
     )
 };

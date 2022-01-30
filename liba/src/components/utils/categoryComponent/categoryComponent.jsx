@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { faPen } from '@fortawesome/free-solid-svg-icons';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import Preloader from '../../utils/preloader/preloader';
 import '../../pages/allResources/allResources.scss'
 
@@ -19,10 +20,6 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
     const [editResourceName, setEditResourceName] = useState("");
     const [editResourceLink, setEditResourceLink] = useState("");
     const [editResourceCategory, setEditResourceCategory] = useState("");
-
-    const refEditName = useRef("");
-    const refEditLink = useRef("");
-    const refEditCategory = useRef("");
 
 
     useEffect(() => {
@@ -68,9 +65,9 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
 
     const editResource = (resourceId) => {
         axios.put(`${baseURL}/${resourceId}`, {
-            name: refEditName.current.value,
-            link: refEditLink.current.value,
-            category: refEditCategory.current.value,
+            name: editResourceName,
+            link: editResourceLink,
+            category: editResourceCategory,
             date: Date.now,
         })
         .then((response) => {
@@ -146,10 +143,18 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
             {editModal &&
                 <div className='editModal-overlay'>
                     <div className="editModal-wrapper">
-                        <input ref={refEditName} className='addResourse__input' type="text" placeholder='Name' value={editResourceName} onChange={e => setEditResourceName(e.target.value)}/>
-                        <input ref={refEditLink} className='addResourse__input' type="text" placeholder='Link' value={editResourceLink} onChange={e => setEditResourceLink(e.target.value)}/>
-                        <input ref={refEditCategory} className='addResourse__input' type="text" placeholder='Category' value={editResourceCategory} onChange={e => setEditResourceCategory(e.target.value)}/>
-                        <button className='addResourse__button' onClick={() => editResource(idOfResource)}>Edit resourse</button>
+                        <div className='editModal__header'>
+                            <p className='editModal__header_title'>Edit resource</p>
+                            <FontAwesomeIcon icon={faTimes} className='editModal__header_closeButton' onClick={() => setEditModal(false)}/>
+                        </div>
+                        <div className='editModal__content'>
+                            <input className='editResource__input' type="text" placeholder='Name' value={editResourceName} onChange={e => setEditResourceName(e.target.value)}/>
+                            <input className='editResource__input' type="text" placeholder='Link' value={editResourceLink} onChange={e => setEditResourceLink(e.target.value)}/>
+                            <input className='editResource__input' type="text" placeholder='Category' value={editResourceCategory} onChange={e => setEditResourceCategory(e.target.value)}/>
+                        </div>
+                        <div className='editModal__footer'>
+                            <button className='editResourse__button' onClick={() => editResource(idOfResource)}>Edit resourse</button>
+                        </div>
                     </div>
                 </div>
             }

@@ -7,9 +7,10 @@
     flex-direction: column;
 }
 
-.addResourse__input {
+.addResourse__input,
+.editResource__input {
     font-size: 22px;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
     border-bottom: 2px solid rgb(187, 187, 187);
     background: transparent;
     transition: 0.5s;
@@ -19,7 +20,8 @@
     }
 }
 
-.addResourse__button {
+.addResourse__button,
+.editResourse__button {
     height: 45px;
     width: 250px;
     color: rgb(133, 133, 133);
@@ -49,4 +51,39 @@
     top: 200px;
     left: calc(50% - 200px);
     background: #ecf0f3;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.editModal__header {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px 15px 0 15px;
+}
+
+.editModal__header_title {
+    text-transform: uppercase;
+    font-size: 28px;
+    font-weight: 500;
+}
+
+.editModal__header_closeButton {
+    cursor: pointer;
+    color: rgb(155, 155, 155);
+    font-size: 20px;
+    transition: 0.5s;
+    &:hover {
+        color: #000;
+    }
+}
+
+.editModal__content {
+    display: flex;
+    flex-direction: column;
+    padding: 20px 20px 0 20px;
+}
+
+.editResourse__button {
+    width: 100%;
+    height: 50px;
 }

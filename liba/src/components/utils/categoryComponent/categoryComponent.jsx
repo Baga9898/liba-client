@@ -9,7 +9,6 @@ import '../../pages/allResources/allResources.scss'
 
 const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSections=false, actionSection=false, itemsToShow }) => {
     const [allResources, setAllResources] = useState([]);
-    const [editModal, setEditModal] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const [idOfResource, setIdOfResource] = useState("");
 
@@ -17,9 +16,12 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
     const [resourceLink, setResourceLink] = useState("");
     const [resourceCategory, setResourceCategory] = useState("");
 
+    const [editModalIsOpen, setEditModalIsOpen] = useState(false);
     const [editResourceName, setEditResourceName] = useState("");
     const [editResourceLink, setEditResourceLink] = useState("");
     const [editResourceCategory, setEditResourceCategory] = useState("");
+
+    const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
 
 
     useEffect(() => {
@@ -58,8 +60,8 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
             setResourceCategory("");
         }
 
-    const modalEditResourse = (resourceId) => {
-        setEditModal(true);
+    const openEditModal = (resourceId) => {
+        setEditModalIsOpen(true);
         setIdOfResource(resourceId)
     }
 
@@ -79,7 +81,12 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
         setEditResourceName("");
         setEditResourceLink("");
         setEditResourceCategory("");
-        setEditModal(false);
+        setEditModalIsOpen(false);
+    }
+
+    const openDeleteModal = (resourceId) => {
+        setDeleteModalIsOpen(true);
+        setIdOfResource(resourceId);
     }
 
     const deleteResourse = (resourceId) => {
@@ -88,6 +95,7 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
             const newArray = allResources.filter((resource) => resource.id !== response.data.id);
             setAllResources(newArray);
         })
+        setDeleteModalIsOpen(false);
     }
 
     if (!allResources || allResources.length === 0) return (
@@ -115,8 +123,8 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
                                 </div>
                                 {actionSection &&
                                     <div className="section__rightside_bottom">
-                                        <FontAwesomeIcon icon={faPen} className="edit-section-icon" onClick={() => modalEditResourse(resource.id)}/>  
-                                        <FontAwesomeIcon icon={faTrashAlt} className="delete-section-icon" onClick={() => deleteResourse(resource.id)}/>
+                                        <FontAwesomeIcon icon={faPen} className="edit-section-icon" onClick={() => openEditModal(resource.id)}/>  
+                                        <FontAwesomeIcon icon={faTrashAlt} className="delete-section-icon" onClick={() => openDeleteModal(resource.id)}/>
                                     </div>
                                 }
                             </div>
@@ -140,20 +148,37 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
                 }
             </div>
             {/* TODO: Вынести в отдельный компонент. */}
-            {editModal &&
+            {editModalIsOpen &&
                 <div className='editModal-overlay'>
                     <div className="editModal-wrapper">
                         <div className='editModal__header'>
                             <p className='editModal__header_title'>Edit resource</p>
-                            <FontAwesomeIcon icon={faTimes} className='editModal__header_closeButton' onClick={() => setEditModal(false)}/>
+                            <FontAwesomeIcon icon={faTimes} className='editModal__header_closeButton' onClick={() => setEditModalIsOpen(false)}/>
                         </div>
                         <div className='editModal__content'>
-                            <input className='editResource__input' type="text" placeholder='Name' value={editResourceName} onChange={e => setEditResourceName(e.target.value)}/>
-                            <input className='editResource__input' type="text" placeholder='Link' value={editResourceLink} onChange={e => setEditResourceLink(e.target.value)}/>
-                            <input className='editResource__input' type="text" placeholder='Category' value={editResourceCategory} onChange={e => setEditResourceCategory(e.target.value)}/>
+                            <input className='editResource__input' type="text" placeholder='Name' onChange={e => setEditResourceName(e.target.value)}/>
+                            <input className='editResource__input' type="text" placeholder='Link' onChange={e => setEditResourceLink(e.target.value)}/>
+                            <input className='editResource__input' type="text" placeholder='Category' onChange={e => setEditResourceCategory(e.target.value)}/>
                         </div>
                         <div className='editModal__footer'>
                             <button className='editResourse__button' onClick={() => editResource(idOfResource)}>Edit resourse</button>
+                        </div>
+                    </div>
+                </div>
+            }
+            {deleteModalIsOpen && 
+                <div className='editModal-overlay'>
+                    <div className="editModal-wrapper">
+                        <div className='editModal__header'>
+                            <p className='editModal__header_title'>Delete resource</p>
+                            <FontAwesomeIcon icon={faTimes} className='editModal__header_closeButton' onClick={() => setDeleteModalIsOpen(false)}/>
+                        </div>
+                        <div className='editModal__content'>
+                            <p>Are you sure you want to delete the resource?</p>
+                        </div>
+                        <div className='editModal__footer'>
+                            <button className='editResourse__button' onClick={() => setDeleteModalIsOpen(false)}>Cancel</button>
+                            <button className='editResourse__button' onClick={() => deleteResourse(idOfResource)}>Delete</button>
                         </div>
                     </div>
                 </div>

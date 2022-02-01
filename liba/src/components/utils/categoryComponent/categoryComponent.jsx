@@ -3,9 +3,9 @@ import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { faPen } from '@fortawesome/free-solid-svg-icons';
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import Preloader from '../../utils/preloader/preloader';
 import '../../pages/allResources/allResources.scss'
+import LibaModal from '../libaModal/libaModal';
 
 const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSections=false, actionSection=false, itemsToShow }) => {
     const [allResources, setAllResources] = useState([]);
@@ -133,55 +133,30 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
                 }
             </div>
             <div>
+                {/* TODO: Выести в отдельный компонент. */}
+                {/* <div className='countOfResources'>{allResources.length}</div> */}
                 {actionSection && 
                     <div className='allResources__actions_wrapper'>
-                        {/* TODO: Выести в отдельный компонент. */}
-                        {/* <div className='countOfResources'>{allResources.length}</div> */}
-                        {/* TODO: Выести в отдельный компонент. */}
                         <div className='addResourse__wrapper section__wrapper'>
-                            <input className='addResourse__input' type="text" placeholder='Name' value={resourceName} onChange={e => setResourceName(e.target.value)}/>
-                            <input className='addResourse__input' type="text" placeholder='Link' value={resourceLink} onChange={e => setResourceLink(e.target.value)}/>
-                            <input className='addResourse__input' type="text" placeholder='Category' value={resourceCategory} onChange={e => setResourceCategory(e.target.value)}/>
-                            <button className='addResourse__button' onClick={createResource}>Create new resourse</button>
+                            <input className='editModal__content_input' type="text" placeholder='Name' onChange={e => setResourceName(e.target.value)}/>
+                            <input className='editModal__content_input' type="text" placeholder='Link' onChange={e => setResourceLink(e.target.value)}/>
+                            <input className='editModal__content_input' type="text" placeholder='Category' onChange={e => setResourceCategory(e.target.value)}/>
+                            <button className='libaModal__footer_button' onClick={createResource}>Create new resourse</button>
                         </div>
                     </div>
                 }
             </div>
-            {/* TODO: Вынести в отдельный компонент. */}
             {editModalIsOpen &&
-                <div className='editModal-overlay'>
-                    <div className="editModal-wrapper">
-                        <div className='editModal__header'>
-                            <p className='editModal__header_title'>Edit resource</p>
-                            <FontAwesomeIcon icon={faTimes} className='editModal__header_closeButton' onClick={() => setEditModalIsOpen(false)}/>
-                        </div>
-                        <div className='editModal__content'>
-                            <input className='editResource__input' type="text" placeholder='Name' onChange={e => setEditResourceName(e.target.value)}/>
-                            <input className='editResource__input' type="text" placeholder='Link' onChange={e => setEditResourceLink(e.target.value)}/>
-                            <input className='editResource__input' type="text" placeholder='Category' onChange={e => setEditResourceCategory(e.target.value)}/>
-                        </div>
-                        <div className='editModal__footer'>
-                            <button className='editResourse__button' onClick={() => editResource(idOfResource)}>Edit resourse</button>
-                        </div>
-                    </div>
-                </div>
+                <LibaModal modalTitle="Edit resource" closeHandler={() => setEditModalIsOpen(false)} actionHandler={() => editResource(idOfResource)} actionName="Edit">
+                    <input className='editModal__content_input' type="text" placeholder='Name' onChange={e => setEditResourceName(e.target.value)}/>
+                    <input className='editModal__content_input' type="text" placeholder='Link' onChange={e => setEditResourceLink(e.target.value)}/>
+                    <input className='editModal__content_input' type="text" placeholder='Category' onChange={e => setEditResourceCategory(e.target.value)}/>
+                </LibaModal>
             }
             {deleteModalIsOpen && 
-                <div className='editModal-overlay'>
-                    <div className="editModal-wrapper">
-                        <div className='editModal__header'>
-                            <p className='editModal__header_title'>Delete resource</p>
-                            <FontAwesomeIcon icon={faTimes} className='editModal__header_closeButton' onClick={() => setDeleteModalIsOpen(false)}/>
-                        </div>
-                        <div className='editModal__content'>
-                            <p>Are you sure you want to delete the resource?</p>
-                        </div>
-                        <div className='editModal__footer'>
-                            <button className='editResourse__button' onClick={() => setDeleteModalIsOpen(false)}>Cancel</button>
-                            <button className='editResourse__button' onClick={() => deleteResourse(idOfResource)}>Delete</button>
-                        </div>
-                    </div>
-                </div>
+                <LibaModal modalTitle="Delete resource" closeHandler={() => setDeleteModalIsOpen(false)} actionHandler={() => deleteResourse(idOfResource)} actionName="Delete">
+                    <p className='editModal__content_text'>Are you sure you want to delete the resource?</p>
+                </LibaModal>
             }
         </div>
     )

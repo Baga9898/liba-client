@@ -138,9 +138,9 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
                 {actionSection && 
                     <div className='allResources__actions_wrapper'>
                         <div className='addResourse__wrapper section__wrapper'>
-                            <input className='editModal__content_input' type="text" placeholder='Name' onChange={e => setResourceName(e.target.value)}/>
-                            <input className='editModal__content_input' type="text" placeholder='Link' onChange={e => setResourceLink(e.target.value)}/>
-                            <input className='editModal__content_input' type="text" placeholder='Category' onChange={e => setResourceCategory(e.target.value)}/>
+                            <input className='editModal__content_input' type="text" placeholder='Name' value={resourceName} onChange={e => setResourceName(e.target.value)}/>
+                            <input className='editModal__content_input' type="text" placeholder='Link' value={resourceLink} onChange={e => setResourceLink(e.target.value)}/>
+                            <input className='editModal__content_input' type="text" placeholder='Category' value={resourceCategory} onChange={e => setResourceCategory(e.target.value)}/>
                             <button className='libaModal__footer_button' onClick={createResource}>Create new resourse</button>
                         </div>
                     </div>

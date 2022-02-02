@@ -3,11 +3,12 @@ import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { faPen } from '@fortawesome/free-solid-svg-icons';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import Preloader from '../../utils/preloader/preloader';
 import '../../pages/allResources/allResources.scss'
 import LibaModal from '../libaModal/libaModal';
 
-const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSections=false, actionSection=false, itemsToShow }) => {
+const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSections=false, actionSection=false, itemsToShow, searchInclude=true }) => {
     const [allResources, setAllResources] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [idOfResource, setIdOfResource] = useState("");
@@ -103,61 +104,70 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
     )
 
     return (
-        <div className={actionInfoSections ? 'action-info-wrapper' : ""}>
-            <div className='allResources__wrapper'>
-                {
-                    allResources.map((resource) =>
-                        <div key={resource.id} className='section__wrapper'>
-                            <div className='section__leftside'>
-                                <div className='section__leftside_top'>
-                                    <div className='section__leftside_name'>{resource.name}</div>
-                                    <div className='section__leftside_link'>{resource.link}</div>
-                                </div>
-                                <div className='section__leftside_down'>
-                                    <div className='section__leftside_date'>{resource.date}</div>
-                                </div>
-                            </div>
-                            <div className='section__rightside'>
-                                <div className="section__rightside_top">
-                                    <div className='section__rightside_category'>{resource.category}</div>
-                                </div>
-                                {actionSection &&
-                                    <div className="section__rightside_bottom">
-                                        <FontAwesomeIcon icon={faPen} className="edit-section-icon" onClick={() => openEditModal(resource.id)}/>  
-                                        <FontAwesomeIcon icon={faTrashAlt} className="delete-section-icon" onClick={() => openDeleteModal(resource.id)}/>
+        <div>
+            {searchInclude && 
+                <div className='resources__search_wrapper'>
+                    <FontAwesomeIcon icon={faSearch} className='search-icon'/>
+                    <input className='resources__search' type='text' placeholder='Search...'/>
+                </div>
+            }
+            <div className={actionInfoSections ? 'action-info-wrapper' : ""}>
+                <div className='allResources__wrapper'>
+                    {/* Создать универсальный компонент отрисовки элемента. */}
+                    {
+                        allResources.map((resource) =>
+                            <div key={resource.id} className='section__wrapper'>
+                                <div className='section__leftside'>
+                                    <div className='section__leftside_top'>
+                                        <div className='section__leftside_name'>{resource.name}</div>
+                                        <div className='section__leftside_link'>{resource.link}</div>
                                     </div>
-                                }
+                                    <div className='section__leftside_down'>
+                                        <div className='section__leftside_date'>{resource.date}</div>
+                                    </div>
+                                </div>
+                                <div className='section__rightside'>
+                                    <div className="section__rightside_top">
+                                        <div className='section__rightside_category'>{resource.category}</div>
+                                    </div>
+                                    {actionSection &&
+                                        <div className="section__rightside_bottom">
+                                            <FontAwesomeIcon icon={faPen} className="edit-section-icon" onClick={() => openEditModal(resource.id)}/>  
+                                            <FontAwesomeIcon icon={faTrashAlt} className="delete-section-icon" onClick={() => openDeleteModal(resource.id)}/>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        )
+                    }
+                </div>
+                <div>
+                    {/* TODO: Выести в отдельный компонент. */}
+                    {/* <div className='countOfResources'>{allResources.length}</div> */}
+                    {actionSection && 
+                        <div className='allResources__actions_wrapper'>
+                            <div className='addResourse__wrapper section__wrapper'>
+                                <input className='editModal__content_input' type="text" placeholder='Name' value={resourceName} onChange={e => setResourceName(e.target.value)}/>
+                                <input className='editModal__content_input' type="text" placeholder='Link' value={resourceLink} onChange={e => setResourceLink(e.target.value)}/>
+                                <input className='editModal__content_input' type="text" placeholder='Category' value={resourceCategory} onChange={e => setResourceCategory(e.target.value)}/>
+                                <button className='libaModal__footer_button' onClick={createResource}>Create new resourse</button>
                             </div>
                         </div>
-                    )
+                    }
+                </div>
+                {editModalIsOpen &&
+                    <LibaModal modalTitle="Edit resource" closeHandler={() => setEditModalIsOpen(false)} actionHandler={() => editResource(idOfResource)} actionName="Edit">
+                        <input className='editModal__content_input' type="text" placeholder='Name' onChange={e => setEditResourceName(e.target.value)}/>
+                        <input className='editModal__content_input' type="text" placeholder='Link' onChange={e => setEditResourceLink(e.target.value)}/>
+                        <input className='editModal__content_input' type="text" placeholder='Category' onChange={e => setEditResourceCategory(e.target.value)}/>
+                    </LibaModal>
+                }
+                {deleteModalIsOpen && 
+                    <LibaModal modalTitle="Delete resource" closeHandler={() => setDeleteModalIsOpen(false)} actionHandler={() => deleteResourse(idOfResource)} actionName="Delete">
+                        <p className='editModal__content_text'>Are you sure you want to delete the resource?</p>
+                    </LibaModal>
                 }
             </div>
-            <div>
-                {/* TODO: Выести в отдельный компонент. */}
-                {/* <div className='countOfResources'>{allResources.length}</div> */}
-                {actionSection && 
-                    <div className='allResources__actions_wrapper'>
-                        <div className='addResourse__wrapper section__wrapper'>
-                            <input className='editModal__content_input' type="text" placeholder='Name' value={resourceName} onChange={e => setResourceName(e.target.value)}/>
-                            <input className='editModal__content_input' type="text" placeholder='Link' value={resourceLink} onChange={e => setResourceLink(e.target.value)}/>
-                            <input className='editModal__content_input' type="text" placeholder='Category' value={resourceCategory} onChange={e => setResourceCategory(e.target.value)}/>
-                            <button className='libaModal__footer_button' onClick={createResource}>Create new resourse</button>
-                        </div>
-                    </div>
-                }
-            </div>
-            {editModalIsOpen &&
-                <LibaModal modalTitle="Edit resource" closeHandler={() => setEditModalIsOpen(false)} actionHandler={() => editResource(idOfResource)} actionName="Edit">
-                    <input className='editModal__content_input' type="text" placeholder='Name' onChange={e => setEditResourceName(e.target.value)}/>
-                    <input className='editModal__content_input' type="text" placeholder='Link' onChange={e => setEditResourceLink(e.target.value)}/>
-                    <input className='editModal__content_input' type="text" placeholder='Category' onChange={e => setEditResourceCategory(e.target.value)}/>
-                </LibaModal>
-            }
-            {deleteModalIsOpen && 
-                <LibaModal modalTitle="Delete resource" closeHandler={() => setDeleteModalIsOpen(false)} actionHandler={() => deleteResourse(idOfResource)} actionName="Delete">
-                    <p className='editModal__content_text'>Are you sure you want to delete the resource?</p>
-                </LibaModal>
-            }
         </div>
     )
 };

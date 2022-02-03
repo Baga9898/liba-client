@@ -8,10 +8,12 @@ import Preloader from '../../utils/preloader/preloader';
 import '../../pages/allResources/allResources.scss'
 import LibaModal from '../libaModal/libaModal';
 
-const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSections=false, actionSection=false, itemsToShow, searchInclude=true }) => {
+const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSections=false, actionSection=false, itemsToShow, searchInclude=false }) => {
     const [allResources, setAllResources] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [idOfResource, setIdOfResource] = useState("");
+    const [searchParametrs, setSearchParametrs] = useState("");
+    const searchArray = allResources.filter(n => n.name.includes(searchParametrs))
 
     const [resourceName, setResourceName] = useState("");
     const [resourceLink, setResourceLink] = useState("");
@@ -108,14 +110,14 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
             {searchInclude && 
                 <div className='resources__search_wrapper'>
                     <FontAwesomeIcon icon={faSearch} className='search-icon'/>
-                    <input className='resources__search' type='text' placeholder='Search...'/>
+                    <input className='resources__search' type='text' placeholder='Search...' onChange={e => setSearchParametrs(e.currentTarget.value)}/>
                 </div>
             }
             <div className={actionInfoSections ? 'action-info-wrapper' : ""}>
                 <div className='allResources__wrapper'>
                     {/* Создать универсальный компонент отрисовки элемента. */}
                     {
-                        allResources.map((resource) =>
+                        searchArray.map((resource) =>
                             <div key={resource.id} className='section__wrapper'>
                                 <div className='section__leftside'>
                                     <div className='section__leftside_top'>

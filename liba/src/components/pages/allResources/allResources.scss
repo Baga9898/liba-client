@@ -1,5 +1,23 @@
+.action-info-wrapper {
+    display: flex;
+}
+
+.allResources__wrapper {
+    width: 100%;
+    padding: 15px 25px 15px 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow: auto;
+    position: relative;
+}
+
+.fix-height {
+    height: calc(100vh - 140px);
+}
+
 .allResources__actions_wrapper {
-    padding: 15px;
+    padding: 15px 10px 15px 25px;
 }
 
 .addResourse__wrapper {
@@ -8,7 +26,7 @@
 }
 
 .resources__search_wrapper {
-    padding: 0 15px;
+    padding: 0 25px;
     position: relative;
     margin-top: 15px;
     &:hover .search-icon{
@@ -29,7 +47,7 @@
 .search-icon {
     position: absolute;
     top: 12px;
-    right: 30px;
+    right: 40px;
     color: #bbb;
     font-size: 16px;
     transition: 0.5s;

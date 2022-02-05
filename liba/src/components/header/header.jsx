@@ -10,7 +10,7 @@ const Header = () => {
             <div className="container">
                 <div className="header__wrapper">
                     <div className="header__leftside">
-                        <FontAwesomeIcon icon={faTh} className="header__leftside_menu-icon"/>
+                        {/* <FontAwesomeIcon icon={faTh} className="header__leftside_menu-icon"/> */}
                         <Link to="/"><div className="logo">Liba_</div></Link>
                     </div>
                     <div className="header__rideside">

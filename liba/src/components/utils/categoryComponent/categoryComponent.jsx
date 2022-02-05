@@ -4,18 +4,20 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { faPen } from '@fortawesome/free-solid-svg-icons';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
+import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import Preloader from '../../utils/preloader/preloader';
 import '../../pages/allResources/allResources.scss'
 import LibaModal from '../libaModal/libaModal';
 import Pagination from '../pagination/pagination';
 
-const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSections=false, actionSection=false, itemsToShow, searchInclude=false, pagination=false}) => {
+const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSections=false, actionSection=false, itemsToShow, searchInclude=false, pagination=false, pageSize, fixHeight=false}) => {
     const [allResources, setAllResources] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [idOfResource, setIdOfResource] = useState("");
     const [searchParametrs, setSearchParametrs] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
-    const [resourcesPerPage] = useState(10);
+    const [resourcesPerPage] = useState(pageSize || 5);
 
     const [resourceName, setResourceName] = useState("");
     const [resourceLink, setResourceLink] = useState("");
@@ -34,17 +36,15 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
 
     const paginate = pageNumbers => {setCurrentPage(pageNumbers)}
 
-    function prevPage() {
-        
+    const prevPage = () => {
         setCurrentPage(pageNumber => pageNumber === 1 ? 1 : pageNumber - 1)
     }
 
-    function nextPage() {
+    const nextPage = () => {
         setCurrentPage(pageNumber =>
             pageNumber === Math.ceil(searchArray.length / resourcesPerPage) ?
                 pageNumber : pageNumber + 1)
     }
-
 
     useEffect(() => {
         if (itemsToShow) {
@@ -98,8 +98,6 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
     }
 
     const editResource = (resourceId) => {
-        //Сделать get запрос с целью получения полей выбранного элемента, и последующей передачи на изменение.
-        // Ltkftv get запрос, результаты помещаем в setEditResourceName и так далее.
         axios.put(`${baseURL}/${resourceId}`, {
             name: editResourceName,
             link: editResourceLink,
@@ -145,7 +143,21 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
                 </div>
             }
             <div className={actionInfoSections ? 'action-info-wrapper' : ""}>
-                <div className='allResources__wrapper'>
+                <div>
+                    {/* TODO: Выести в отдельный компонент. */}
+                    {/* <div className='countOfResources'>{allResources.length}</div> */}
+                    {actionSection && 
+                        <div className='allResources__actions_wrapper'>
+                            <div className='addResourse__wrapper section__wrapper'>
+                                <input className='editModal__content_input' type="text" placeholder='Name' value={resourceName} onChange={e => setResourceName(e.target.value)}/>
+                                <input className='editModal__content_input' type="text" placeholder='Link' value={resourceLink} onChange={e => setResourceLink(e.target.value)}/>
+                                <input className='editModal__content_input' type="text" placeholder='Category' value={resourceCategory} onChange={e => setResourceCategory(e.target.value)}/>
+                                <button className='libaModal__footer_button' onClick={createResource}>Create new resourse</button>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <div className={fixHeight ? 'allResources__wrapper fix-height' : 'allResources__wrapper'}>
                     {
                         currentResources.map((resource) =>
                             <div key={resource.id} className='section__wrapper'>
@@ -173,24 +185,10 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
                         )
                     }
                     {pagination &&
-                        <div>
-                            <button className='prev-page' onClick={prevPage}>prev</button>
-                            <Pagination resourcesPerPage={resourcesPerPage} totalCountOfResources={searchArray.length} paginate={paginate}/>
-                            <button className='next-page' onClick={nextPage}>next</button>
-                        </div>
-                    }
-                </div>
-                <div>
-                    {/* TODO: Выести в отдельный компонент. */}
-                    {/* <div className='countOfResources'>{allResources.length}</div> */}
-                    {actionSection && 
-                        <div className='allResources__actions_wrapper'>
-                            <div className='addResourse__wrapper section__wrapper'>
-                                <input className='editModal__content_input' type="text" placeholder='Name' value={resourceName} onChange={e => setResourceName(e.target.value)}/>
-                                <input className='editModal__content_input' type="text" placeholder='Link' value={resourceLink} onChange={e => setResourceLink(e.target.value)}/>
-                                <input className='editModal__content_input' type="text" placeholder='Category' value={resourceCategory} onChange={e => setResourceCategory(e.target.value)}/>
-                                <button className='libaModal__footer_button' onClick={createResource}>Create new resourse</button>
-                            </div>
+                        <div className='pagination-wrapper'>
+                            <button className='prev-page' onClick={prevPage}><FontAwesomeIcon icon={faChevronLeft}/></button>
+                            <Pagination resourcesPerPage={resourcesPerPage} totalCountOfResources={searchArray.length} paginate={paginate} currentPage={currentPage}/>
+                            <button className='next-page' onClick={nextPage}><FontAwesomeIcon icon={faChevronRight}/></button>
                         </div>
                     }
                 </div>

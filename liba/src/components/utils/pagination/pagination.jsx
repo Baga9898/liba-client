@@ -1,6 +1,7 @@
 import React from 'react';
+import './pagination.scss'
 
-const Pagination = ({ resourcesPerPage, totalCountOfResources, paginate}) => {
+const Pagination = ({ resourcesPerPage, totalCountOfResources, paginate, currentPage}) => {
     const pageNumbers = [];
 
     for (let i = 1; i <= Math.ceil(totalCountOfResources / resourcesPerPage); i++) {
@@ -8,17 +9,15 @@ const Pagination = ({ resourcesPerPage, totalCountOfResources, paginate}) => {
     }
 
     return (
-        <div>
-            <ul className='pagination'>
-                {
-                    pageNumbers.map(number => (
-                        <li className='page-item' key={"page№" + number}>
-                            <button className='page-link' onClick={() => paginate(number)}>{number}</button>
-                        </li>
-                    ))
-                }
-            </ul>
-        </div>
+        <ul className='pagination'>
+            {
+                pageNumbers.map((number, index) => (
+                    <li className='page-item' key={"page№" + number}>
+                        <button className={currentPage == index + 1 ? 'page-link current-page' : 'page-link'} onClick={() => paginate(number)}>{number}</button>
+                    </li>
+                ))
+            }
+        </ul>
     );
 };
 

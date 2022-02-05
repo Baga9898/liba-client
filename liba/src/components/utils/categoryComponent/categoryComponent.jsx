@@ -13,7 +13,6 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
     const [isLoading, setIsLoading] = useState(true);
     const [idOfResource, setIdOfResource] = useState("");
     const [searchParametrs, setSearchParametrs] = useState("");
-    const searchArray = allResources.filter(n => n.name.includes(searchParametrs))
 
     const [resourceName, setResourceName] = useState("");
     const [resourceLink, setResourceLink] = useState("");
@@ -25,6 +24,8 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
     const [editResourceCategory, setEditResourceCategory] = useState("");
 
     const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
+
+    const searchArray = allResources.filter(resource => resource.name.includes(searchParametrs));
 
 
     useEffect(() => {
@@ -48,6 +49,15 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
         
     }, [itemsToShow, baseURL, getParams]);
 
+    const getOneResource = (resourceId) => {
+        axios.get(`${baseURL}/${resourceId}`)
+        .then((response) => {
+            setEditResourceName(response.data.name)
+            setEditResourceLink(response.data.link)
+            setEditResourceCategory(response.data.category)
+        })
+    }
+
     const createResource = () => {
         axios.post(baseURL, {
                 name: resourceName,
@@ -64,11 +74,14 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
         }
 
     const openEditModal = (resourceId) => {
+        getOneResource(resourceId);
         setEditModalIsOpen(true);
         setIdOfResource(resourceId)
     }
 
     const editResource = (resourceId) => {
+        //Сделать get запрос с целью получения полей выбранного элемента, и последующей передачи на изменение.
+        // Ltkftv get запрос, результаты помещаем в setEditResourceName и так далее.
         axios.put(`${baseURL}/${resourceId}`, {
             name: editResourceName,
             link: editResourceLink,
@@ -115,7 +128,6 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
             }
             <div className={actionInfoSections ? 'action-info-wrapper' : ""}>
                 <div className='allResources__wrapper'>
-                    {/* Создать универсальный компонент отрисовки элемента. */}
                     {
                         searchArray.map((resource) =>
                             <div key={resource.id} className='section__wrapper'>
@@ -159,9 +171,9 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
                 </div>
                 {editModalIsOpen &&
                     <LibaModal modalTitle="Edit resource" closeHandler={() => setEditModalIsOpen(false)} actionHandler={() => editResource(idOfResource)} actionName="Edit">
-                        <input className='editModal__content_input' type="text" placeholder='Name' onChange={e => setEditResourceName(e.target.value)}/>
-                        <input className='editModal__content_input' type="text" placeholder='Link' onChange={e => setEditResourceLink(e.target.value)}/>
-                        <input className='editModal__content_input' type="text" placeholder='Category' onChange={e => setEditResourceCategory(e.target.value)}/>
+                        <input className='editModal__content_input' type="text" placeholder='Name' value={editResourceName} onChange={e => setEditResourceName(e.target.value)}/>
+                        <input className='editModal__content_input' type="text" placeholder='Link' value={editResourceLink} onChange={e => setEditResourceLink(e.target.value)}/>
+                        <input className='editModal__content_input' type="text" placeholder='Category' value={editResourceCategory} onChange={e => setEditResourceCategory(e.target.value)}/>
                     </LibaModal>
                 }
                 {deleteModalIsOpen && 

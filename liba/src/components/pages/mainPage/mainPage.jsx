@@ -15,7 +15,7 @@ const MainPage = () => {
                     {/* TODO: Создать универсальный компонент, принимающий объект с именем секции и ресурсами. */}
                     <h1 className='middleside-top-title'>Last added</h1>
                         <div className='mainPage-content__middleside_top'>
-                            <AllResources actionSection={false} itemsToShow={10} searchInclude={false}/>
+                            <AllResources actionSection={false} itemsToShow={10} searchInclude={false} pagination={false}/>
                         </div>
                     <div className='devider'></div>
                     <div className='mainPage-content__middleside_bottom'>

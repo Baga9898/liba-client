@@ -7,12 +7,15 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import Preloader from '../../utils/preloader/preloader';
 import '../../pages/allResources/allResources.scss'
 import LibaModal from '../libaModal/libaModal';
+import Pagination from '../pagination/pagination';
 
-const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSections=false, actionSection=false, itemsToShow, searchInclude=false }) => {
+const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSections=false, actionSection=false, itemsToShow, searchInclude=false, pagination=false}) => {
     const [allResources, setAllResources] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [idOfResource, setIdOfResource] = useState("");
     const [searchParametrs, setSearchParametrs] = useState("");
+    const [currentPage, setCurrentPage] = useState(1);
+    const [resourcesPerPage] = useState(10);
 
     const [resourceName, setResourceName] = useState("");
     const [resourceLink, setResourceLink] = useState("");
@@ -22,10 +25,25 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
     const [editResourceName, setEditResourceName] = useState("");
     const [editResourceLink, setEditResourceLink] = useState("");
     const [editResourceCategory, setEditResourceCategory] = useState("");
-
     const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
 
     const searchArray = allResources.filter(resource => resource.name.includes(searchParametrs));
+    const lastResourceIndex = currentPage * resourcesPerPage;
+    const firstResourseIndex = lastResourceIndex - resourcesPerPage;
+    const currentResources = searchArray.slice(firstResourseIndex, lastResourceIndex);
+
+    const paginate = pageNumbers => {setCurrentPage(pageNumbers)}
+
+    function prevPage() {
+        
+        setCurrentPage(pageNumber => pageNumber === 1 ? 1 : pageNumber - 1)
+    }
+
+    function nextPage() {
+        setCurrentPage(pageNumber =>
+            pageNumber === Math.ceil(searchArray.length / resourcesPerPage) ?
+                pageNumber : pageNumber + 1)
+    }
 
 
     useEffect(() => {
@@ -129,7 +147,7 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
             <div className={actionInfoSections ? 'action-info-wrapper' : ""}>
                 <div className='allResources__wrapper'>
                     {
-                        searchArray.map((resource) =>
+                        currentResources.map((resource) =>
                             <div key={resource.id} className='section__wrapper'>
                                 <div className='section__leftside'>
                                     <div className='section__leftside_top'>
@@ -153,6 +171,13 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
                                 </div>
                             </div>
                         )
+                    }
+                    {pagination &&
+                        <div>
+                            <button className='prev-page' onClick={prevPage}>prev</button>
+                            <Pagination resourcesPerPage={resourcesPerPage} totalCountOfResources={searchArray.length} paginate={paginate}/>
+                            <button className='next-page' onClick={nextPage}>next</button>
+                        </div>
                     }
                 </div>
                 <div>

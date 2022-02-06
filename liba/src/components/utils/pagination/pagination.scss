@@ -22,16 +22,12 @@
     margin: 0 5px;
     font-size: 20px;
     transition: 0.5s;
-}
-
-.current-page {
-    color: rgb(255, 123, 0);
-}
-
-.prev-page,
-.next-page {
     color: rgb(170, 170, 170);
     &:hover {
         color: #000;
     }
+}
+
+.current-page {
+    color: rgb(255, 123, 0);
 }

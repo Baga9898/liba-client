@@ -47,6 +47,8 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
     }
 
     useEffect(() => {
+        //TODO: все запросы вынести в родительские компоненты, передавая лишь массив с результатом в компонент категории.
+        //Вынести в родительский компонент и отдавать массив. (Для всех запросов).
         if (itemsToShow) {
             axios.get(baseURL, {params: getParams})
             .then((response) => {
@@ -54,7 +56,12 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
                 const reverseArray = newArray.reverse().slice(0, itemsToShow);
                 setAllResources(reverseArray);
                 setIsLoading(false);
-            });
+                //TODO: добавить модальное окно нотификации, при успехе.
+            })
+            //TODO: добавить модальное окно нотификации, при неудаче.
+            .catch(error => {
+                console.log(error);
+            })
         } else {
             axios.get(baseURL, {params: getParams})
             .then((response) => {
@@ -62,7 +69,10 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
                 const reverseArray = newArray.reverse();
                 setAllResources(reverseArray);
                 setIsLoading(false);
-            });
+            })
+            .catch(error => {
+                console.log(error);
+            })
         }
         
     }, [itemsToShow, baseURL, getParams]);
@@ -70,9 +80,12 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
     const getOneResource = (resourceId) => {
         axios.get(`${baseURL}/${resourceId}`)
         .then((response) => {
-            setEditResourceName(response.data.name)
-            setEditResourceLink(response.data.link)
-            setEditResourceCategory(response.data.category)
+            setEditResourceName(response.data.name);
+            setEditResourceLink(response.data.link);
+            setEditResourceCategory(response.data.category);
+        })
+        .catch(error => {
+            console.log(error);
         })
     }
 
@@ -85,7 +98,10 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
             })
                 .then((response) => {
                     setAllResources([response.data, ...allResources]);
-            });
+            })
+            .catch(error => {
+                console.log(error);
+            })
             setResourceName("");
             setResourceLink("");
             setResourceCategory("");
@@ -109,7 +125,10 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
             const newArray = [...allResources];
             newArray[indexOfChangedResource] = response.data;
             setAllResources(newArray);
-        });
+        })
+        .catch(error => {
+            console.log(error);
+        })
         setEditResourceName("");
         setEditResourceLink("");
         setEditResourceCategory("");
@@ -126,6 +145,9 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
         .then((response) => {
             const newArray = allResources.filter((resource) => resource.id !== response.data.id);
             setAllResources(newArray);
+        })
+        .catch(error => {
+            console.log(error);
         })
         setDeleteModalIsOpen(false);
     }

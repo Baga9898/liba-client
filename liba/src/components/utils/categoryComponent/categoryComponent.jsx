@@ -47,50 +47,55 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
     }
 
     useEffect(() => {
-        //TODO: все запросы вынести в родительские компоненты, передавая лишь массив с результатом в компонент категории.
-        //Вынести в родительский компонент и отдавать массив. (Для всех запросов).
         if (itemsToShow) {
-            axios.get(baseURL, {params: getParams})
-            .then((response) => {
-                const newArray = response.data;
-                const reverseArray = newArray.reverse().slice(0, itemsToShow);
-                setAllResources(reverseArray);
-                setIsLoading(false);
-                //TODO: добавить модальное окно нотификации, при успехе.
-            })
-            //TODO: добавить модальное окно нотификации, при неудаче.
-            .catch(error => {
+            try {
+                axios.get(baseURL, {params: getParams})
+                .then((response) => {
+                    const newArray = response.data;
+                    const reverseArray = newArray.reverse().slice(0, itemsToShow);
+                    setAllResources(reverseArray);
+                    setIsLoading(false);
+                    //TODO: добавить модальное окно нотификации, при успехе.
+                })
+            } catch (error) {
+                //TODO: добавить модальное окно нотификации, при неудаче.
                 console.log(error);
-            })
+            }
         } else {
-            axios.get(baseURL, {params: getParams})
-            .then((response) => {
-                const newArray = response.data;
-                const reverseArray = newArray.reverse();
-                setAllResources(reverseArray);
-                setIsLoading(false);
-            })
-            .catch(error => {
+            try {
+                axios.get(baseURL, {params: getParams})
+                .then((response) => {
+                    const newArray = response.data;
+                    const reverseArray = newArray.reverse();
+                    setAllResources(reverseArray);
+                    setIsLoading(false);
+                    //TODO: добавить модальное окно нотификации, при успехе.
+                })
+            } catch (error) {
+                //TODO: добавить модальное окно нотификации, при неудаче.
                 console.log(error);
-            })
-        }
-        
+            }
+        }   
     }, [itemsToShow, baseURL, getParams]);
 
     const getOneResource = (resourceId) => {
-        axios.get(`${baseURL}/${resourceId}`)
-        .then((response) => {
-            setEditResourceName(response.data.name);
-            setEditResourceLink(response.data.link);
-            setEditResourceCategory(response.data.category);
-        })
-        .catch(error => {
+        try {
+            axios.get(`${baseURL}/${resourceId}`)
+            .then((response) => {
+                setEditResourceName(response.data.name);
+                setEditResourceLink(response.data.link);
+                setEditResourceCategory(response.data.category);
+                //TODO: добавить модальное окно нотификации, при успехе.
+            })
+        } catch (error) {
+            //TODO: добавить модальное окно нотификации, при неудаче.
             console.log(error);
-        })
+        }
     }
 
     const createResource = () => {
-        axios.post(baseURL, {
+        try {
+            axios.post(baseURL, {
                 name: resourceName,
                 link: resourceLink,
                 category: resourceCategory,
@@ -99,13 +104,15 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
                 .then((response) => {
                     setAllResources([response.data, ...allResources]);
             })
-            .catch(error => {
-                console.log(error);
-            })
             setResourceName("");
             setResourceLink("");
             setResourceCategory("");
+            //TODO: добавить модальное окно нотификации, при успехе.
+        } catch (error) {
+            //TODO: добавить модальное окно нотификации, при неудаче.
+            console.log(error);
         }
+    }
 
     const openEditModal = (resourceId) => {
         getOneResource(resourceId);
@@ -114,25 +121,28 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
     }
 
     const editResource = (resourceId) => {
-        axios.put(`${baseURL}/${resourceId}`, {
-            name: editResourceName,
-            link: editResourceLink,
-            category: editResourceCategory,
-            date: Date.now,
-        })
-        .then((response) => {
-            const indexOfChangedResource = allResources.findIndex((resource) => resource.id === response.data.id);
-            const newArray = [...allResources];
-            newArray[indexOfChangedResource] = response.data;
-            setAllResources(newArray);
-        })
-        .catch(error => {
+        try {
+            axios.put(`${baseURL}/${resourceId}`, {
+                name: editResourceName,
+                link: editResourceLink,
+                category: editResourceCategory,
+                date: Date.now,
+            })
+            .then((response) => {
+                const indexOfChangedResource = allResources.findIndex((resource) => resource.id === response.data.id);
+                const newArray = [...allResources];
+                newArray[indexOfChangedResource] = response.data;
+                setAllResources(newArray);
+            })
+            setEditResourceName("");
+            setEditResourceLink("");
+            setEditResourceCategory("");
+            setEditModalIsOpen(false);
+            //TODO: добавить модальное окно нотификации, при успехе.
+        } catch (error) {
+            //TODO: добавить модальное окно нотификации, при неудаче.
             console.log(error);
-        })
-        setEditResourceName("");
-        setEditResourceLink("");
-        setEditResourceCategory("");
-        setEditModalIsOpen(false);
+        }
     }
 
     const openDeleteModal = (resourceId) => {
@@ -141,15 +151,18 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
     }
 
     const deleteResourse = (resourceId) => {
-        axios.delete(`${baseURL}/${resourceId}`)
-        .then((response) => {
-            const newArray = allResources.filter((resource) => resource.id !== response.data.id);
-            setAllResources(newArray);
-        })
-        .catch(error => {
+        try {
+            axios.delete(`${baseURL}/${resourceId}`)
+            .then((response) => {
+                const newArray = allResources.filter((resource) => resource.id !== response.data.id);
+                setAllResources(newArray);
+            })
+            setDeleteModalIsOpen(false);
+            //TODO: добавить модальное окно нотификации, при успехе.
+        } catch (error) {
             console.log(error);
-        })
-        setDeleteModalIsOpen(false);
+            //TODO: добавить модальное окно нотификации, при неудаче.
+        }
     }
 
     if (!allResources || allResources.length === 0) return (

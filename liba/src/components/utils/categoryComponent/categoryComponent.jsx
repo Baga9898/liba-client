@@ -46,10 +46,10 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
                 pageNumber : pageNumber + 1)
     }
 
-    useEffect(() => {
+    useEffect(async () => {
         if (itemsToShow) {
             try {
-                axios.get(baseURL, {params: getParams})
+                await axios.get(baseURL, {params: getParams})
                 .then((response) => {
                     const newArray = response.data;
                     const reverseArray = newArray.reverse().slice(0, itemsToShow);
@@ -63,7 +63,7 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
             }
         } else {
             try {
-                axios.get(baseURL, {params: getParams})
+                await axios.get(baseURL, {params: getParams})
                 .then((response) => {
                     const newArray = response.data;
                     const reverseArray = newArray.reverse();
@@ -78,9 +78,9 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
         }   
     }, [itemsToShow, baseURL, getParams]);
 
-    const getOneResource = (resourceId) => {
+    const getOneResource = async (resourceId) => {
         try {
-            axios.get(`${baseURL}/${resourceId}`)
+            await axios.get(`${baseURL}/${resourceId}`)
             .then((response) => {
                 setEditResourceName(response.data.name);
                 setEditResourceLink(response.data.link);
@@ -93,9 +93,9 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
         }
     }
 
-    const createResource = () => {
+    const createResource = async () => {
         try {
-            axios.post(baseURL, {
+            await axios.post(baseURL, {
                 name: resourceName,
                 link: resourceLink,
                 category: resourceCategory,
@@ -120,9 +120,9 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
         setIdOfResource(resourceId)
     }
 
-    const editResource = (resourceId) => {
+    const editResource = async (resourceId) => {
         try {
-            axios.put(`${baseURL}/${resourceId}`, {
+            await axios.put(`${baseURL}/${resourceId}`, {
                 name: editResourceName,
                 link: editResourceLink,
                 category: editResourceCategory,
@@ -150,9 +150,9 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
         setIdOfResource(resourceId);
     }
 
-    const deleteResourse = (resourceId) => {
+    const deleteResourse = async (resourceId) => {
         try {
-            axios.delete(`${baseURL}/${resourceId}`)
+            await axios.delete(`${baseURL}/${resourceId}`)
             .then((response) => {
                 const newArray = allResources.filter((resource) => resource.id !== response.data.id);
                 setAllResources(newArray);

@@ -10,6 +10,7 @@ import Preloader from '../../utils/preloader/preloader';
 import '../../pages/allResources/allResources.scss'
 import LibaModal from '../libaModal/libaModal';
 import Pagination from '../pagination/pagination';
+import LibaNotification from '../libaNotification/libaNotification';
 
 const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSections=false, actionSection=false, itemsToShow, searchInclude=false, pagination=false, pageSize, fixHeight=false}) => {
     const [allResources, setAllResources] = useState([]);
@@ -28,6 +29,15 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
     const [editResourceLink, setEditResourceLink] = useState("");
     const [editResourceCategory, setEditResourceCategory] = useState("");
     const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
+
+    const [addSuccessNotificationIsOpen, setAddSuccessNotificationIsOpen] = useState(false);
+    const [addErrorNotificationIsOpen, setAddErrorNotificationIsOpen] = useState(false);
+
+    const [editSuccessNotificationIsOpen, setEditSuccessNotificationIsOpen] = useState(false);
+    const [editErrorNotificationIsOpen, setEditErrorNotificationIsOpen] = useState(false);
+
+    const [deleteSuccessNotificationIsOpen, setDeleteSuccessNotificationIsOpen] = useState(false);
+    const [deleteErrorNotificationIsOpen, setDeleteErrorNotificationIsOpen] = useState(false);
 
     const searchArray = allResources.filter(resource => resource.name.includes(searchParametrs));
     const lastResourceIndex = currentPage * resourcesPerPage;
@@ -55,10 +65,8 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
                     const reverseArray = newArray.reverse().slice(0, itemsToShow);
                     setAllResources(reverseArray);
                     setIsLoading(false);
-                    //TODO: добавить модальное окно нотификации, при успехе.
                 })
             } catch (error) {
-                //TODO: добавить модальное окно нотификации, при неудаче.
                 console.log(error);
             }
         } else {
@@ -69,10 +77,8 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
                     const reverseArray = newArray.reverse();
                     setAllResources(reverseArray);
                     setIsLoading(false);
-                    //TODO: добавить модальное окно нотификации, при успехе.
                 })
             } catch (error) {
-                //TODO: добавить модальное окно нотификации, при неудаче.
                 console.log(error);
             }
         }   
@@ -85,10 +91,8 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
                 setEditResourceName(response.data.name);
                 setEditResourceLink(response.data.link);
                 setEditResourceCategory(response.data.category);
-                //TODO: добавить модальное окно нотификации, при успехе.
             })
         } catch (error) {
-            //TODO: добавить модальное окно нотификации, при неудаче.
             console.log(error);
         }
     }
@@ -107,10 +111,16 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
             setResourceName("");
             setResourceLink("");
             setResourceCategory("");
-            //TODO: добавить модальное окно нотификации, при успехе.
+            setAddSuccessNotificationIsOpen(true);
+            setTimeout(() => {
+                setAddSuccessNotificationIsOpen(false);
+            }, 3000);
         } catch (error) {
-            //TODO: добавить модальное окно нотификации, при неудаче.
             console.log(error);
+            setAddErrorNotificationIsOpen(true);
+            setTimeout(() => {
+                setAddErrorNotificationIsOpen(false);
+            }, 3000);
         }
     }
 
@@ -137,10 +147,16 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
             setEditResourceName("");
             setEditResourceLink("");
             setEditResourceCategory("");
-            //TODO: добавить модальное окно нотификации, при успехе.
+            setEditSuccessNotificationIsOpen(true);
+            setTimeout(() => {
+                setEditSuccessNotificationIsOpen(false);
+            }, 3000);
         } catch (error) {
-            //TODO: добавить модальное окно нотификации, при неудаче.
             console.log(error);
+            setEditErrorNotificationIsOpen(true);
+            setTimeout(() => {
+                setEditErrorNotificationIsOpen(false);
+            }, 3000);
         }
         setEditModalIsOpen(false);
     }
@@ -157,10 +173,16 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
                 const newArray = allResources.filter((resource) => resource.id !== response.data.id);
                 setAllResources(newArray);
             })
-            //TODO: добавить модальное окно нотификации, при успехе.
+            setDeleteSuccessNotificationIsOpen(true);
+            setTimeout(() => {
+                setDeleteSuccessNotificationIsOpen(false);
+            }, 3000);
         } catch (error) {
             console.log(error);
-            //TODO: добавить модальное окно нотификации, при неудаче.
+            setDeleteErrorNotificationIsOpen(true);
+            setTimeout(() => {
+                setDeleteErrorNotificationIsOpen(false);
+            }, 3000);
         }
         setDeleteModalIsOpen(false);
     }
@@ -170,7 +192,7 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
     )
 
     return (
-        <div>
+        <>
             {searchInclude && 
                 <div className='resources__search_wrapper'>
                     <FontAwesomeIcon icon={faSearch} className='search-icon'/>
@@ -179,7 +201,7 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
             }
             <div className={actionInfoSections ? 'action-info-wrapper' : ""}>
                 <div>
-                    {/* TODO: Выести в отдельный компонент. */}
+                    {/* TODO: Вынести в отдельный компонент. */}
                     {/* <div className='countOfResources'>{allResources.length}</div> */}
                     {actionSection && 
                         <div className='allResources__actions_wrapper'>
@@ -239,8 +261,38 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
                         <p className='editModal__content_text'>Are you sure you want to delete the resource?</p>
                     </LibaModal>
                 }
+                {addSuccessNotificationIsOpen &&
+                    <LibaNotification closeHandler={() => setAddSuccessNotificationIsOpen(false)}>
+                        <p className='libaNotification__body_text'>Adding was success</p>
+                    </LibaNotification>
+                }
+                {addErrorNotificationIsOpen &&
+                    <LibaNotification closeHandler={() => setAddErrorNotificationIsOpen(false)}>
+                        <p className='libaNotification__body_text'>Adding failed</p>
+                    </LibaNotification>
+                }
+                {editSuccessNotificationIsOpen &&
+                    <LibaNotification closeHandler={() => setEditSuccessNotificationIsOpen(false)}>
+                        <p className='libaNotification__body_text'>Editing was success</p>
+                    </LibaNotification>
+                }
+                {editErrorNotificationIsOpen &&
+                    <LibaNotification closeHandler={() => setEditErrorNotificationIsOpen(false)}>
+                        <p className='libaNotification__body_text'>Editing failed</p>
+                    </LibaNotification>
+                }
+                {deleteSuccessNotificationIsOpen &&
+                    <LibaNotification closeHandler={() => setDeleteSuccessNotificationIsOpen(false)}>
+                        <p className='libaNotification__body_text'>Removal was success</p>
+                    </LibaNotification>
+                }
+                {deleteErrorNotificationIsOpen &&
+                    <LibaNotification closeHandler={() => setDeleteErrorNotificationIsOpen(false)}>
+                        <p className='libaNotification__body_text'>Removal failed</p>
+                    </LibaNotification>
+                }
             </div>
-        </div>
+        </>
     )
 };
 

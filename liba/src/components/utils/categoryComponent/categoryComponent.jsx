@@ -137,12 +137,12 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
             setEditResourceName("");
             setEditResourceLink("");
             setEditResourceCategory("");
-            setEditModalIsOpen(false);
             //TODO: добавить модальное окно нотификации, при успехе.
         } catch (error) {
             //TODO: добавить модальное окно нотификации, при неудаче.
             console.log(error);
         }
+        setEditModalIsOpen(false);
     }
 
     const openDeleteModal = (resourceId) => {
@@ -157,12 +157,12 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
                 const newArray = allResources.filter((resource) => resource.id !== response.data.id);
                 setAllResources(newArray);
             })
-            setDeleteModalIsOpen(false);
             //TODO: добавить модальное окно нотификации, при успехе.
         } catch (error) {
             console.log(error);
             //TODO: добавить модальное окно нотификации, при неудаче.
         }
+        setDeleteModalIsOpen(false);
     }
 
     if (!allResources || allResources.length === 0) return (

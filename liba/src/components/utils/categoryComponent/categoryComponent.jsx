@@ -97,13 +97,16 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
         }
     }
 
+    const newDate = new Date();
+    const date = (newDate.toLocaleString('en-US', { hour12: true }));
+
     const createResource = async () => {
         try {
             await axios.post(baseURL, {
                 name: resourceName,
                 link: resourceLink,
                 category: resourceCategory,
-                date: "date",
+                date: date,
             })
                 .then((response) => {
                     setAllResources([response.data, ...allResources]);
@@ -295,5 +298,6 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
         </>
     )
 };
+
 
 export default CategoryComponent;

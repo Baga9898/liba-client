@@ -39,6 +39,8 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
     const [deleteSuccessNotificationIsOpen, setDeleteSuccessNotificationIsOpen] = useState(false);
     const [deleteErrorNotificationIsOpen, setDeleteErrorNotificationIsOpen] = useState(false);
 
+    const [matchesNotificationIsOpen, setMatchesNotificationIsOpen] = useState(false);
+
     const searchArray = allResources.filter(resource => resource.name.includes(searchParametrs));
     const lastResourceIndex = currentPage * resourcesPerPage;
     const firstResourseIndex = lastResourceIndex - resourcesPerPage;
@@ -108,16 +110,24 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
                 category: resourceCategory,
                 date: date,
             })
-                .then((response) => {
+            .then((response) => {
+                if (allResources.some(resourse => resourse.name == response.data.name)) {
+                    axios.delete(`${baseURL}/${response.data.id}`);
+                    setMatchesNotificationIsOpen(true);
+                    setTimeout(() => {
+                        setMatchesNotificationIsOpen(false);
+                    }, 3000);
+                } else {
                     setAllResources([response.data, ...allResources]);
+                    setAddSuccessNotificationIsOpen(true);
+                    setTimeout(() => {
+                        setAddSuccessNotificationIsOpen(false);
+                    }, 3000);
+                }
             })
             setResourceName("");
             setResourceLink("");
             setResourceCategory("");
-            setAddSuccessNotificationIsOpen(true);
-            setTimeout(() => {
-                setAddSuccessNotificationIsOpen(false);
-            }, 3000);
         } catch (error) {
             console.log(error);
             setAddErrorNotificationIsOpen(true);
@@ -292,6 +302,11 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
                 {deleteErrorNotificationIsOpen &&
                     <LibaNotification closeHandler={() => setDeleteErrorNotificationIsOpen(false)}>
                         <p className='libaNotification__body_text'>Removal failed</p>
+                    </LibaNotification>
+                }
+                {matchesNotificationIsOpen &&
+                    <LibaNotification closeHandler={() => setMatchesNotificationIsOpen(false)}>
+                        <p className='libaNotification__body_text'>This resource name already exists</p>
                     </LibaNotification>
                 }
             </div>

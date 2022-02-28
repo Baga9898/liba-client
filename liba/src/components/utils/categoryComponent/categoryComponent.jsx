@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -103,37 +104,39 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
     const date = (newDate.toLocaleString('en-US', { hour12: true }));
 
     const createResource = async () => {
-        try {
-            await axios.post(baseURL, {
-                name: resourceName,
-                link: resourceLink,
-                category: resourceCategory,
-                date: date,
-            })
-            .then((response) => {
-                if (allResources.some(resourse => resourse.name == response.data.name)) {
-                    axios.delete(`${baseURL}/${response.data.id}`);
-                    setMatchesNotificationIsOpen(true);
-                    setTimeout(() => {
-                        setMatchesNotificationIsOpen(false);
-                    }, 3000);
-                } else {
+        if (!allResources.some(resource => resource.name === resourceName)) {
+            try {
+                await axios.post(baseURL, {
+                    name: resourceName,
+                    link: resourceLink,
+                    category: resourceCategory,
+                    date: date,
+                })
+                .then((response) => {
                     setAllResources([response.data, ...allResources]);
                     setAddSuccessNotificationIsOpen(true);
                     setTimeout(() => {
                         setAddSuccessNotificationIsOpen(false);
                     }, 3000);
-                }
-            })
+                })
+                setResourceName("");
+                setResourceLink("");
+                setResourceCategory("");
+            } catch (error) {
+                console.log(error);
+                setAddErrorNotificationIsOpen(true);
+                setTimeout(() => {
+                    setAddErrorNotificationIsOpen(false);
+                }, 3000);
+            }
+        } else {
+            setMatchesNotificationIsOpen(true);
+            setTimeout(() => {
+                setMatchesNotificationIsOpen(false);
+            }, 3000);
             setResourceName("");
             setResourceLink("");
             setResourceCategory("");
-        } catch (error) {
-            console.log(error);
-            setAddErrorNotificationIsOpen(true);
-            setTimeout(() => {
-                setAddErrorNotificationIsOpen(false);
-            }, 3000);
         }
     }
 

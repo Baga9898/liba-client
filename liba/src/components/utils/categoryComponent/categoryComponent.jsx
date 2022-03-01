@@ -147,32 +147,42 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
     }
 
     const editResource = async (resourceId) => {
-        try {
-            await axios.put(`${baseURL}/${resourceId}`, {
-                name: editResourceName,
-                link: editResourceLink,
-                category: editResourceCategory,
-                date: Date.now,
-            })
-            .then((response) => {
-                const indexOfChangedResource = allResources.findIndex((resource) => resource.id === response.data.id);
-                const newArray = [...allResources];
-                newArray[indexOfChangedResource] = response.data;
-                setAllResources(newArray);
-            })
+        if (!allResources.some(resource => resource.name === editResourceName)) {
+            try {
+                await axios.put(`${baseURL}/${resourceId}`, {
+                    name: editResourceName,
+                    link: editResourceLink,
+                    category: editResourceCategory,
+                    date: Date.now,
+                })
+                .then((response) => {
+                    const indexOfChangedResource = allResources.findIndex((resource) => resource.id === response.data.id);
+                    const newArray = [...allResources];
+                    newArray[indexOfChangedResource] = response.data;
+                    setAllResources(newArray);
+                })
+                setEditResourceName("");
+                setEditResourceLink("");
+                setEditResourceCategory("");
+                setEditSuccessNotificationIsOpen(true);
+                setTimeout(() => {
+                    setEditSuccessNotificationIsOpen(false);
+                }, 3000);
+            } catch (error) {
+                console.log(error);
+                setEditErrorNotificationIsOpen(true);
+                setTimeout(() => {
+                    setEditErrorNotificationIsOpen(false);
+                }, 3000);
+            }
+        } else {
+            setMatchesNotificationIsOpen(true);
+            setTimeout(() => {
+                setMatchesNotificationIsOpen(false);
+            }, 3000);
             setEditResourceName("");
             setEditResourceLink("");
             setEditResourceCategory("");
-            setEditSuccessNotificationIsOpen(true);
-            setTimeout(() => {
-                setEditSuccessNotificationIsOpen(false);
-            }, 3000);
-        } catch (error) {
-            console.log(error);
-            setEditErrorNotificationIsOpen(true);
-            setTimeout(() => {
-                setEditErrorNotificationIsOpen(false);
-            }, 3000);
         }
         setEditModalIsOpen(false);
     }

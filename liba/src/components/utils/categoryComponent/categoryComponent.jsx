@@ -16,6 +16,7 @@ import LibaNotification from '../libaNotification/libaNotification';
 const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSections=false, actionSection=false, itemsToShow, searchInclude=false, pagination=false, pageSize, fixHeight=false}) => {
     const [allResources, setAllResources] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [requestIsLoading, setRequestIsLoading] = useState(false);
     const [idOfResource, setIdOfResource] = useState("");
     const [searchParametrs, setSearchParametrs] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
@@ -105,6 +106,7 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
 
     const createResource = async () => {
         if (!allResources.some(resource => resource.name === resourceName || resource.link === resourceLink)) {
+            setRequestIsLoading(true);
             try {
                 await axios.post(baseURL, {
                     name: resourceName,
@@ -129,6 +131,7 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
                     setAddErrorNotificationIsOpen(false);
                 }, 3000);
             }
+            setRequestIsLoading(false);
         } else {
             setMatchesNotificationIsOpen(true);
             setTimeout(() => {
@@ -148,6 +151,7 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
 
     const editResource = async (resourceId) => {
         if (!allResources.some(resource => resource.name === editResourceName || resource.link === editResourceLink)) {
+            setRequestIsLoading(true);
             try {
                 await axios.put(`${baseURL}/${resourceId}`, {
                     name: editResourceName,
@@ -175,6 +179,7 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
                     setEditErrorNotificationIsOpen(false);
                 }, 3000);
             }
+            setRequestIsLoading(false);
         } else {
             setMatchesNotificationIsOpen(true);
             setTimeout(() => {
@@ -193,6 +198,7 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
     }
 
     const deleteResourse = async (resourceId) => {
+        setRequestIsLoading(true);
         try {
             await axios.delete(`${baseURL}/${resourceId}`)
             .then((response) => {
@@ -210,6 +216,7 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
                 setDeleteErrorNotificationIsOpen(false);
             }, 3000);
         }
+        setRequestIsLoading(false);
         setDeleteModalIsOpen(false);
     }
 
@@ -219,6 +226,7 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
 
     return (
         <>
+            {requestIsLoading && <Preloader/>}
             {searchInclude && 
                 <div className='resources__search_wrapper'>
                     <FontAwesomeIcon icon={faSearch} className='search-icon'/>

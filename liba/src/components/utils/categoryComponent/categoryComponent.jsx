@@ -147,7 +147,7 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
     }
 
     const editResource = async (resourceId) => {
-        if (!allResources.some(resource => resource.name === editResourceName)) {
+        if (!allResources.some(resource => resource.name === editResourceName || resource.link === editResourceLink)) {
             try {
                 await axios.put(`${baseURL}/${resourceId}`, {
                     name: editResourceName,

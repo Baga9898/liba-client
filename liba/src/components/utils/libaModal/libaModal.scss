@@ -67,18 +67,28 @@
     }
 }
 
-.editModal__content_input {
-    font-size: 22px;
-    margin-bottom: 30px;
-    border-bottom: 2px solid rgb(187, 187, 187);
-    background: transparent;
-    transition: 0.5s;
-    &:hover,
-    &:focus {
-        border-bottom: 2px solid #000;
+.editModal__content{
+    &_input {
+        font-size: 22px;
+        margin-bottom: 30px;
+        border-bottom: 2px solid rgb(187, 187, 187);
+        background: transparent;
+        transition: 0.5s;
+        &:hover,
+        &:focus {
+            border-bottom: 2px solid #000;
+        }
+    }
+    &_text {
+        font-size: 20px;
+    }
+    &_label {
+        font-size: 22px;
+        color: rgb(133, 133, 133);
     }
 }
 
-.editModal__content_text {
-    font-size: 20px;
+.addResource__content_wrapper {
+    display: flex;
+    flex-direction: column;
 }

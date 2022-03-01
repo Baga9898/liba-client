@@ -240,9 +240,18 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
                     {actionSection && 
                         <div className='allResources__actions_wrapper'>
                             <div className='addResourse__wrapper section__wrapper'>
-                                <input className='editModal__content_input' type="text" placeholder='Name' value={resourceName} onChange={e => setResourceName(e.target.value)}/>
-                                <input className='editModal__content_input' type="text" placeholder='Link' value={resourceLink} onChange={e => setResourceLink(e.target.value)}/>
-                                <input className='editModal__content_input' type="text" placeholder='Category' value={resourceCategory} onChange={e => setResourceCategory(e.target.value)}/>
+                                <div className='addResource__content_wrapper'>
+                                    <label className='editModal__content_label'>Name</label>
+                                    <input className='editModal__content_input' type="text" value={resourceName} onChange={e => setResourceName(e.target.value)}/>
+                                </div>
+                                <div className='addResource__content_wrapper'>
+                                    <label className='editModal__content_label'>Link</label>
+                                    <input className='editModal__content_input' type="text" value={resourceLink} onChange={e => setResourceLink(e.target.value)}/>
+                                </div>
+                                <div className='addResource__content_wrapper'>
+                                    <label className='editModal__content_label'>Category</label>
+                                    <input className='editModal__content_input' type="text" value={resourceCategory} onChange={e => setResourceCategory(e.target.value)}/>
+                                </div>
                                 <button className='libaModal__footer_button' onClick={createResource}>Create new resourse</button>
                             </div>
                         </div>
@@ -285,9 +294,18 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
                 </div>
                 {editModalIsOpen &&
                     <LibaModal modalTitle="Edit resource" closeHandler={() => setEditModalIsOpen(false)} actionHandler={() => editResource(idOfResource)} actionName="Edit">
-                        <input className='editModal__content_input' type="text" placeholder='Name' value={editResourceName} onChange={e => setEditResourceName(e.target.value)}/>
-                        <input className='editModal__content_input' type="text" placeholder='Link' value={editResourceLink} onChange={e => setEditResourceLink(e.target.value)}/>
-                        <input className='editModal__content_input' type="text" placeholder='Category' value={editResourceCategory} onChange={e => setEditResourceCategory(e.target.value)}/>
+                        <div className='addResource__content_wrapper'>
+                            <label className='editModal__content_label'>Name</label>
+                            <input className='editModal__content_input' type="text" value={editResourceName} onChange={e => setEditResourceName(e.target.value)}/>
+                        </div>
+                        <div className='addResource__content_wrapper'>
+                            <label className='editModal__content_label'>Link</label>
+                            <input className='editModal__content_input' type="text" value={editResourceLink} onChange={e => setEditResourceLink(e.target.value)}/>
+                        </div>
+                        <div className='addResource__content_wrapper'>
+                            <label className='editModal__content_label'>Category</label>
+                            <input className='editModal__content_input' type="text" value={editResourceCategory} onChange={e => setEditResourceCategory(e.target.value)}/>
+                        </div>
                     </LibaModal>
                 }
                 {deleteModalIsOpen && 

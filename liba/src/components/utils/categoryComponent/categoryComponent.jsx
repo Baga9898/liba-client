@@ -104,7 +104,7 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
     const date = (newDate.toLocaleString('en-US', { hour12: true }));
 
     const createResource = async () => {
-        if (!allResources.some(resource => resource.name === resourceName)) {
+        if (!allResources.some(resource => resource.name === resourceName || resource.link === resourceLink)) {
             try {
                 await axios.post(baseURL, {
                     name: resourceName,
@@ -319,7 +319,7 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
                 }
                 {matchesNotificationIsOpen &&
                     <LibaNotification closeHandler={() => setMatchesNotificationIsOpen(false)}>
-                        <p className='libaNotification__body_text'>This resource name already exists</p>
+                        <p className='libaNotification__body_text'>Resource with the same name or link already exists</p>
                     </LibaNotification>
                 }
             </div>

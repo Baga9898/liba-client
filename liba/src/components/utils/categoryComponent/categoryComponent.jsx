@@ -70,7 +70,7 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
                     setIsLoading(false);
                 })
             } catch (error) {
-                console.log(error);
+                console.error(error);
             }
         } else {
             try {
@@ -82,7 +82,7 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
                     setIsLoading(false);
                 })
             } catch (error) {
-                console.log(error);
+                console.error(error);
             }
         }   
     }, [itemsToShow, baseURL, getParams]);
@@ -96,7 +96,7 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
                 setEditResourceCategory(response.data.category);
             })
         } catch (error) {
-            console.log(error);
+            console.error(error);
         }
     }
 
@@ -124,7 +124,7 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
                 setResourceLink("");
                 setResourceCategory("");
             } catch (error) {
-                console.log(error);
+                console.error(error);
                 setAddErrorNotificationIsOpen(true);
                 setTimeout(() => {
                     setAddErrorNotificationIsOpen(false);
@@ -172,7 +172,7 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
                     setEditSuccessNotificationIsOpen(false);
                 }, 3000);
             } catch (error) {
-                console.log(error);
+                console.error(error);
                 setEditErrorNotificationIsOpen(true);
                 setTimeout(() => {
                     setEditErrorNotificationIsOpen(false);
@@ -209,7 +209,7 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
                 setDeleteSuccessNotificationIsOpen(false);
             }, 3000);
         } catch (error) {
-            console.log(error);
+            console.error(error);
             setDeleteErrorNotificationIsOpen(true);
             setTimeout(() => {
                 setDeleteErrorNotificationIsOpen(false);

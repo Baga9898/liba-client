@@ -15,6 +15,7 @@
     "@types/node": "^17.0.8",
     "@types/react": "^17.0.38",
     "@types/react-dom": "^17.0.11",
+    "animate.css": "^4.1.1",
     "axios": "^0.24.0",
     "node-sass": "^7.0.1",
     "react": "^17.0.2",

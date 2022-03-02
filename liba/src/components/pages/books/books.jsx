@@ -11,6 +11,7 @@ const Books = () => {
         categoryName={categoryName} 
         baseURL={baseURL} 
         getParams={getParams}
+        pagination={true}
         />
     );
 }

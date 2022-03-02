@@ -11,6 +11,7 @@ const Posts = () => {
         categoryName={categoryName} 
         baseURL={baseURL} 
         getParams={getParams}
+        pagination={true}
         />
     );
 }

@@ -11,6 +11,7 @@ const Websites = () => {
         categoryName={categoryName} 
         baseURL={baseURL} 
         getParams={getParams}
+        pagination={true}
         />
     );
 }

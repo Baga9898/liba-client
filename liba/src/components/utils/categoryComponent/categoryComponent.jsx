@@ -2,8 +2,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
-import { faPen } from '@fortawesome/free-solid-svg-icons';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
@@ -12,6 +10,7 @@ import '../../pages/allResources/allResources.scss'
 import LibaModal from '../libaModal/libaModal';
 import Pagination from '../pagination/pagination';
 import LibaNotification from '../libaNotification/libaNotification';
+import ResourceWrapper from '../resourceWrapper/resourceWrapper';
 
 const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSections=false, actionSection=false, itemsToShow, searchInclude=false, pagination=false, pageSize, fixHeight=false}) => {
     const [allResources, setAllResources] = useState([]);
@@ -259,30 +258,7 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
                 </div>
                 <div className={fixHeight ? 'allResources__wrapper fix-height' : 'allResources__wrapper'}>
                     {
-                        currentResources.map((resource) =>
-                            <div key={resource.id} className='section__wrapper'>
-                                <div className='section__leftside'>
-                                    <div className='section__leftside_top'>
-                                        <div className='section__leftside_name'>{resource.name}</div>
-                                        <div className='section__leftside_link'>{resource.link}</div>
-                                    </div>
-                                    <div className='section__leftside_down'>
-                                        <div className='section__leftside_date'>{resource.date}</div>
-                                    </div>
-                                </div>
-                                <div className='section__rightside'>
-                                    <div className="section__rightside_top">
-                                        <div className='section__rightside_category'>{resource.category}</div>
-                                    </div>
-                                    {actionSection &&
-                                        <div className="section__rightside_bottom">
-                                            <FontAwesomeIcon icon={faPen} className="edit-section-icon" onClick={() => openEditModal(resource.id)}/>  
-                                            <FontAwesomeIcon icon={faTrashAlt} className="delete-section-icon" onClick={() => openDeleteModal(resource.id)}/>
-                                        </div>
-                                    }
-                                </div>
-                            </div>
-                        )
+                        <ResourceWrapper dataSource={currentResources} actionSection={actionSection} openEditModal={openEditModal} openDeleteModal={openDeleteModal}/>
                     }
                     {pagination &&
                         <div className='pagination-wrapper'>

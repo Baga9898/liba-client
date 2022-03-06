@@ -1,5 +1,4 @@
 .mainPage-content {
-    // width: 100%;
     display: flex;
     max-height: calc(100vh - 66px);
     overflow: hidden;
@@ -133,7 +132,7 @@
 }
 
 .links-content__category_name {
-    // Сделать миксин для шрифтов, разны миксины для заголовков, категорий и т.д.
+    // TODO: Сделать миксин для шрифтов, разны миксины для заголовков, категорий и т.д.
     font-weight: 700;
     text-transform: uppercase;
     margin-bottom: 5px;
@@ -142,10 +141,24 @@
 
 .countOfResources {
     font-weight: 500;
-    font-size: 200px;
-    transform: rotate(270deg);
-    margin: 30px 0 50px 0;
-    font-family: 'Rubik', sans-serif;
+    font-size: 26px;
+    margin-left: 5px;
     // font-family: 'Press Start 2P', cursive; Битный шрифт.
     // font-family: 'Libre Barcode 39', cursive; Баркодный шрифт.
+    &-text {
+        text-transform: uppercase;
+        font-size: 18px;        
+    }
+}
+
+.category-info-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+}
+
+.nameOfCategory {
+    font-size: 20px;
+    font-weight: 500;
+    text-transform: uppercase;
 }

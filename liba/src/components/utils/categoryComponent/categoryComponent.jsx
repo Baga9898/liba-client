@@ -234,29 +234,30 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
                 </div>
             }
             <div className={actionInfoSections ? 'action-info-wrapper' : ""}>
-                <div>
-                    {/* TODO: Вынести в отдельный компонент. */}
-                    {/* <div className='countOfResources'>{allResources.length}</div> */}
-                    {actionSection && 
-                        <div className='allResources__actions_wrapper'>
-                            <div className='addResourse__wrapper section__wrapper animate__animated animate__fadeIn'>
-                                <div className='addResource__content_wrapper'>
-                                    <label className='editModal__content_label animate__animated animate__fadeIn'>Name</label>
-                                    <input className='editModal__content_input animate__animated animate__fadeIn' type="text" value={resourceName} onChange={e => setResourceName(e.target.value)}/>
-                                </div>
-                                <div className='addResource__content_wrapper'>
-                                    <label className='editModal__content_label animate__animated animate__fadeIn'>Link</label>
-                                    <input className='editModal__content_input animate__animated animate__fadeIn' type="text" value={resourceLink} onChange={e => setResourceLink(e.target.value)}/>
-                                </div>
-                                <div className='addResource__content_wrapper'>
-                                    <label className='editModal__content_label animate__animated animate__fadeIn'>Category</label>
-                                    <input className='editModal__content_input animate__animated animate__fadeIn' type="text" value={resourceCategory} onChange={e => setResourceCategory(e.target.value)}/>
-                                </div>
-                                <button className='libaModal__footer_button animate__animated animate__fadeIn' onClick={createResource}>Create new resourse</button>
-                            </div>
+                {actionSection && 
+                    <div className='allResources__actions_wrapper animate__animated animate__fadeIn'>
+                        <div className='section__wrapper category-info-wrapper'>
+                            <p className='nameOfCategory'>All resources</p>
+                            <p className='countOfResources-text'>Count of resources:<span className='countOfResources'>{allResources.length}</span></p>
                         </div>
-                    }
-                </div>
+                        <div className='addResourse__wrapper section__wrapper '>
+                            <div className='addResource__content_wrapper'>
+                                <label className='editModal__content_label'>Name</label>
+                                <input className='editModal__content_input' type="text" value={resourceName} onChange={e => setResourceName(e.target.value)}/>
+                            </div>
+                            <div className='addResource__content_wrapper'>
+                                <label className='editModal__content_label'>Link</label>
+                                <input className='editModal__content_input' type="text" value={resourceLink} onChange={e => setResourceLink(e.target.value)}/>
+                            </div>
+                            <div className='addResource__content_wrapper'>
+                                <label className='editModal__content_label'>Category</label>
+                                <input className='editModal__content_input' type="text" value={resourceCategory} onChange={e => setResourceCategory(e.target.value)}/>
+                            </div>
+                            <button className='libaModal__footer_button' onClick={createResource}>Create new resourse</button>
+                        </div>
+                    </div>
+                    
+                }
                 <div className={fixHeight ? 'allResources__wrapper fix-height' : 'allResources__wrapper'}>
                     {
                         <ResourceWrapper dataSource={currentResources} actionSection={actionSection} openEditModal={openEditModal} openDeleteModal={openDeleteModal}/>

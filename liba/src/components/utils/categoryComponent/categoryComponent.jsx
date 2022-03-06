@@ -228,7 +228,7 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
         <>
             {requestIsLoading && <Preloader/>}
             {searchInclude && 
-                <div className='resources__search_wrapper animate__animated animate__fadeInUp'>
+                <div className='resources__search_wrapper animate__animated animate__fadeIn'>
                     <FontAwesomeIcon icon={faSearch} className='search-icon'/>
                     <input className='resources__search' type='text' placeholder='Search...' onChange={e => setSearchParametrs(e.currentTarget.value)}/>
                 </div>
@@ -239,20 +239,20 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
                     {/* <div className='countOfResources'>{allResources.length}</div> */}
                     {actionSection && 
                         <div className='allResources__actions_wrapper'>
-                            <div className='addResourse__wrapper section__wrapper animate__animated animate__fadeInUp'>
+                            <div className='addResourse__wrapper section__wrapper animate__animated animate__fadeIn'>
                                 <div className='addResource__content_wrapper'>
-                                    <label className='editModal__content_label animate__animated animate__fadeInUp'>Name</label>
-                                    <input className='editModal__content_input animate__animated animate__fadeInUp' type="text" value={resourceName} onChange={e => setResourceName(e.target.value)}/>
+                                    <label className='editModal__content_label animate__animated animate__fadeIn'>Name</label>
+                                    <input className='editModal__content_input animate__animated animate__fadeIn' type="text" value={resourceName} onChange={e => setResourceName(e.target.value)}/>
                                 </div>
                                 <div className='addResource__content_wrapper'>
-                                    <label className='editModal__content_label animate__animated animate__fadeInUp'>Link</label>
-                                    <input className='editModal__content_input animate__animated animate__fadeInUp' type="text" value={resourceLink} onChange={e => setResourceLink(e.target.value)}/>
+                                    <label className='editModal__content_label animate__animated animate__fadeIn'>Link</label>
+                                    <input className='editModal__content_input animate__animated animate__fadeIn' type="text" value={resourceLink} onChange={e => setResourceLink(e.target.value)}/>
                                 </div>
                                 <div className='addResource__content_wrapper'>
-                                    <label className='editModal__content_label animate__animated animate__fadeInUp'>Category</label>
-                                    <input className='editModal__content_input animate__animated animate__fadeInUp' type="text" value={resourceCategory} onChange={e => setResourceCategory(e.target.value)}/>
+                                    <label className='editModal__content_label animate__animated animate__fadeIn'>Category</label>
+                                    <input className='editModal__content_input animate__animated animate__fadeIn' type="text" value={resourceCategory} onChange={e => setResourceCategory(e.target.value)}/>
                                 </div>
-                                <button className='libaModal__footer_button animate__animated animate__fadeInUp' onClick={createResource}>Create new resourse</button>
+                                <button className='libaModal__footer_button animate__animated animate__fadeIn' onClick={createResource}>Create new resourse</button>
                             </div>
                         </div>
                     }
@@ -262,7 +262,7 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
                         <ResourceWrapper dataSource={currentResources} actionSection={actionSection} openEditModal={openEditModal} openDeleteModal={openDeleteModal}/>
                     }
                     {pagination &&
-                        <div className='pagination-wrapper animate__animated animate__fadeInUp'>
+                        <div className='pagination-wrapper animate__animated animate__fadeIn'>
                             <button className='prev-page' onClick={prevPage}><FontAwesomeIcon icon={faChevronLeft}/></button>
                             <Pagination resourcesPerPage={resourcesPerPage} totalCountOfResources={searchArray.length} paginate={paginate} currentPage={currentPage}/>
                             <button className='next-page' onClick={nextPage}><FontAwesomeIcon icon={faChevronRight}/></button>

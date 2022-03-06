@@ -8,7 +8,7 @@ import './mainPage.scss';
 const MainPage = () => {
     return (
             <div className='mainPage-content'>
-                <div className='mainPage-content__leftside animate__animated animate__fadeInUp'>
+                <div className='mainPage-content__leftside animate__animated animate__fadeIn'>
                     <CookieClicker/>
                 </div>
                 <div className='mainPage-content__middleside'>
@@ -23,7 +23,7 @@ const MainPage = () => {
                                 fixHeight={false}
                                 />
                         </div>
-                    <div className='devider animate__animated animate__fadeInUp'></div>
+                    <div className='devider animate__animated animate__fadeIn'></div>
                     <div className='mainPage-content__middleside_bottom'>
                         <h1 className='middleside-bottom-title animate__animated animate__fadeIn'>Categories</h1>
                         {/* TODO: Создать универсальный компонент. */}

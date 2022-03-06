@@ -23,6 +23,12 @@
 .addResourse__wrapper {
     display: flex;
     flex-direction: column;
+    &_title {
+        text-transform: uppercase;
+        font-size: 26px;
+        text-align: center;
+        margin-bottom: 17px;
+    }
 }
 
 .resources__search_wrapper {
@@ -51,4 +57,14 @@
     color: #bbb;
     font-size: 16px;
     transition: 0.5s;
+}
+
+.categoryNameTitle {
+    transform: rotate(270deg);
+    position: absolute;
+    left: calc(50% - 680px);
+    top: 95px;
+    font-size: 30px;
+    text-transform: uppercase;
+    font-weight: 700;
 }

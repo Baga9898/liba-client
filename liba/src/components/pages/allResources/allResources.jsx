@@ -16,6 +16,7 @@ const AllResources = ({ actionSection=true, itemsToShow, searchInclude=true, pag
         pagination={pagination}
         pageSize={pageSize}
         fixHeight={fixHeight}
+        oneCategoryPage={false}
         />
     )
 }

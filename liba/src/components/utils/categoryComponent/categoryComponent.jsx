@@ -13,7 +13,7 @@ import LibaNotification from '../libaNotification/libaNotification';
 import ResourceWrapper from '../resourceWrapper/resourceWrapper';
 import 'animate.css';
 
-const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSections=false, actionSection=false, itemsToShow, searchInclude=false, pagination=false, pageSize, fixHeight=false}) => {
+const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSections=false, actionSection=false, itemsToShow, searchInclude=false, pagination=false, pageSize, fixHeight=false, oneCategoryPage=true}) => {
     const [allResources, setAllResources] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [requestIsLoading, setRequestIsLoading] = useState(false);
@@ -233,14 +233,20 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
                     <input className='resources__search' type='text' placeholder='Search...' onChange={e => setSearchParametrs(e.currentTarget.value)}/>
                 </div>
             }
+            {oneCategoryPage &&
+                <div className='categoryNameTitle'>{categoryName}<span style={{marginLeft: '10px'}}>{allResources.length}</span></div>
+            }
             <div className={actionInfoSections ? 'action-info-wrapper' : ""}>
                 {actionSection && 
                     <div className='allResources__actions_wrapper animate__animated animate__fadeIn'>
+                        {/* Вынести в отдельный компонент. */}
                         <div className='section__wrapper category-info-wrapper'>
                             <p className='nameOfCategory'>All resources</p>
                             <p className='countOfResources-text'>Count of resources:<span className='countOfResources'>{allResources.length}</span></p>
                         </div>
+                        {/* Вынести в отдельный компонент. */}
                         <div className='addResourse__wrapper section__wrapper '>
+                            <p className='addResourse__wrapper_title'>Create new resource</p>
                             <div className='addResource__content_wrapper'>
                                 <label className='editModal__content_label'>Name</label>
                                 <input className='editModal__content_input' type="text" value={resourceName} onChange={e => setResourceName(e.target.value)}/>
@@ -253,8 +259,10 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
                                 <label className='editModal__content_label'>Category</label>
                                 <input className='editModal__content_input' type="text" value={resourceCategory} onChange={e => setResourceCategory(e.target.value)}/>
                             </div>
-                            <button className='libaModal__footer_button' onClick={createResource}>Create new resourse</button>
+                            <button className='libaModal__footer_button' onClick={createResource}>Create</button>
                         </div>
+                        {/* Вынести в отдельный компонент. */}
+                        <div className='section__wrapper' style={{height: '200px'}}></div>
                     </div>
                     
                 }

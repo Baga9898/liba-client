@@ -60,6 +60,8 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
                 pageNumber : pageNumber + 1)
     }
 
+    const categotiesList = ["", "books", "soft", "websites", "posts"];
+
     useEffect(async () => {
         if (itemsToShow) {
             try {
@@ -233,18 +235,19 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
                     <input className='resources__search' type='text' placeholder='Search...' onChange={e => setSearchParametrs(e.currentTarget.value)}/>
                 </div>
             }
+            {/* TODO: Вынести в отдельный компонент. */}
             {oneCategoryPage &&
                 <div className='categoryNameTitle'>{categoryName}<span style={{marginLeft: '10px'}}>{allResources.length}</span></div>
             }
             <div className={actionInfoSections ? 'action-info-wrapper' : ""}>
                 {actionSection && 
                     <div className='allResources__actions_wrapper animate__animated animate__fadeIn'>
-                        {/* Вынести в отдельный компонент. */}
+                        {/* TODO: Вынести в отдельный компонент. */}
                         <div className='section__wrapper category-info-wrapper'>
                             <p className='nameOfCategory'>All resources</p>
                             <p className='countOfResources-text'>Count of resources:<span className='countOfResources'>{allResources.length}</span></p>
                         </div>
-                        {/* Вынести в отдельный компонент. */}
+                        {/* TODO: Вынести в отдельный компонент. */}
                         <div className='addResourse__wrapper section__wrapper '>
                             <p className='addResourse__wrapper_title'>Create new resource</p>
                             <div className='addResource__content_wrapper'>
@@ -256,12 +259,14 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
                                 <input className='editModal__content_input' type="text" value={resourceLink} onChange={e => setResourceLink(e.target.value)}/>
                             </div>
                             <div className='addResource__content_wrapper'>
-                                <label className='editModal__content_label'>Category</label>
-                                <input className='editModal__content_input' type="text" value={resourceCategory} onChange={e => setResourceCategory(e.target.value)}/>
+                                <label className='editModal__content_label' style={{marginBottom: "5px"}}>Category</label>
+                                <select className='editModal__content_input' style={{marginBottom: "27px", textTransform: "uppercase"}} type="text" value={resourceCategory} onChange={e => setResourceCategory(e.target.value)}>
+                                    {categotiesList.map((category) => <option style={{textTransform: "uppercase"}}>{category}</option>)};
+                                </select>
                             </div>
                             <button className='libaModal__footer_button' onClick={createResource}>Create</button>
                         </div>
-                        {/* Вынести в отдельный компонент. */}
+                        {/* TODO: Вынести в отдельный компонент. */}
                         <div className='section__wrapper' style={{height: '200px'}}></div>
                     </div>
                     
@@ -290,7 +295,9 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
                         </div>
                         <div className='addResource__content_wrapper'>
                             <label className='editModal__content_label'>Category</label>
-                            <input className='editModal__content_input' type="text" value={editResourceCategory} onChange={e => setEditResourceCategory(e.target.value)}/>
+                            <select className='editModal__content_input' style={{marginBottom: "27px", textTransform: "uppercase"}} type="text" value={editResourceCategory} onChange={e => setEditResourceCategory(e.target.value)}>
+                                {categotiesList.map((category) => <option style={{textTransform: "uppercase"}}>{category}</option>)};
+                            </select>
                         </div>
                     </LibaModal>
                 }

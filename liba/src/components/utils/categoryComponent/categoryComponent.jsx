@@ -147,6 +147,19 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
         setSortType("oldFirst");
     }
 
+    const alphabetSorting = () => {
+        axios.get(baseURL)
+        .then((response) => {
+            const newArray = response.data.sort((a, b) => a.name.localeCompare(b.name));
+            setAllResources(newArray);
+        })
+    }
+
+    const alphabetSort = () => {
+        alphabetSorting();
+        setSortType("alphabet");
+    }
+
     const newDate = new Date();
     const date = (newDate.toLocaleString('en-US', { hour12: true }));
 
@@ -315,6 +328,7 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
                             <h3 className='sort__title'>Sort</h3>
                             <button className={sortType === "newFirst" ? 'sort__item active' : 'sort__item'} onClick={newResourcesIsFirst}>New first</button>
                             <button className={sortType === "oldFirst" ? 'sort__item active' : 'sort__item'} onClick={oldResourcesIsFirst}>Old first</button>
+                            <button className={sortType === "alphabet" ? 'sort__item active' : 'sort__item'} onClick={alphabetSort}>A - Z</button>
                         </div>
                     </div>
                 }

@@ -16,7 +16,7 @@ import CountOfResourcesComponent from '../countOfResourcesComponent/countOfResou
 import AddResourceComponent from '../addResourceComponent/addResourceComponent';
 import 'animate.css';
 
-const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSections=false, actionSection=false, itemsToShow, searchInclude=false, pagination=false, pageSize, fixHeight=false, addResourceAction, createUpdate, isMainPage=false}) => {
+const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSections=false, actionSection=false, itemsToShow, searchInclude=false, pagination=false, pageSize, addResourceAction, createUpdate, isMainPage=false}) => {
     const [allResources, setAllResources] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [requestIsLoading, setRequestIsLoading] = useState(false);

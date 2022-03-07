@@ -11,9 +11,11 @@ import LibaModal from '../libaModal/libaModal';
 import Pagination from '../pagination/pagination';
 import LibaNotification from '../libaNotification/libaNotification';
 import ResourceWrapper from '../resourceWrapper/resourceWrapper';
+import SortComponent from '../sortComponent/sortComponent';
+import CountOfResourcesComponent from '../countOfResourcesComponent/countOfResourcesComponent';
 import 'animate.css';
 
-const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSections=false, actionSection=false, itemsToShow, searchInclude=false, pagination=false, pageSize, fixHeight=false, oneCategoryPage=true}) => {
+const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSections=false, actionSection=false, itemsToShow, searchInclude=false, pagination=false, pageSize, fixHeight=false, addResourceAction}) => {
     const [allResources, setAllResources] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [requestIsLoading, setRequestIsLoading] = useState(false);
@@ -148,7 +150,7 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
     }
 
     const alphabetSorting = () => {
-        axios.get(baseURL)
+        axios.get(baseURL, {params: getParams})
         .then((response) => {
             const newArray = response.data.sort((a, b) => a.name.localeCompare(b.name));
             setAllResources(newArray);
@@ -292,44 +294,31 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
                     <input className='resources__search' type='text' placeholder='Search...' onChange={e => setSearchParametrs(e.currentTarget.value)}/>
                 </div>
             }
-            {/* TODO: Вынести в отдельный компонент. */}
-            {oneCategoryPage &&
-                <div className='categoryNameTitle'>{categoryName}<span style={{marginLeft: '10px'}}>{allResources.length}</span></div>
-            }
             <div className={actionInfoSections ? 'action-info-wrapper' : ""}>
                 {actionSection && 
                     <div className='allResources__actions_wrapper animate__animated animate__fadeIn'>
-                        {/* TODO: Вынести в отдельный компонент. */}
-                        <div className='section__wrapper category-info-wrapper'>
-                            <h3 className='nameOfCategory'>All resources</h3>
-                            <p className='countOfResources-text'>Count of resources:<span className='countOfResources'>{allResources.length}</span></p>
-                        </div>
-                        {/* TODO: Вынести в отдельный компонент. */}
-                        <div className='addResourse__wrapper section__wrapper '>
-                            <h3 className='addResourse__wrapper_title'>Create new resource</h3>
-                            <div className='addResource__content_wrapper'>
-                                <label className='editModal__content_label'>NAME</label>
-                                <input className='editModal__content_input' type="text" value={resourceName} onChange={e => setResourceName(e.target.value)}/>
+                        <CountOfResourcesComponent categoryName={categoryName} count={allResources.length}/>
+                        {addResourceAction &&
+                            <div className='addResourse__wrapper section__wrapper '>
+                                <h3 className='addResourse__wrapper_title'>Create new resource</h3>
+                                <div className='addResource__content_wrapper'>
+                                    <label className='editModal__content_label'>NAME</label>
+                                    <input className='editModal__content_input' type="text" value={resourceName} onChange={e => setResourceName(e.target.value)}/>
+                                </div>
+                                <div className='addResource__content_wrapper'>
+                                    <label className='editModal__content_label'>LINK</label>
+                                    <input className='editModal__content_input' type="text" value={resourceLink} onChange={e => setResourceLink(e.target.value)}/>
+                                </div>
+                                <div className='addResource__content_wrapper'>
+                                    <label className='editModal__content_label' style={{marginBottom: "8px"}}>CATEGORY</label>
+                                    <select className='editModal__content_input' style={{marginBottom: "24px", textTransform: "uppercase"}} type="text" value={resourceCategory} onChange={e => setResourceCategory(e.target.value)}>
+                                        {categotiesList.map((category) => <option style={{textTransform: "uppercase"}}>{category}</option>)};
+                                    </select>
+                                </div>
+                                <button className='libaModal__footer_button' onClick={createResource}>Create</button>
                             </div>
-                            <div className='addResource__content_wrapper'>
-                                <label className='editModal__content_label'>LINK</label>
-                                <input className='editModal__content_input' type="text" value={resourceLink} onChange={e => setResourceLink(e.target.value)}/>
-                            </div>
-                            <div className='addResource__content_wrapper'>
-                                <label className='editModal__content_label' style={{marginBottom: "8px"}}>CATEGORY</label>
-                                <select className='editModal__content_input' style={{marginBottom: "24px", textTransform: "uppercase"}} type="text" value={resourceCategory} onChange={e => setResourceCategory(e.target.value)}>
-                                    {categotiesList.map((category) => <option style={{textTransform: "uppercase"}}>{category}</option>)};
-                                </select>
-                            </div>
-                            <button className='libaModal__footer_button' onClick={createResource}>Create</button>
-                        </div>
-                        {/* TODO: Вынести в отдельный компонент. */}
-                        <div className='section__wrapper sort-wrapper' style={{height: '200px'}}>
-                            <h3 className='sort__title'>Sort</h3>
-                            <button className={sortType === "newFirst" ? 'sort__item active' : 'sort__item'} onClick={newResourcesIsFirst}>New first</button>
-                            <button className={sortType === "oldFirst" ? 'sort__item active' : 'sort__item'} onClick={oldResourcesIsFirst}>Old first</button>
-                            <button className={sortType === "alphabet" ? 'sort__item active' : 'sort__item'} onClick={alphabetSort}>A - Z</button>
-                        </div>
+                        }
+                        <SortComponent sortType={sortType} newResourcesIsFirst={newResourcesIsFirst} oldResourcesIsFirst={oldResourcesIsFirst} alphabetSort={alphabetSort}/>
                     </div>
                 }
                 <div className={fixHeight ? 'allResources__wrapper fix-height' : 'allResources__wrapper'}>

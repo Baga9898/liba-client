@@ -9,7 +9,7 @@ const AllResources = ({ actionSection=true, itemsToShow, searchInclude=true, pag
         <CategoryComponent 
         categoryName={categoryName} 
         baseURL={baseURL} 
-        actionInfoSections={true} 
+        actionInfoSections
         actionSection={actionSection} 
         itemsToShow={itemsToShow}
         searchInclude={searchInclude}
@@ -17,6 +17,7 @@ const AllResources = ({ actionSection=true, itemsToShow, searchInclude=true, pag
         pageSize={pageSize}
         fixHeight={fixHeight}
         oneCategoryPage={false}
+        addResourceAction
         />
     )
 }

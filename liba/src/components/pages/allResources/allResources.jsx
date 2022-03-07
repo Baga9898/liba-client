@@ -18,6 +18,7 @@ const AllResources = ({ actionSection=true, itemsToShow, searchInclude=true, pag
         fixHeight={fixHeight}
         oneCategoryPage={false}
         addResourceAction
+        createUpdate
         />
     )
 }

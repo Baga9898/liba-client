@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { faPen } from '@fortawesome/free-solid-svg-icons';
 
-const ResourceWrapper = ({ dataSource, actionSection, openEditModal, openDeleteModal }) => {
+const ResourceWrapper = ({ dataSource, actionSection, openEditModal, openDeleteModal, createUpdate }) => {
     return (
         <>
             {dataSource.map((resource) =>
@@ -21,7 +21,7 @@ const ResourceWrapper = ({ dataSource, actionSection, openEditModal, openDeleteM
                         <div className="section__rightside_top">
                             <div className='section__rightside_category'>{resource.category}</div>
                         </div>
-                        {actionSection &&
+                        {(actionSection && createUpdate) &&
                             <div className="section__rightside_bottom">
                                 <FontAwesomeIcon icon={faPen} className="edit-section-icon" onClick={() => openEditModal(resource.id)}/>  
                                 <FontAwesomeIcon icon={faTrashAlt} className="delete-section-icon" onClick={() => openDeleteModal(resource.id)}/>

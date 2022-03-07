@@ -13,9 +13,10 @@ import LibaNotification from '../libaNotification/libaNotification';
 import ResourceWrapper from '../resourceWrapper/resourceWrapper';
 import SortComponent from '../sortComponent/sortComponent';
 import CountOfResourcesComponent from '../countOfResourcesComponent/countOfResourcesComponent';
+import AddResourceComponent from '../addResourceComponent/addResourceComponent';
 import 'animate.css';
 
-const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSections=false, actionSection=false, itemsToShow, searchInclude=false, pagination=false, pageSize, fixHeight=false, addResourceAction}) => {
+const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSections=false, actionSection=false, itemsToShow, searchInclude=false, pagination=false, pageSize, fixHeight=false, addResourceAction, createUpdate}) => {
     const [allResources, setAllResources] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [requestIsLoading, setRequestIsLoading] = useState(false);
@@ -63,7 +64,7 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
                 pageNumber : pageNumber + 1)
     }
 
-    const categotiesList = ["", "books", "soft", "websites", "posts"];
+    const categoriesList = ["", "books", "soft", "websites", "posts"];
 
     useEffect(async () => {
         if (itemsToShow) {
@@ -299,31 +300,14 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
                     <div className='allResources__actions_wrapper animate__animated animate__fadeIn'>
                         <CountOfResourcesComponent categoryName={categoryName} count={allResources.length}/>
                         {addResourceAction &&
-                            <div className='addResourse__wrapper section__wrapper '>
-                                <h3 className='addResourse__wrapper_title'>Create new resource</h3>
-                                <div className='addResource__content_wrapper'>
-                                    <label className='editModal__content_label'>NAME</label>
-                                    <input className='editModal__content_input' type="text" value={resourceName} onChange={e => setResourceName(e.target.value)}/>
-                                </div>
-                                <div className='addResource__content_wrapper'>
-                                    <label className='editModal__content_label'>LINK</label>
-                                    <input className='editModal__content_input' type="text" value={resourceLink} onChange={e => setResourceLink(e.target.value)}/>
-                                </div>
-                                <div className='addResource__content_wrapper'>
-                                    <label className='editModal__content_label' style={{marginBottom: "8px"}}>CATEGORY</label>
-                                    <select className='editModal__content_input' style={{marginBottom: "24px", textTransform: "uppercase"}} type="text" value={resourceCategory} onChange={e => setResourceCategory(e.target.value)}>
-                                        {categotiesList.map((category) => <option style={{textTransform: "uppercase"}}>{category}</option>)};
-                                    </select>
-                                </div>
-                                <button className='libaModal__footer_button' onClick={createResource}>Create</button>
-                            </div>
+                            <AddResourceComponent resourceName={resourceName} setResourceName={setResourceName} resourceLink={resourceLink} setResourceLink={setResourceLink} resourceCategory={resourceCategory} setResourceCategory={setResourceCategory} categoriesList={categoriesList} createResource={createResource}/>
                         }
                         <SortComponent sortType={sortType} newResourcesIsFirst={newResourcesIsFirst} oldResourcesIsFirst={oldResourcesIsFirst} alphabetSort={alphabetSort}/>
                     </div>
                 }
                 <div className={fixHeight ? 'allResources__wrapper fix-height' : 'allResources__wrapper'}>
                     {
-                        <ResourceWrapper dataSource={currentResources} actionSection={actionSection} openEditModal={openEditModal} openDeleteModal={openDeleteModal}/>
+                        <ResourceWrapper dataSource={currentResources} actionSection={actionSection} openEditModal={openEditModal} openDeleteModal={openDeleteModal} createUpdate={createUpdate}/>
                     }
                     {pagination &&
                         <div className='pagination-wrapper animate__animated animate__fadeIn'>
@@ -346,7 +330,7 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
                         <div className='addResource__content_wrapper'>
                             <label className='editModal__content_label'>Category</label>
                             <select className='editModal__content_input' style={{marginBottom: "27px", textTransform: "uppercase"}} type="text" value={editResourceCategory} onChange={e => setEditResourceCategory(e.target.value)}>
-                                {categotiesList.map((category) => <option style={{textTransform: "uppercase"}}>{category}</option>)};
+                                {categoriesList.map((category) => <option style={{textTransform: "uppercase"}}>{category}</option>)};
                             </select>
                         </div>
                     </LibaModal>

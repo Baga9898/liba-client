@@ -21,6 +21,7 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
     const [searchParametrs, setSearchParametrs] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
     const [resourcesPerPage] = useState(pageSize || 5);
+    const [sortType, setSortType] = useState("newFirst");
 
     const [resourceName, setResourceName] = useState("");
     const [resourceLink, setResourceLink] = useState("");
@@ -87,10 +88,12 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
             } catch (error) {
                 console.error(error);
             }
-        }   
+        } 
+          
     }, [itemsToShow, baseURL, getParams]);
 
     const getOneResource = async (resourceId) => {
+        setRequestIsLoading(true);
         try {
             await axios.get(`${baseURL}/${resourceId}`)
             .then((response) => {
@@ -101,6 +104,47 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
         } catch (error) {
             console.error(error);
         }
+        setRequestIsLoading(false);
+    }
+
+    const getNewResourcesFirst = async () => {
+        setRequestIsLoading(true);
+        try {
+            await axios.get(baseURL, {params: getParams})
+            .then((response) => {
+                const newArray = response.data;
+                const reverseArray = newArray.reverse();
+                setAllResources(reverseArray);
+                setIsLoading(false);
+            })
+        } catch (error) {
+            console.error(error);
+        }
+        setRequestIsLoading(false);
+    }
+
+    const newResourcesIsFirst = () => {
+        getNewResourcesFirst();
+        setSortType("newFirst");
+    }
+
+    const getOldResourcesFirst = async () => {
+        setRequestIsLoading(true);
+        try {
+            await axios.get(baseURL, {params: getParams})
+            .then((response) => {
+                setAllResources(response.data);
+                setIsLoading(false);
+            })
+        } catch (error) {
+            console.error(error);
+        }
+        setRequestIsLoading(false);
+    }
+
+    const oldResourcesIsFirst = () => {
+        getOldResourcesFirst();
+        setSortType("oldFirst");
     }
 
     const newDate = new Date();
@@ -244,32 +288,35 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
                     <div className='allResources__actions_wrapper animate__animated animate__fadeIn'>
                         {/* TODO: Вынести в отдельный компонент. */}
                         <div className='section__wrapper category-info-wrapper'>
-                            <p className='nameOfCategory'>All resources</p>
+                            <h3 className='nameOfCategory'>All resources</h3>
                             <p className='countOfResources-text'>Count of resources:<span className='countOfResources'>{allResources.length}</span></p>
                         </div>
                         {/* TODO: Вынести в отдельный компонент. */}
                         <div className='addResourse__wrapper section__wrapper '>
-                            <p className='addResourse__wrapper_title'>Create new resource</p>
+                            <h3 className='addResourse__wrapper_title'>Create new resource</h3>
                             <div className='addResource__content_wrapper'>
-                                <label className='editModal__content_label'>Name</label>
+                                <label className='editModal__content_label'>NAME</label>
                                 <input className='editModal__content_input' type="text" value={resourceName} onChange={e => setResourceName(e.target.value)}/>
                             </div>
                             <div className='addResource__content_wrapper'>
-                                <label className='editModal__content_label'>Link</label>
+                                <label className='editModal__content_label'>LINK</label>
                                 <input className='editModal__content_input' type="text" value={resourceLink} onChange={e => setResourceLink(e.target.value)}/>
                             </div>
                             <div className='addResource__content_wrapper'>
-                                <label className='editModal__content_label' style={{marginBottom: "5px"}}>Category</label>
-                                <select className='editModal__content_input' style={{marginBottom: "27px", textTransform: "uppercase"}} type="text" value={resourceCategory} onChange={e => setResourceCategory(e.target.value)}>
+                                <label className='editModal__content_label' style={{marginBottom: "8px"}}>CATEGORY</label>
+                                <select className='editModal__content_input' style={{marginBottom: "24px", textTransform: "uppercase"}} type="text" value={resourceCategory} onChange={e => setResourceCategory(e.target.value)}>
                                     {categotiesList.map((category) => <option style={{textTransform: "uppercase"}}>{category}</option>)};
                                 </select>
                             </div>
                             <button className='libaModal__footer_button' onClick={createResource}>Create</button>
                         </div>
                         {/* TODO: Вынести в отдельный компонент. */}
-                        <div className='section__wrapper' style={{height: '200px'}}></div>
+                        <div className='section__wrapper sort-wrapper' style={{height: '200px'}}>
+                            <h3 className='sort__title'>Sort</h3>
+                            <button className={sortType === "newFirst" ? 'sort__item active' : 'sort__item'} onClick={newResourcesIsFirst}>New first</button>
+                            <button className={sortType === "oldFirst" ? 'sort__item active' : 'sort__item'} onClick={oldResourcesIsFirst}>Old first</button>
+                        </div>
                     </div>
-                    
                 }
                 <div className={fixHeight ? 'allResources__wrapper fix-height' : 'allResources__wrapper'}>
                     {

@@ -4,6 +4,7 @@ import AllResources from '../allResources/allResources';
 import CookieClicker from '../../utils/cookieClicker/cookieClicker';
 
 import './mainPage.scss';
+import categories from './categories';
 
 const MainPage = () => {
     return (
@@ -26,34 +27,14 @@ const MainPage = () => {
                     <div className='devider animate__animated animate__fadeIn'></div>
                     <div className='mainPage-content__middleside_bottom'>
                         <h1 className='middleside-bottom-title animate__animated animate__fadeIn'>Categories</h1>
-                        {/* TODO: Создать универсальный компонент. */}
                         <div className='links-wrapper animate__animated animate__fadeIn'>
-                            <Link to="/all-resources">
-                                <div className='links-content'>
-                                    <div className='links-content__category_name'>All resources</div>
-                                </div>
-                            </Link>
-                        </div>
-                        <div className='links-wrapper animate__animated animate__fadeIn'>
-                            <Link to="/websites">
-                                <div className='links-content'>
-                                    <div className='links-content__category_name'>Websites</div>
-                                </div>
-                            </Link>
-                        </div>
-                        <div className='links-wrapper animate__animated animate__fadeIn'>
-                            <Link to="/books">
-                                <div className='links-content'>
-                                    <div className='links-content__category_name'>Books</div>
-                                </div>
-                            </Link>
-                        </div>
-                        <div className='links-wrapper animate__animated animate__fadeIn'>
-                            <Link to="/posts">
-                                <div className='links-content'>
-                                    <div className='links-content__category_name'>Posts</div>
-                                </div>
-                            </Link>
+                            {categories.map((category) => 
+                                <Link to={category.path} className='links-content'>
+                                    {/* <div className='links-content'> */}
+                                        <div className='links-content__category_name'>{category.name}</div>
+                                    {/* </div> */}
+                                </Link>
+                            )}
                         </div>
                     </div>
                 </div>

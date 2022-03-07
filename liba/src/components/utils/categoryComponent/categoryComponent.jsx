@@ -16,7 +16,7 @@ import CountOfResourcesComponent from '../countOfResourcesComponent/countOfResou
 import AddResourceComponent from '../addResourceComponent/addResourceComponent';
 import 'animate.css';
 
-const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSections=false, actionSection=false, itemsToShow, searchInclude=false, pagination=false, pageSize, fixHeight=false, addResourceAction, createUpdate}) => {
+const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSections=false, actionSection=false, itemsToShow, searchInclude=false, pagination=false, pageSize, fixHeight=false, addResourceAction, createUpdate, isMainPage=false}) => {
     const [allResources, setAllResources] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [requestIsLoading, setRequestIsLoading] = useState(false);
@@ -305,10 +305,12 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
                         <SortComponent sortType={sortType} newResourcesIsFirst={newResourcesIsFirst} oldResourcesIsFirst={oldResourcesIsFirst} alphabetSort={alphabetSort}/>
                     </div>
                 }
-                <div className={fixHeight ? 'allResources__wrapper fix-height' : 'allResources__wrapper'}>
-                    {
-                        <ResourceWrapper dataSource={currentResources} actionSection={actionSection} openEditModal={openEditModal} openDeleteModal={openDeleteModal} createUpdate={createUpdate}/>
-                    }
+                <din style={{width: "100%"}}>
+                    <div className={isMainPage ? 'allResources__wrapper' : 'allResources__wrapper-mainPage'}>
+                        {
+                            <ResourceWrapper dataSource={currentResources} actionSection={actionSection} openEditModal={openEditModal} openDeleteModal={openDeleteModal} createUpdate={createUpdate}/>
+                        }
+                    </div>
                     {pagination &&
                         <div className='pagination-wrapper animate__animated animate__fadeIn'>
                             <button className='prev-page' onClick={prevPage}><FontAwesomeIcon icon={faChevronLeft}/></button>
@@ -316,7 +318,7 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
                             <button className='next-page' onClick={nextPage}><FontAwesomeIcon icon={faChevronRight}/></button>
                         </div>
                     }
-                </div>
+                </din>
                 {editModalIsOpen &&
                     <LibaModal modalTitle="Edit resource" closeHandler={() => setEditModalIsOpen(false)} actionHandler={() => editResource(idOfResource)} actionName="Edit">
                         <div className='addResource__content_wrapper'>

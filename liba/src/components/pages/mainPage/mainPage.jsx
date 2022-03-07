@@ -21,7 +21,7 @@ const MainPage = () => {
                             searchInclude={false} 
                             pagination={false} 
                             pageSize={10}
-                            fixHeight={false}
+                            isMainPage={true}
                             />
                     </div>
                 <div className='devider animate__animated animate__fadeIn'></div>

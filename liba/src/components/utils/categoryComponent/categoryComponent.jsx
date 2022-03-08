@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
@@ -65,6 +65,45 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
     }
 
     const categoriesList = ["", "books", "soft", "websites", "posts"];
+
+    const useKey = (key, cb) => {
+        const callbackRef = useRef(cb);
+
+        useEffect(() => {
+            callbackRef.current = cb;
+        });
+
+        useEffect(() => {
+            const handle = (e) => {
+                if (e.code === key) {
+                    callbackRef.current(e);
+                }
+            }
+            document.addEventListener("keydown", handle);
+            return() => document.removeEventListener("keydown", handle);
+        }, [key]);
+    }
+
+    const handleEnter = () => {
+        if (editModalIsOpen) {
+            editResource(idOfResource);
+            setEditModalIsOpen(false);
+        } else if (deleteModalIsOpen) {
+            deleteResourse(idOfResource);
+            setDeleteModalIsOpen(false);
+        }
+    }
+
+    const handleEscape = () => {
+        if (editModalIsOpen) {
+            setEditModalIsOpen(false);
+        } else if (deleteModalIsOpen) {
+            setDeleteModalIsOpen(false);
+        }
+    }
+
+    useKey("Enter", handleEnter);
+    useKey("Escape", handleEscape);
 
     useEffect(async () => {
         if (itemsToShow) {
@@ -305,7 +344,7 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
                         <SortComponent sortType={sortType} newResourcesIsFirst={newResourcesIsFirst} oldResourcesIsFirst={oldResourcesIsFirst} alphabetSort={alphabetSort}/>
                     </div>
                 }
-                <din style={{width: "100%"}}>
+                <div style={{width: "100%"}}>
                     <div className={isMainPage ? 'allResources__wrapper' : 'allResources__wrapper-mainPage'}>
                         {
                             <ResourceWrapper dataSource={currentResources} actionSection={actionSection} openEditModal={openEditModal} openDeleteModal={openDeleteModal} createUpdate={createUpdate}/>
@@ -318,7 +357,7 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
                             <button className='next-page' onClick={nextPage}><FontAwesomeIcon icon={faChevronRight}/></button>
                         </div>
                     }
-                </din>
+                </div>
                 {editModalIsOpen &&
                     <LibaModal modalTitle="Edit resource" closeHandler={() => setEditModalIsOpen(false)} actionHandler={() => editResource(idOfResource)} actionName="Edit">
                         <div className='addResource__content_wrapper'>

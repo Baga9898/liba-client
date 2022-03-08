@@ -11,12 +11,12 @@ const MainPage = () => {
         <div className='mainPage-content'>
             <div className='mainPage-content__leftside animate__animated animate__fadeIn'>
                 <CookieClicker/>
-                <div style={{display: "flex", justifyContent: "space-between"}}>
+                <div style={{display: "flex", justifyContent: "space-between", alignItems: "baseline"}}>
                     <h1 className='middleside-bottom-title animate__animated animate__fadeIn'>Categories</h1>
                     <button className='allCategories-button'>All</button>
                 </div>
-                {categories.map((category) => 
-                    <Link to={category.path}>
+                {categories.map((category, index) => 
+                    <Link key={Date.now + index} to={category.path}>
                             <div className='links-content__category_name links-content__category'>{category.name}</div>
                     </Link>
                 )}

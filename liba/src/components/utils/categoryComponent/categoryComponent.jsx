@@ -59,9 +59,7 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
     }
 
     const nextPage = () => {
-        setCurrentPage(pageNumber =>
-            pageNumber === Math.ceil(searchArray.length / resourcesPerPage) ?
-                pageNumber : pageNumber + 1)
+        setCurrentPage(pageNumber => pageNumber === Math.ceil(searchArray.length / resourcesPerPage) ? pageNumber : pageNumber + 1)
     }
 
     const categoriesList = ["", "books", "soft", "websites", "posts"];
@@ -371,7 +369,7 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
                         <div className='addResource__content_wrapper'>
                             <label className='editModal__content_label'>Category</label>
                             <select className='editModal__content_input' style={{marginBottom: "27px", textTransform: "uppercase"}} type="text" value={editResourceCategory} onChange={e => setEditResourceCategory(e.target.value)}>
-                                {categoriesList.map((category) => <option style={{textTransform: "uppercase"}}>{category}</option>)};
+                                {categoriesList.map((category, index) => <option key={Date.now + index} style={{textTransform: "uppercase"}}>{category}</option>)};
                             </select>
                         </div>
                     </LibaModal>

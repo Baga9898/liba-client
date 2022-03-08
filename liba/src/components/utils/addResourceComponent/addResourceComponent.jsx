@@ -15,7 +15,7 @@ const AddResourceComponent = ({ resourceName, setResourceName, resourceLink, set
         <div className='addResource__content_wrapper'>
             <label className='editModal__content_label' style={{marginBottom: "8px"}}>CATEGORY</label>
             <select className='editModal__content_input' style={{marginBottom: "24px", textTransform: "uppercase"}} type="text" value={resourceCategory} onChange={e => setResourceCategory(e.target.value)}>
-                {categoriesList.map((category) => <option style={{textTransform: "uppercase"}}>{category}</option>)};
+                {categoriesList.map((category, index) => <option key={Date.now + index} style={{textTransform: "uppercase"}}>{category}</option>)};
             </select>
         </div>
         <button className='libaModal__footer_button' onClick={createResource}>Create</button>

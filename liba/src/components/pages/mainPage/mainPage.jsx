@@ -8,10 +8,10 @@ import { useSelector } from "react-redux";
 
 
 const MainPage = () => {
-    const countOfAllResources = useSelector((state) => state.countAllResources);
-    const countOfBooks = useSelector((state) => state.countBooks);
-    const websitesCount = useSelector((state) => state.countWebsites);
-    const postsCount = useSelector((state) => state.countPosts);
+    const countOfAllResources = useSelector((state) => state.resourcesCount.countAllResources);
+    const countOfBooks = useSelector((state) => state.resourcesCount.countBooks);
+    const websitesCount = useSelector((state) => state.resourcesCount.countWebsites);
+    const postsCount = useSelector((state) => state.resourcesCount.countPosts);
 
     const allCounts = [countOfAllResources, countOfBooks, websitesCount, postsCount];
 

@@ -20,34 +20,42 @@ const AllResources = ({ actionSection=true, itemsToShow, searchInclude=true, pag
         })
     }, []);
 
-    dispatch({ type: 'GET_COUNT_ALLRESOURCES', payload: countOfResources });
-
+    useEffect(() => {
+        dispatch({ type: 'GET_COUNT_ALLRESOURCES', payload: countOfResources });
+    }, [countOfResources, dispatch])
+    
     useMemo(() => {
         axios.get(`${baseURL}?category=books`)
         .then((response) => {
             setCountOfBooksResources(response.data.length);
         })
       }, []);
-  
-    dispatch({ type: 'GET_COUNT_BOOKS', payload: countOfBooksResources });
+
+    useEffect(() => {
+        dispatch({ type: 'GET_COUNT_BOOKS', payload: countOfBooksResources });
+    }, [countOfBooksResources, dispatch])
 
     useMemo(() => {
         axios.get(`${baseURL}?category=websites`)
         .then((response) => {
             setCountOfWebsitesResources(response.data.length);
         })
-      }, []);
+    }, []);
   
-    dispatch({ type: 'GET_COUNT_WEBSITES', payload: countOfWebsitesResources });
+    useEffect(() => {
+        dispatch({ type: 'GET_COUNT_WEBSITES', payload: countOfWebsitesResources });
+    }, [countOfWebsitesResources, dispatch])
 
     useMemo(() => {
         axios.get(`${baseURL}?category=posts`)
         .then((response) => {
             setCountOfPostsResources(response.data.length);
         })
-      }, []);
-  
-    dispatch({ type: 'GET_COUNT_POSTS', payload: countOfPostsResources });
+    }, []);
+    
+    useEffect(() => {
+        dispatch({ type: 'GET_COUNT_POSTS', payload: countOfPostsResources });
+    }, [countOfPostsResources, dispatch])
 
     return (
         <CategoryComponent 

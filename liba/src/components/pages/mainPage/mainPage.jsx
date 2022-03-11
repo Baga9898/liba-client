@@ -25,8 +25,10 @@ const MainPage = () => {
                 </div>
                 {categories.map((category, index) => 
                     <Link key={Date.now + index} to={category.path}>
-                            <div className='links-content__category_name links-content__category'>{category.name}</div>
-                            <p style={{position: 'absolute'}}>{allCounts[index]}</p>
+                            <div className='links-content__category_name links-content__category'>
+                                {category.name}
+                                <p className='category-resourcesCount'>{allCounts[index]}</p>
+                            </div>
                     </Link>
                 )}
             </div>

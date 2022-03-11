@@ -36,6 +36,8 @@
     padding: 15px;
     box-shadow: -8px -8px 12px 0 rgba(255, 255, 255, 1), 12px 12px 16px 0 rgba(210, 218, 230, 1);
     background: #ecf0f3;
+    position: relative;
+    overflow: hidden;
 }
 
 .middleside-bottom-title {
@@ -146,4 +148,12 @@
     font-size: 20px;
     font-weight: 500;
     text-transform: uppercase;
+}
+
+.category-resourcesCount {
+    position: absolute;
+    bottom: -7px;
+    right: -7px;
+    font-size: 70px;
+    color: rgba(187, 187, 187, 0.7);
 }

@@ -32,8 +32,6 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
 
     const [editModalIsOpen, setEditModalIsOpen] = useState(false);
     const [editResourceName, setEditResourceName] = useState("");
-    const [editResourceLink, setEditResourceLink] = useState("");
-    const [editResourceCategory, setEditResourceCategory] = useState("");
     const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
 
     const [addSuccessNotificationIsOpen, setAddSuccessNotificationIsOpen] = useState(false);
@@ -139,8 +137,6 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
             await axios.get(`${baseURL}/${resourceId}`)
             .then((response) => {
                 setEditResourceName(response.data.name);
-                setEditResourceLink(response.data.link);
-                setEditResourceCategory(response.data.category);
             })
         } catch (error) {
             console.error(error);
@@ -262,8 +258,6 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
             try {
                 await axios.put(`${baseURL}/${resourceId}`, {
                     name: editResourceName,
-                    link: editResourceLink,
-                    category: editResourceCategory,
                     date: Date.now,
                 })
                 .then((response) => {
@@ -273,8 +267,6 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
                     setAllResources(newArray);
                 })
                 setEditResourceName("");
-                setEditResourceLink("");
-                setEditResourceCategory("");
                 setEditSuccessNotificationIsOpen(true);
                 setTimeout(() => {
                     setEditSuccessNotificationIsOpen(false);
@@ -295,8 +287,6 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
                 }, 3000);
             }
             setEditResourceName("");
-            setEditResourceLink("");
-            setEditResourceCategory("");
         }
         setEditModalIsOpen(false);
     }
@@ -371,16 +361,6 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
                         <div className='addResource__content_wrapper'>
                             <label className='editModal__content_label'>Name</label>
                             <input className='editModal__content_input' type="text" value={editResourceName} onChange={e => setEditResourceName(e.target.value)}/>
-                        </div>
-                        <div className='addResource__content_wrapper'>
-                            <label className='editModal__content_label'>Link</label>
-                            <input className='editModal__content_input' type="text" value={editResourceLink} onChange={e => setEditResourceLink(e.target.value)}/>
-                        </div>
-                        <div className='addResource__content_wrapper'>
-                            <label className='editModal__content_label'>Category</label>
-                            <select className='editModal__content_input' style={{marginBottom: "27px", textTransform: "uppercase"}} type="text" value={editResourceCategory} onChange={e => setEditResourceCategory(e.target.value)}>
-                                {categoriesList.map((category, index) => <option key={Date.now + index} style={{textTransform: "uppercase"}}>{category}</option>)};
-                            </select>
                         </div>
                     </LibaModal>
                 }

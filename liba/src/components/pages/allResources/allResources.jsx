@@ -12,7 +12,6 @@ const AllResources = ({ actionSection=true, itemsToShow, searchInclude=true, pag
     const [countOfPostsResources, setCountOfPostsResources] = useState(null);
     const dispatch = useDispatch();
 
-    // TODO: Сделать универсальную функцию, перебирающую массив категорий.
     useMemo(() => {
         axios.get(baseURL)
         .then((response) => {

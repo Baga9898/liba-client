@@ -27,7 +27,7 @@ const MainPage = () => {
                     <Link key={Date.now + index} to={category.path}>
                             <div className='links-content__category_name links-content__category'>
                                 {category.name}
-                                <p className='category-resourcesCount'>{allCounts[index]}</p>
+                                <p className='category-resourcesCount animate__animated animate__fadeIn'>{allCounts[index]}</p>
                             </div>
                     </Link>
                 )}

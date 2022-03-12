@@ -45,7 +45,8 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
     const [deleteSuccessNotificationIsOpen, setDeleteSuccessNotificationIsOpen] = useState(false);
     const [deleteErrorNotificationIsOpen, setDeleteErrorNotificationIsOpen] = useState(false);
 
-    const [matchesNotificationIsOpen, setMatchesNotificationIsOpen] = useState(false);
+    const [matchesNameNotificationIsOpen, setMatchesNameNotificationIsOpen] = useState(false);
+    const [matchesLinkNotificationIsOpen, setMatchesLinkNotificationIsOpen] = useState(false);
 
     const searchArray = allResources.filter(resource => resource.name.includes(searchParametrs));
     const lastResourceIndex = currentPage * resourcesPerPage;
@@ -64,11 +65,11 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
 
     const categoriesList = ["", "books", "soft", "websites", "posts"];
 
-    const useKey = (key, cb) => {
-        const callbackRef = useRef(cb);
+    const useKey = (key, callBack) => {
+        const callbackRef = useRef(callBack);
 
         useEffect(() => {
-            callbackRef.current = cb;
+            callbackRef.current = callBack;
         });
 
         useEffect(() => {
@@ -232,10 +233,17 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
             }
             setRequestIsLoading(false);
         } else {
-            setMatchesNotificationIsOpen(true);
-            setTimeout(() => {
-                setMatchesNotificationIsOpen(false);
-            }, 3000);
+            if (allResources.some(resource => resource.name === resourceName)) {
+                setMatchesNameNotificationIsOpen(true);
+                setTimeout(() => {
+                    setMatchesNameNotificationIsOpen(false);
+                }, 3000);
+            } else if (allResources.some(resource => resource.link === resourceLink)) {
+                setMatchesLinkNotificationIsOpen(true);
+                setTimeout(() => {
+                    setMatchesLinkNotificationIsOpen(false);
+                }, 3000);
+            }
             setResourceName("");
             setResourceLink("");
             setResourceCategory("");
@@ -249,7 +257,7 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
     }
 
     const editResource = async (resourceId) => {
-        if (!allResources.some(resource => resource.name === editResourceName || resource.link === editResourceLink)) {
+        if (!allResources.some(resource => resource.name === editResourceName)) {
             setRequestIsLoading(true);
             try {
                 await axios.put(`${baseURL}/${resourceId}`, {
@@ -280,10 +288,12 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
             }
             setRequestIsLoading(false);
         } else {
-            setMatchesNotificationIsOpen(true);
-            setTimeout(() => {
-                setMatchesNotificationIsOpen(false);
-            }, 3000);
+            if (allResources.some(resource => resource.name === editResourceName)) {
+                setMatchesNameNotificationIsOpen(true);
+                setTimeout(() => {
+                    setMatchesNameNotificationIsOpen(false);
+                }, 3000);
+            }
             setEditResourceName("");
             setEditResourceLink("");
             setEditResourceCategory("");
@@ -409,9 +419,14 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
                         <p className='libaNotification__body_text'>Removal failed</p>
                     </LibaNotification>
                 }
-                {matchesNotificationIsOpen &&
-                    <LibaNotification closeHandler={() => setMatchesNotificationIsOpen(false)}>
-                        <p className='libaNotification__body_text'>Resource with the same name or link already exists</p>
+                {matchesNameNotificationIsOpen &&
+                    <LibaNotification closeHandler={() => setMatchesNameNotificationIsOpen(false)}>
+                        <p className='libaNotification__body_text'>Resource with the same name already exists</p>
+                    </LibaNotification>
+                }
+                {matchesLinkNotificationIsOpen &&
+                    <LibaNotification closeHandler={() => setMatchesLinkNotificationIsOpen(false)}>
+                        <p className='libaNotification__body_text'>Resource with the same link already exists</p>
                     </LibaNotification>
                 }
             </div>

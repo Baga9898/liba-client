@@ -7,7 +7,7 @@ const ResourceWrapper = ({ dataSource, actionSection, openEditModal, openDeleteM
     return (
         <>
             {dataSource.map((resource) =>
-                <div target='_blank' key={Date.now + resource.id} className='section__wrapper animate__animated animate__fadeIn'>
+                <div key={Date.now + resource.id} className='section__wrapper animate__animated animate__fadeIn'>
                     <div className='section__leftside'>
                         <div className='section__leftside_top'>
                             <div className='section__leftside_name'>{resource.name}</div>

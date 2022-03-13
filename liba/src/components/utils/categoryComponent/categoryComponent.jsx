@@ -15,6 +15,7 @@ import SortComponent from '../sortComponent/sortComponent';
 import CountOfResourcesComponent from '../countOfResourcesComponent/countOfResourcesComponent';
 import AddResourceComponent from '../addResourceComponent/addResourceComponent';
 import 'animate.css';
+import { useKey } from '../../../utils/hooks/useKey';
 
 const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSections=false, actionSection=false, itemsToShow, searchInclude=false, pagination=false, pageSize, addResourceAction, createUpdate, isMainPage=false}) => {
     const [allResources, setAllResources] = useState([]);
@@ -62,24 +63,6 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
     }
 
     const categoriesList = ["", "books", "soft", "websites", "posts"];
-
-    const useKey = (key, callBack) => {
-        const callbackRef = useRef(callBack);
-
-        useEffect(() => {
-            callbackRef.current = callBack;
-        });
-
-        useEffect(() => {
-            const handle = (e) => {
-                if (e.code === key) {
-                    callbackRef.current(e);
-                }
-            }
-            document.addEventListener("keydown", handle);
-            return() => document.removeEventListener("keydown", handle);
-        }, [key]);
-    }
 
     const handleEnter = () => {
         if (editModalIsOpen) {

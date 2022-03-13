@@ -1,12 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useEffect, useRef } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect, useMemo } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
+import { useKey } from '../../../utils/hooks/useKey';
+import axios from 'axios';
 import Preloader from '../../utils/preloader/preloader';
-import '../../pages/allResources/allResources.scss'
 import LibaModal from '../libaModal/libaModal';
 import Pagination from '../pagination/pagination';
 import LibaNotification from '../libaNotification/libaNotification';
@@ -14,10 +14,10 @@ import ResourceWrapper from '../resourceWrapper/resourceWrapper';
 import SortComponent from '../sortComponent/sortComponent';
 import CountOfResourcesComponent from '../countOfResourcesComponent/countOfResourcesComponent';
 import AddResourceComponent from '../addResourceComponent/addResourceComponent';
+import '../../pages/allResources/allResources.scss'
 import 'animate.css';
-import { useKey } from '../../../utils/hooks/useKey';
 
-const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSections=false, actionSection=false, itemsToShow, searchInclude=false, pagination=false, pageSize, addResourceAction, createUpdate, isMainPage=false}) => {
+const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSections=false, actionSection=false, itemsToShow, searchInclude=false, pagination=false, pageSize, addResourceAction, createUpdate, isMainPage=false }) => {
     const [allResources, setAllResources] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [requestIsLoading, setRequestIsLoading] = useState(false);
@@ -26,10 +26,14 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
     const [currentPage, setCurrentPage] = useState(1);
     const [resourcesPerPage] = useState(pageSize || 5);
     const [sortType, setSortType] = useState("newFirst");
+    const [formIsValid, setFormIsValid] = useState(false);
 
     const [resourceName, setResourceName] = useState("");
     const [resourceLink, setResourceLink] = useState("");
     const [resourceCategory, setResourceCategory] = useState("");
+
+    const [resourceLinkDirty, setResourceLinkDirty] = useState("");
+    const [resourceLinkError, setResourceLinkError] = useState("Cannot be empty");
 
     const [editModalIsOpen, setEditModalIsOpen] = useState(false);
     const [editResourceName, setEditResourceName] = useState("");
@@ -84,6 +88,46 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
 
     useKey("Enter", handleEnter);
     useKey("Escape", handleEscape);
+
+    const blurHandler = (e) => {
+        switch (e.target.name) {
+            case "link":
+                setResourceLinkDirty(true);
+                break;
+        
+            default:
+                break;
+        }
+    }
+
+    useEffect(() => {
+        if (resourceLinkError) {
+            setFormIsValid(false);
+        } else {
+            setFormIsValid(true);
+        }
+    }, [resourceLinkError]);
+
+    useMemo(() => {
+        if (resourceName === '' || resourceLink === '' || resourceCategory === '') {
+            setFormIsValid(false);
+        } else {
+            setFormIsValid(true);
+        }
+    }, [])
+
+    const linkHandler = (e) => {
+        setResourceLink(e.target.value);
+        const regEx = /^(http|https)/;
+        if (!regEx.test(String(e.target.value).toLowerCase())) {
+            setResourceLinkError("Link is not correct");
+            if (!e.target.value) {
+                setResourceLinkError("Cannot be empty");
+            }
+        } else {
+            setResourceLinkError("");
+        }
+    }
 
     useEffect(async () => {
         if (itemsToShow) {
@@ -320,7 +364,7 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
                     <div className='allResources__actions_wrapper animate__animated animate__fadeIn'>
                         <CountOfResourcesComponent categoryName={categoryName} count={allResources.length}/>
                         {addResourceAction &&
-                            <AddResourceComponent resourceName={resourceName} setResourceName={setResourceName} resourceLink={resourceLink} setResourceLink={setResourceLink} resourceCategory={resourceCategory} setResourceCategory={setResourceCategory} categoriesList={categoriesList} createResource={createResource}/>
+                            <AddResourceComponent resourceName={resourceName} setResourceName={setResourceName} resourceLink={resourceLink} resourceLinkDirty={resourceLinkDirty} resourceLinkError={resourceLinkError} setResourceLink={setResourceLink} resourceCategory={resourceCategory} setResourceCategory={setResourceCategory} categoriesList={categoriesList} createResource={createResource} blurHandler={blurHandler} linkHandler={linkHandler} formIsValid={formIsValid}/>
                         }
                         <SortComponent sortType={sortType} newResourcesIsFirst={newResourcesIsFirst} oldResourcesIsFirst={oldResourcesIsFirst} alphabetSort={alphabetSort}/>
                     </div>

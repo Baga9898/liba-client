@@ -120,7 +120,7 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
         } else {
             setFormIsValid(true);
         }
-    }, [])
+    }, [resourceName, resourceLink, resourceCategory])
 
     const nameHandler = (e) => {
         setResourceName(e.target.value);

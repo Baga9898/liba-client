@@ -32,6 +32,9 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
     const [resourceLink, setResourceLink] = useState("");
     const [resourceCategory, setResourceCategory] = useState("");
 
+    const [resourceNameDirty, setResourceNameDirty] = useState("");
+    const [resourceNameError, setResourceNameError] = useState("Cannot be empty");
+
     const [resourceLinkDirty, setResourceLinkDirty] = useState("");
     const [resourceLinkError, setResourceLinkError] = useState("Cannot be empty");
 
@@ -94,6 +97,9 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
             case "link":
                 setResourceLinkDirty(true);
                 break;
+            case "name":
+                setResourceNameDirty(true);
+                break;
         
             default:
                 break;
@@ -115,6 +121,15 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
             setFormIsValid(true);
         }
     }, [])
+
+    const nameHandler = (e) => {
+        setResourceName(e.target.value);
+        if (!e.target.value) {
+            setResourceNameError("Cannot be empty");
+        } else {
+            setResourceNameError("");
+        }
+    }
 
     const linkHandler = (e) => {
         setResourceLink(e.target.value);
@@ -364,7 +379,7 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
                     <div className='allResources__actions_wrapper animate__animated animate__fadeIn'>
                         <CountOfResourcesComponent categoryName={categoryName} count={allResources.length}/>
                         {addResourceAction &&
-                            <AddResourceComponent resourceName={resourceName} setResourceName={setResourceName} resourceLink={resourceLink} resourceLinkDirty={resourceLinkDirty} resourceLinkError={resourceLinkError} setResourceLink={setResourceLink} resourceCategory={resourceCategory} setResourceCategory={setResourceCategory} categoriesList={categoriesList} createResource={createResource} blurHandler={blurHandler} linkHandler={linkHandler} formIsValid={formIsValid}/>
+                            <AddResourceComponent resourceName={resourceName} setResourceName={setResourceName} resourceLink={resourceLink} resourceLinkDirty={resourceLinkDirty} resourceLinkError={resourceLinkError} setResourceLink={setResourceLink} resourceCategory={resourceCategory} setResourceCategory={setResourceCategory} categoriesList={categoriesList} createResource={createResource} blurHandler={blurHandler} linkHandler={linkHandler} formIsValid={formIsValid} resourceNameDirty={resourceNameDirty} resourceNameError={resourceNameError} nameHandler={nameHandler}/>
                         }
                         <SortComponent sortType={sortType} newResourcesIsFirst={newResourcesIsFirst} oldResourcesIsFirst={oldResourcesIsFirst} alphabetSort={alphabetSort}/>
                     </div>

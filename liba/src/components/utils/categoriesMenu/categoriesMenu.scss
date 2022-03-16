@@ -1,0 +1,12 @@
+.categoriesMenu {
+    &-overlay {
+        width: 100vw;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.9);
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 999;
+        transition: 0.5s;
+    }
+}

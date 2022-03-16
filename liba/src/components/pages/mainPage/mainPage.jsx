@@ -12,8 +12,13 @@ const MainPage = () => {
     const countOfBooks = useSelector((state) => state.resourcesCount.countBooks);
     const websitesCount = useSelector((state) => state.resourcesCount.countWebsites);
     const postsCount = useSelector((state) => state.resourcesCount.countPosts);
+    const setCategoriesMenuIsOpen = useSelector(state => state.categoriesMenu.setCategoriesMenuIsOpen);
 
     const allCounts = [countOfAllResources, countOfBooks, websitesCount, postsCount];
+
+    const openCategoriesHandler = () => {
+        setCategoriesMenuIsOpen(true);
+    }
 
     return (
         <div className='mainPage-content'>
@@ -21,7 +26,7 @@ const MainPage = () => {
                 <CookieClicker/>
                 <div style={{display: "flex", justifyContent: "space-between", alignItems: "baseline"}}>
                     <h1 className='middleside-bottom-title animate__animated animate__fadeIn'>Categories</h1>
-                    <button className='allCategories-button'>All</button>
+                    <button className='allCategories-button' onClick={openCategoriesHandler}>All</button>
                 </div>
                 {categories.map((category, index) => 
                     <Link key={Date.now + index} to={category.path}>

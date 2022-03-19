@@ -28,7 +28,7 @@ const MainPage = () => {
                     <h1 className='middleside-bottom-title animate__animated animate__fadeIn'>Categories</h1>
                     <button className='allCategories-button' onClick={openCategoriesHandler}>All</button>
                 </div>
-                {categories.map((category, index) => 
+                {categories.slice(0, 4).map((category, index) => 
                     <Link key={Date.now + index} to={category.path}>
                             <div className='links-content__category_name links-content__category'>
                                 {category.name}

@@ -2,11 +2,37 @@
     &-overlay {
         width: 100vw;
         height: 100vh;
-        background: rgba(0, 0, 0, 0.9);
+        background: rgba(219, 219, 219, 0.9);
         position: absolute;
         top: 0;
         left: 0;
         z-index: 999;
         transition: 0.5s;
     }
+}
+
+.categoriesMenu__closeButton {
+    background: transparent;
+    &_icon {
+        font-size: 40px;
+        color: rgba(95, 95, 95, 0.7);
+        transition: 0.5s;
+        position: absolute;
+        top: 10px;
+        right: 20px;
+        &:hover {
+            color: rgb(63, 63, 63);
+        }
+    }
+}
+
+.categories-container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    padding: 30px 15px;
+}
+
+.categories-mini {
+    max-width: 270px;
 }

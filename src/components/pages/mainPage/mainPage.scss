@@ -1,6 +1,6 @@
 .mainPage-content {
     display: flex;
-    max-height: calc(100vh - 66px);
+    max-height: calc(100vh - 30px);
     overflow: hidden;
     &__leftside {
         width: 25%;
@@ -24,6 +24,15 @@
             font-size: 30px;
             text-transform: uppercase;
         }
+    }
+}
+
+@media screen and (max-width: 1280px) {
+    .mainPage-content__leftside {
+        width: 32%;
+    }
+    .mainPage-content__middleside {
+        width: 68%;
     }
 }
 

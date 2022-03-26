@@ -20,6 +20,22 @@
     margin-bottom: 20px;
 }
 
+@media screen and (max-width: 970px) {
+    .clickerBlockWrapper {
+        width: 55% !important;
+        height: 389px;
+    }
+
+    .cookie {
+        width: 270px;
+        height: 270px;
+        &:active {
+            width: 265px;
+            height: 265px;
+        }
+    }
+}
+
 .clickerCount {
     color: #aaa;
     font-weight: bold;

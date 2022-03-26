@@ -23,6 +23,22 @@ body {
   }
 }
 
+@media screen and (max-width: 970px) {
+  .container {
+    width: 750px;
+  }
+}
+
+@media screen and (max-width: 760px) {
+  .container {
+    width: 540px;
+  }
+}
+
+@media screen and (max-width: 550px) {
+
+}
+
 * {
   padding: 0;
   margin: 0;

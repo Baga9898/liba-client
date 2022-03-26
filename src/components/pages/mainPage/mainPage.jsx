@@ -49,7 +49,7 @@ const MainPage = () => {
     const { height, width } = useWindowDimensions();
 
     useEffect(() => {
-        if (height <= 985) {
+        if (height <= 920) {
             setCountOfMainPageCategories(3);
         } else {
             setCountOfMainPageCategories(4);
@@ -60,18 +60,20 @@ const MainPage = () => {
         <div className='mainPage-content'>
             <div className='mainPage-content__leftside animate__animated animate__fadeIn'>
                 <CookieClicker/>
-                <div style={{display: "flex", justifyContent: "space-between", alignItems: "baseline"}}>
-                    <h1 className='middleside-bottom-title animate__animated animate__fadeIn'>Categories</h1>
-                    <button className='allCategories-button' onClick={openCategoriesHandler}>All</button>
+                <div>
+                    <div style={{display: "flex", justifyContent: "space-between", alignItems: "baseline"}}>
+                        <h1 className='middleside-bottom-title animate__animated animate__fadeIn'>Categories</h1>
+                        <button className='allCategories-button' onClick={openCategoriesHandler}>All</button>
+                    </div>
+                    {categories.slice(0, countOfMainPageCategories).map((category, index) => 
+                        <Link key={Date.now + index} to={category.path}>
+                                <div className='links-content__category_name links-content__category'>
+                                    {category.name}
+                                    <p className='category-resourcesCount animate__animated animate__fadeIn'>{allCounts[index]}</p>
+                                </div>
+                        </Link>
+                    )}
                 </div>
-                {categories.slice(0, countOfMainPageCategories).map((category, index) => 
-                    <Link key={Date.now + index} to={category.path}>
-                            <div className='links-content__category_name links-content__category'>
-                                {category.name}
-                                <p className='category-resourcesCount animate__animated animate__fadeIn'>{allCounts[index]}</p>
-                            </div>
-                    </Link>
-                )}
             </div>
             <div className='mainPage-content__middleside'>
                 <h1 className='middleside-top-title animate__animated animate__fadeIn'>Last added</h1>

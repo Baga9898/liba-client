@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import AllResources from '../allResources/allResources';
 import CookieClicker from '../../utils/cookieClicker/cookieClicker';
@@ -13,12 +13,48 @@ const MainPage = () => {
     const websitesCount = useSelector((state) => state.resourcesCount.countWebsites);
     const postsCount = useSelector((state) => state.resourcesCount.countPosts);
     const setCategoriesMenuIsOpen = useSelector(state => state.categoriesMenu.setCategoriesMenuIsOpen);
+    const [countOfMainPageCategories, setCountOfMainPageCategories] = useState(4);
 
     const allCounts = [countOfAllResources, countOfBooks, websitesCount, postsCount];
 
     const openCategoriesHandler = () => {
         setCategoriesMenuIsOpen(true);
     }
+
+    const getWindowDimensions = () => {
+        const { innerWidth: width, innerHeight: height } = window;
+        return {
+            width,
+            height
+        };
+    };
+      
+    const useWindowDimensions = () => {
+        const [windowDimensions, setWindowDimensions] = useState(
+            getWindowDimensions()
+        );
+        
+        useEffect(() => {
+            const handleResize = () => {
+                setWindowDimensions(getWindowDimensions());
+            }
+        
+        window.addEventListener("resize", handleResize);
+            return () => window.removeEventListener("resize", handleResize);
+        }, []);
+      
+        return windowDimensions;
+    };
+
+    const { height, width } = useWindowDimensions();
+
+    useEffect(() => {
+        if (height <= 985) {
+            setCountOfMainPageCategories(3);
+        } else {
+            setCountOfMainPageCategories(4);
+        }
+    }, [height]);
 
     return (
         <div className='mainPage-content'>
@@ -28,7 +64,7 @@ const MainPage = () => {
                     <h1 className='middleside-bottom-title animate__animated animate__fadeIn'>Categories</h1>
                     <button className='allCategories-button' onClick={openCategoriesHandler}>All</button>
                 </div>
-                {categories.slice(0, 4).map((category, index) => 
+                {categories.slice(0, countOfMainPageCategories).map((category, index) => 
                     <Link key={Date.now + index} to={category.path}>
                             <div className='links-content__category_name links-content__category'>
                                 {category.name}

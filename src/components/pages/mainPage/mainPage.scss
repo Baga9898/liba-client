@@ -61,8 +61,7 @@
 }
 
 .links-content__category {
-    width: 100%;
-    min-width: 270px;
+    width: 270px;
     min-height: 105px;
     border-radius: 20px;
     margin-bottom: 20px;
@@ -71,6 +70,20 @@
     background: #ecf0f3;
     position: relative;
     overflow: hidden;
+}
+
+@media screen and (max-width: 760px) {
+    .mainPage-content__leftside {
+        flex-direction: column;
+    }
+
+    .links-content__category {
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 550px) {
+    
 }
 
 @media all and (device-width: 768px) and (device-height: 1024px) and (orientation:portrait) {

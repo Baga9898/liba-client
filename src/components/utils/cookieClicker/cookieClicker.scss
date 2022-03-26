@@ -43,6 +43,27 @@
     }
 }
 
+@media screen and (max-width: 760px) {
+    .clickerBlockWrapper {
+        width: 100% !important;
+    }
+}
+
+@media screen and (max-width: 550px) {
+    .cookie {
+        width: 180px;
+        height: 180px;
+        &:active {
+            width: 175px;
+            height: 175px;
+        }
+    }
+
+    .clickerBlockWrapper {
+        height: 280px;
+    }
+}
+
 .clickerCount {
     color: #aaa;
     font-weight: bold;

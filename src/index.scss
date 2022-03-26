@@ -36,7 +36,9 @@ body {
 }
 
 @media screen and (max-width: 550px) {
-
+  .container {
+    width: 310px;
+  }
 }
 
 * {

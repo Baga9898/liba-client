@@ -51,10 +51,14 @@ const MainPage = () => {
     useEffect(() => {
         if (height <= 920) {
             setCountOfMainPageCategories(3);
+        } else if (height === 1024 && width === 768) {
+            setCountOfMainPageCategories(3);
+        } else if (height === 1180 && width === 820) {
+            setCountOfMainPageCategories(3);
         } else {
             setCountOfMainPageCategories(4);
         }
-    }, [height]);
+    }, [height, width]);
 
     return (
         <div className='mainPage-content'>

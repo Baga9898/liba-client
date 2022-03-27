@@ -1,9 +1,9 @@
 .categoriesMenu {
     &-overlay {
-        width: 100vw;
-        height: 100vh;
+        min-width: 100vw;
+        min-height: 100vh;
         background: rgba(219, 219, 219, 0.9);
-        position: absolute;
+        position: fixed;
         top: 0;
         left: 0;
         z-index: 999;
@@ -26,6 +26,12 @@
     }
 }
 
+@media screen and (max-width: 1080px) {
+    .categoriesMenu__closeButton_icon {
+        font-size: 30px;
+    }
+}
+
 .categories-container {
     display: flex;
     justify-content: space-between;
@@ -35,4 +41,15 @@
 
 .categories-mini {
     max-width: 270px;
+}
+
+@media screen and (max-width: 760px) {
+    .categories-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .categories-mini {
+        width: 270px !important;
+    }
 }

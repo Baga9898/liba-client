@@ -3,13 +3,15 @@
     flex-direction: column;
     justify-content: center;
     text-align: center;
-    height: 320px;
+    height: 389px;
+    width: 40% !important;
+    padding-top: 30px !important;
 }
 
 .cookie {
     cursor: pointer;
-    width: 200px;
-    height: 200px;
+    width: 270px;
+    height: 270px;
     margin-bottom: 20px;
 }
 
@@ -25,6 +27,10 @@
         height: 464px !important;
         padding-top: 40px !important;
     }
+}
+
+@media screen and (max-width: 1280px) {
+    
 }
 
 @media screen and (max-width: 970px) {

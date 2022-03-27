@@ -13,7 +13,7 @@ const MainPage = () => {
     const websitesCount = useSelector((state) => state.resourcesCount.countWebsites);
     const postsCount = useSelector((state) => state.resourcesCount.countPosts);
     const setCategoriesMenuIsOpen = useSelector(state => state.categoriesMenu.setCategoriesMenuIsOpen);
-    const [countOfMainPageCategories, setCountOfMainPageCategories] = useState(4);
+    const [countOfMainPageCategories, setCountOfMainPageCategories] = useState(6);
 
     const allCounts = [countOfAllResources, countOfBooks, websitesCount, postsCount];
 
@@ -49,14 +49,14 @@ const MainPage = () => {
     const { height, width } = useWindowDimensions();
 
     useEffect(() => {
-        if (height <= 920) {
+        if (width <= 970) {
             setCountOfMainPageCategories(3);
         } else if (height === 1024 && width === 768) {
             setCountOfMainPageCategories(3);
         } else if (height === 1180 && width === 820) {
             setCountOfMainPageCategories(3);
         } else {
-            setCountOfMainPageCategories(4);
+            setCountOfMainPageCategories(6);
         }
     }, [height, width]);
 
@@ -64,19 +64,21 @@ const MainPage = () => {
         <div className='mainPage-content'>
             <div className='mainPage-content__leftside animate__animated animate__fadeIn'>
                 <CookieClicker/>
-                <div>
+                <div className='mainpage-categories-wrapper'>
                     <div style={{display: "flex", justifyContent: "space-between", alignItems: "baseline"}}>
                         <h1 className='middleside-bottom-title animate__animated animate__fadeIn'>Categories</h1>
                         <button className='allCategories-button' onClick={openCategoriesHandler}>All</button>
                     </div>
-                    {categories.slice(0, countOfMainPageCategories).map((category, index) => 
-                        <Link key={Date.now + index} to={category.path}>
-                                <div className='links-content__category_name links-content__category'>
-                                    {category.name}
-                                    <p className='category-resourcesCount animate__animated animate__fadeIn'>{allCounts[index]}</p>
-                                </div>
-                        </Link>
-                    )}
+                    <div className='mainpage-categories-wrapper__items'>
+                        {categories.slice(0, countOfMainPageCategories).map((category, index) => 
+                            <Link key={Date.now + index} to={category.path}>
+                                    <div className='links-content__category_name links-content__category'>
+                                        {category.name}
+                                        <p className='category-resourcesCount animate__animated animate__fadeIn'>{allCounts[index]}</p>
+                                    </div>
+                            </Link>
+                        )}
+                    </div>
                 </div>
             </div>
             <div className='mainPage-content__middleside'>

@@ -27,6 +27,8 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
     const [resourcesPerPage] = useState(pageSize || 5);
     const [sortType, setSortType] = useState("newFirst");
     const [formIsValid, setFormIsValid] = useState(false);
+    const [notificationIsOpen, setNotificationIsOpen] = useState('');
+    const [notificationText, setNotificationText] = useState('');
 
     const [resourceName, setResourceName] = useState("");
     const [resourceLink, setResourceLink] = useState("");
@@ -41,18 +43,6 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
     const [editModalIsOpen, setEditModalIsOpen] = useState(false);
     const [editResourceName, setEditResourceName] = useState("");
     const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
-
-    const [addSuccessNotificationIsOpen, setAddSuccessNotificationIsOpen] = useState(false);
-    const [addErrorNotificationIsOpen, setAddErrorNotificationIsOpen] = useState(false);
-
-    const [editSuccessNotificationIsOpen, setEditSuccessNotificationIsOpen] = useState(false);
-    const [editErrorNotificationIsOpen, setEditErrorNotificationIsOpen] = useState(false);
-
-    const [deleteSuccessNotificationIsOpen, setDeleteSuccessNotificationIsOpen] = useState(false);
-    const [deleteErrorNotificationIsOpen, setDeleteErrorNotificationIsOpen] = useState(false);
-
-    const [matchesNameNotificationIsOpen, setMatchesNameNotificationIsOpen] = useState(false);
-    const [matchesLinkNotificationIsOpen, setMatchesLinkNotificationIsOpen] = useState(false);
 
     const searchArray = allResources.filter(resource => resource.name.includes(searchParametrs));
     const lastResourceIndex = currentPage * resourcesPerPage;
@@ -254,9 +244,10 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
                 })
                 .then((response) => {
                     setAllResources([response.data, ...allResources]);
-                    setAddSuccessNotificationIsOpen(true);
+                    setNotificationText('Adding was successfully');
+                    setNotificationIsOpen(true);
                     setTimeout(() => {
-                        setAddSuccessNotificationIsOpen(false);
+                        setNotificationIsOpen(false);
                     }, 3000);
                 })
                 setResourceName("");
@@ -264,27 +255,30 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
                 setResourceCategory("");
             } catch (error) {
                 console.error(error);
-                setAddErrorNotificationIsOpen(true);
+                setNotificationText('Adding failed');
+                setNotificationIsOpen(true);
                 setTimeout(() => {
-                    setAddErrorNotificationIsOpen(false);
+                    setNotificationIsOpen(false);
                 }, 3000);
             }
             setRequestIsLoading(false);
-        } else {
-            if (allResources.some(resource => resource.name === resourceName)) {
-                setMatchesNameNotificationIsOpen(true);
-                setTimeout(() => {
-                    setMatchesNameNotificationIsOpen(false);
-                }, 3000);
-            } else if (allResources.some(resource => resource.link === resourceLink)) {
-                setMatchesLinkNotificationIsOpen(true);
-                setTimeout(() => {
-                    setMatchesLinkNotificationIsOpen(false);
-                }, 3000);
-            }
             setResourceName("");
             setResourceLink("");
             setResourceCategory("");
+        } else {
+            if (allResources.some(resource => resource.name === resourceName)) {
+                setNotificationText('Resource with the same name already exists');
+                setNotificationIsOpen(true);
+                setTimeout(() => {
+                    setNotificationIsOpen(false);
+                }, 3000);
+            } else if (allResources.some(resource => resource.link === resourceLink)) {
+                setNotificationText('Resource with the same link already exists');
+                setNotificationIsOpen(true);
+                setTimeout(() => {
+                    setNotificationIsOpen(false);
+                }, 3000);
+            }
         }
     }
 
@@ -309,23 +303,26 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
                     setAllResources(newArray);
                 })
                 setEditResourceName("");
-                setEditSuccessNotificationIsOpen(true);
+                setNotificationText('Editing was successfilly');
+                setNotificationIsOpen(true);
                 setTimeout(() => {
-                    setEditSuccessNotificationIsOpen(false);
+                    setNotificationIsOpen(false);
                 }, 3000);
             } catch (error) {
                 console.error(error);
-                setEditErrorNotificationIsOpen(true);
+                setNotificationText('Resource with the same name already exists');
+                setNotificationIsOpen(true);
                 setTimeout(() => {
-                    setEditErrorNotificationIsOpen(false);
+                    setNotificationIsOpen(false);
                 }, 3000);
             }
             setRequestIsLoading(false);
         } else {
             if (allResources.some(resource => resource.name === editResourceName)) {
-                setMatchesNameNotificationIsOpen(true);
+                setNotificationText('');
+                setNotificationIsOpen(true);
                 setTimeout(() => {
-                    setMatchesNameNotificationIsOpen(false);
+                    setNotificationIsOpen(false);
                 }, 3000);
             }
             setEditResourceName("");
@@ -346,15 +343,17 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
                 const newArray = allResources.filter((resource) => resource.id !== response.data.id);
                 setAllResources(newArray);
             })
-            setDeleteSuccessNotificationIsOpen(true);
+            setNotificationText('Removal was successfully');
+            setNotificationIsOpen(true);
             setTimeout(() => {
-                setDeleteSuccessNotificationIsOpen(false);
+                setNotificationIsOpen(false);
             }, 3000);
         } catch (error) {
             console.error(error);
-            setDeleteErrorNotificationIsOpen(true);
+            setNotificationText('Removal failed');
+            setNotificationIsOpen(true);
             setTimeout(() => {
-                setDeleteErrorNotificationIsOpen(false);
+                setNotificationIsOpen(false);
             }, 3000);
         }
         setRequestIsLoading(false);
@@ -411,44 +410,9 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
                         <p className='editModal__content_text'>Are you sure you want to delete the resource?</p>
                     </LibaModal>
                 }
-                {addSuccessNotificationIsOpen &&
-                    <LibaNotification closeHandler={() => setAddSuccessNotificationIsOpen(false)}>
-                        <p className='libaNotification__body_text'>Adding was success</p>
-                    </LibaNotification>
-                }
-                {addErrorNotificationIsOpen &&
-                    <LibaNotification closeHandler={() => setAddErrorNotificationIsOpen(false)}>
-                        <p className='libaNotification__body_text'>Adding failed</p>
-                    </LibaNotification>
-                }
-                {editSuccessNotificationIsOpen &&
-                    <LibaNotification closeHandler={() => setEditSuccessNotificationIsOpen(false)}>
-                        <p className='libaNotification__body_text'>Editing was success</p>
-                    </LibaNotification>
-                }
-                {editErrorNotificationIsOpen &&
-                    <LibaNotification closeHandler={() => setEditErrorNotificationIsOpen(false)}>
-                        <p className='libaNotification__body_text'>Editing failed</p>
-                    </LibaNotification>
-                }
-                {deleteSuccessNotificationIsOpen &&
-                    <LibaNotification closeHandler={() => setDeleteSuccessNotificationIsOpen(false)}>
-                        <p className='libaNotification__body_text'>Removal was success</p>
-                    </LibaNotification>
-                }
-                {deleteErrorNotificationIsOpen &&
-                    <LibaNotification closeHandler={() => setDeleteErrorNotificationIsOpen(false)}>
-                        <p className='libaNotification__body_text'>Removal failed</p>
-                    </LibaNotification>
-                }
-                {matchesNameNotificationIsOpen &&
-                    <LibaNotification closeHandler={() => setMatchesNameNotificationIsOpen(false)}>
-                        <p className='libaNotification__body_text'>Resource with the same name already exists</p>
-                    </LibaNotification>
-                }
-                {matchesLinkNotificationIsOpen &&
-                    <LibaNotification closeHandler={() => setMatchesLinkNotificationIsOpen(false)}>
-                        <p className='libaNotification__body_text'>Resource with the same link already exists</p>
+                {notificationIsOpen && 
+                    <LibaNotification>
+                        <p className='libaNotification__body_text'>{notificationText}</p>
                     </LibaNotification>
                 }
             </div>

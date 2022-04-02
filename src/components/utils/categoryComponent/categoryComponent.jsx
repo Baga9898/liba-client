@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect, useMemo } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import { useKey } from '../../../utils/hooks/useKey';
@@ -14,6 +13,7 @@ import ResourceWrapper from '../resourceWrapper/resourceWrapper';
 import SortComponent from '../sortComponent/sortComponent';
 import CountOfResourcesComponent from '../countOfResourcesComponent/countOfResourcesComponent';
 import AddResourceComponent from '../addResourceComponent/addResourceComponent';
+import ResourcesSearch from '../resourcesSearch/resourcesSearch';
 import '../../pages/allResources/allResources.scss'
 import 'animate.css';
 
@@ -23,6 +23,8 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
     const [requestIsLoading, setRequestIsLoading] = useState(false);
     const [idOfResource, setIdOfResource] = useState("");
     const [searchParametrs, setSearchParametrs] = useState("");
+
+    console.log(searchParametrs)
     const [currentPage, setCurrentPage] = useState(1);
     const [resourcesPerPage] = useState(pageSize || 5);
     const [sortType, setSortType] = useState("newFirst");
@@ -368,10 +370,7 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
         <>
             {requestIsLoading && <Preloader/>}
             {searchInclude && 
-                <div className='resources__search_wrapper animate__animated animate__fadeIn'>
-                    <FontAwesomeIcon icon={faSearch} className='search-icon'/>
-                    <input className='resources__search' type='text' placeholder='Search...' onChange={e => setSearchParametrs(e.currentTarget.value)}/>
-                </div>
+                <ResourcesSearch setSearchParametrs={setSearchParametrs}/>
             }
             <div className={actionInfoSections ? 'action-info-wrapper' : ""}>
                 {actionSection && 

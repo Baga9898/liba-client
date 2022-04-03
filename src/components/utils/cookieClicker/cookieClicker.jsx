@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import CookieImage from "../../../assets/Cookie.png";
 import "./cookieClicker.scss";
 

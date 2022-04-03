@@ -23,8 +23,6 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
     const [requestIsLoading, setRequestIsLoading] = useState(false);
     const [idOfResource, setIdOfResource] = useState("");
     const [searchParametrs, setSearchParametrs] = useState("");
-
-    console.log(searchParametrs)
     const [currentPage, setCurrentPage] = useState(1);
     const [resourcesPerPage] = useState(pageSize || 5);
     const [sortType, setSortType] = useState("newFirst");
@@ -162,7 +160,7 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
                 console.error(error);
             }
         } 
-          
+      
     }, [itemsToShow, baseURL, getParams]);
 
     const getOneResource = async (resourceId) => {

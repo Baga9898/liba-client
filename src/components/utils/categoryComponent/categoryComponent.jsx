@@ -134,33 +134,35 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
         }
     }
 
-    useEffect(async () => {
-        if (itemsToShow) {
-            try {
-                await axios.get(baseURL, {params: getParams})
-                .then((response) => {
-                    const newArray = response.data;
-                    const reverseArray = newArray.reverse().slice(0, itemsToShow);
-                    setAllResources(reverseArray);
-                    setIsLoading(false);
-                })
-            } catch (error) {
-                console.error(error);
-            }
-        } else {
-            try {
-                await axios.get(baseURL, {params: getParams})
-                .then((response) => {
-                    const newArray = response.data;
-                    const reverseArray = newArray.reverse();
-                    setAllResources(reverseArray);
-                    setIsLoading(false);
-                })
-            } catch (error) {
-                console.error(error);
-            }
-        } 
-      
+    useEffect(() => {
+        const getResources = () => {
+            if (itemsToShow) {
+                try {
+                    axios.get(baseURL, {params: getParams})
+                    .then((response) => {
+                        const newArray = response.data;
+                        const reverseArray = newArray.reverse().slice(0, itemsToShow);
+                        setAllResources(reverseArray);
+                        setIsLoading(false);
+                    })
+                } catch (error) {
+                    console.error(error);
+                }
+            } else {
+                try {
+                    axios.get(baseURL, {params: getParams})
+                    .then((response) => {
+                        const newArray = response.data;
+                        const reverseArray = newArray.reverse();
+                        setAllResources(reverseArray);
+                        setIsLoading(false);
+                    })
+                } catch (error) {
+                    console.error(error);
+                }
+            } 
+        }
+        getResources();
     }, [itemsToShow, baseURL, getParams]);
 
     const getOneResource = async (resourceId) => {

@@ -12,7 +12,7 @@ const Pagination = ({ resourcesPerPage, totalCountOfResources, paginate, current
         <ul className='pagination'>
             {
                 pageNumbers.map((number, index) => (
-                    <li className='page-item' key={"page№" + number}>
+                    <li className='page-item' key={'page№' + number}>
                         <button className={currentPage === index + 1 ? 'page-link current-page' : 'page-link'} onClick={() => paginate(number)}>{number}</button>
                     </li>
                 ))

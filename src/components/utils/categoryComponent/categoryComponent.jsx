@@ -21,27 +21,27 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
     const [allResources, setAllResources] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [requestIsLoading, setRequestIsLoading] = useState(false);
-    const [idOfResource, setIdOfResource] = useState("");
-    const [searchParametrs, setSearchParametrs] = useState("");
+    const [idOfResource, setIdOfResource] = useState('');
+    const [searchParametrs, setSearchParametrs] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const [resourcesPerPage] = useState(pageSize || 5);
-    const [sortType, setSortType] = useState("newFirst");
+    const [sortType, setSortType] = useState('newFirst');
     const [formIsValid, setFormIsValid] = useState(false);
     const [notificationIsOpen, setNotificationIsOpen] = useState('');
     const [notificationText, setNotificationText] = useState('');
 
-    const [resourceName, setResourceName] = useState("");
-    const [resourceLink, setResourceLink] = useState("");
-    const [resourceCategory, setResourceCategory] = useState("");
+    const [resourceName, setResourceName] = useState('');
+    const [resourceLink, setResourceLink] = useState('');
+    const [resourceCategory, setResourceCategory] = useState('');
 
-    const [resourceNameDirty, setResourceNameDirty] = useState("");
-    const [resourceNameError, setResourceNameError] = useState("Cannot be empty");
+    const [resourceNameDirty, setResourceNameDirty] = useState('');
+    const [resourceNameError, setResourceNameError] = useState('Cannot be empty');
 
-    const [resourceLinkDirty, setResourceLinkDirty] = useState("");
-    const [resourceLinkError, setResourceLinkError] = useState("Cannot be empty");
+    const [resourceLinkDirty, setResourceLinkDirty] = useState('');
+    const [resourceLinkError, setResourceLinkError] = useState('Cannot be empty');
 
     const [editModalIsOpen, setEditModalIsOpen] = useState(false);
-    const [editResourceName, setEditResourceName] = useState("");
+    const [editResourceName, setEditResourceName] = useState('');
     const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
 
     const searchArray = allResources.filter(resource => resource.name.includes(searchParametrs));
@@ -59,7 +59,7 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
         setCurrentPage(pageNumber => pageNumber === Math.ceil(searchArray.length / resourcesPerPage) ? pageNumber : pageNumber + 1)
     }
 
-    const categoriesList = ["", "books", "soft", "websites", "posts"];
+    const categoriesList = ['', 'books', 'soft', 'websites', 'posts'];
 
     const handleEnter = () => {
         if (editModalIsOpen) {
@@ -79,15 +79,15 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
         }
     }
 
-    useKey("Enter", handleEnter);
-    useKey("Escape", handleEscape);
+    useKey('Enter', handleEnter);
+    useKey('Escape', handleEscape);
 
     const blurHandler = (e) => {
         switch (e.target.name) {
-            case "link":
+            case 'link':
                 setResourceLinkDirty(true);
                 break;
-            case "name":
+            case 'name':
                 setResourceNameDirty(true);
                 break;
         
@@ -115,9 +115,9 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
     const nameHandler = (e) => {
         setResourceName(e.target.value);
         if (!e.target.value) {
-            setResourceNameError("Cannot be empty");
+            setResourceNameError('Cannot be empty');
         } else {
-            setResourceNameError("");
+            setResourceNameError('');
         }
     }
 
@@ -125,20 +125,20 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
         setResourceLink(e.target.value);
         const regEx = /^(http|https)/;
         if (!regEx.test(String(e.target.value).toLowerCase())) {
-            setResourceLinkError("Link is not correct");
+            setResourceLinkError('Link is not correct');
             if (!e.target.value) {
-                setResourceLinkError("Cannot be empty");
+                setResourceLinkError('Cannot be empty');
             }
         } else {
-            setResourceLinkError("");
+            setResourceLinkError('');
         }
     }
 
     useEffect(() => {
-        const getResources = () => {
+        const getResources = async () => {
             if (itemsToShow) {
                 try {
-                    axios.get(baseURL, {params: getParams})
+                    await axios.get(baseURL, {params: getParams})
                     .then((response) => {
                         const newArray = response.data;
                         const reverseArray = newArray.reverse().slice(0, itemsToShow);
@@ -150,7 +150,7 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
                 }
             } else {
                 try {
-                    axios.get(baseURL, {params: getParams})
+                    await axios.get(baseURL, {params: getParams})
                     .then((response) => {
                         const newArray = response.data;
                         const reverseArray = newArray.reverse();
@@ -196,7 +196,7 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
 
     const newResourcesIsFirst = () => {
         getNewResourcesFirst();
-        setSortType("newFirst");
+        setSortType('newFirst');
     }
 
     const getOldResourcesFirst = async () => {
@@ -215,7 +215,7 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
 
     const oldResourcesIsFirst = () => {
         getOldResourcesFirst();
-        setSortType("oldFirst");
+        setSortType('oldFirst');
     }
 
     const alphabetSorting = () => {
@@ -228,7 +228,7 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
 
     const alphabetSort = () => {
         alphabetSorting();
-        setSortType("alphabet");
+        setSortType('alphabet');
     }
 
     const newDate = new Date();
@@ -252,9 +252,9 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
                         setNotificationIsOpen(false);
                     }, 3000);
                 })
-                setResourceName("");
-                setResourceLink("");
-                setResourceCategory("");
+                setResourceName('');
+                setResourceLink('');
+                setResourceCategory('');
             } catch (error) {
                 console.error(error);
                 setNotificationText('Adding failed');
@@ -264,9 +264,9 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
                 }, 3000);
             }
             setRequestIsLoading(false);
-            setResourceName("");
-            setResourceLink("");
-            setResourceCategory("");
+            setResourceName('');
+            setResourceLink('');
+            setResourceCategory('');
         } else {
             if (allResources.some(resource => resource.name === resourceName)) {
                 setNotificationText('Resource with the same name already exists');
@@ -304,7 +304,7 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
                     newArray[indexOfChangedResource] = response.data;
                     setAllResources(newArray);
                 })
-                setEditResourceName("");
+                setEditResourceName('');
                 setNotificationText('Editing was successfilly');
                 setNotificationIsOpen(true);
                 setTimeout(() => {
@@ -327,7 +327,7 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
                     setNotificationIsOpen(false);
                 }, 3000);
             }
-            setEditResourceName("");
+            setEditResourceName('');
         }
         setEditModalIsOpen(false);
     }
@@ -372,7 +372,7 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
             {searchInclude && 
                 <ResourcesSearch setSearchParametrs={setSearchParametrs}/>
             }
-            <div className={actionInfoSections ? 'action-info-wrapper' : ""}>
+            <div className={actionInfoSections ? 'action-info-wrapper' : ''}>
                 {actionSection && 
                     <div className='allResources__actions_wrapper animate__animated animate__fadeIn'>
                         <CountOfResourcesComponent categoryName={categoryName} count={allResources.length}/>
@@ -382,7 +382,7 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
                         <SortComponent sortType={sortType} newResourcesIsFirst={newResourcesIsFirst} oldResourcesIsFirst={oldResourcesIsFirst} alphabetSort={alphabetSort}/>
                     </div>
                 }
-                <div style={{width: "100%"}}>
+                <div style={{width: '100%'}}>
                     <div className={isMainPage ? 'allResources__wrapper' : 'allResources__wrapper-mainPage'}>
                         {
                             <ResourceWrapper dataSource={currentResources} actionSection={actionSection} openEditModal={openEditModal} openDeleteModal={openDeleteModal} createUpdate={createUpdate}/>
@@ -397,15 +397,15 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
                     }
                 </div>
                 {editModalIsOpen &&
-                    <LibaModal modalTitle="Edit resource" closeHandler={() => setEditModalIsOpen(false)} actionHandler={() => editResource(idOfResource)} actionName="Edit">
+                    <LibaModal modalTitle='Edit resource' closeHandler={() => setEditModalIsOpen(false)} actionHandler={() => editResource(idOfResource)} actionName='Edit'>
                         <div className='addResource__content_wrapper'>
                             <label className='editModal__content_label'>Name</label>
-                            <input className='editModal__content_input' type="text" value={editResourceName} onChange={e => setEditResourceName(e.target.value)}/>
+                            <input className='editModal__content_input' type='text' value={editResourceName} onChange={e => setEditResourceName(e.target.value)}/>
                         </div>
                     </LibaModal>
                 }
                 {deleteModalIsOpen && 
-                    <LibaModal modalTitle="Delete resource" closeHandler={() => setDeleteModalIsOpen(false)} actionHandler={() => deleteResourse(idOfResource)} actionName="Delete">
+                    <LibaModal modalTitle='Delete resource' closeHandler={() => setDeleteModalIsOpen(false)} actionHandler={() => deleteResourse(idOfResource)} actionName='Delete'>
                         <p className='editModal__content_text'>Are you sure you want to delete the resource?</p>
                     </LibaModal>
                 }

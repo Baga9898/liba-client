@@ -20,7 +20,7 @@ const App = () => {
     }, [setCategoriesMenuIsOpen, dispatch]);
 
   	return (
-  	    <div className="App">
+  	    <div className='App'>
 		  {categoriesMenuIsOpen && <CategoriesMenu/>}
   	      	<Header/>
   	      	<div className='container'>

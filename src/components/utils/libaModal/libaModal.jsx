@@ -6,7 +6,7 @@ import './libaModal.scss';
 const LibaModal = ({modalTitle, closeHandler, actionHandler, actionName, children }) => {
     return (
         <div className='libaModal-overlay'>
-            <div className="libaModal-wrapper">
+            <div className='libaModal-wrapper'>
                 <div className='libaModal__header'>
                     <p className='libaModal__header_title'>{modalTitle}</p>
                     <FontAwesomeIcon icon={faTimes} className='libaModal__header_closeButton' onClick={closeHandler}/>

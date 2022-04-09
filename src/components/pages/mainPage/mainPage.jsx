@@ -4,7 +4,7 @@ import AllResources from '../allResources/allResources';
 import CookieClicker from '../../utils/cookieClicker/cookieClicker';
 import './mainPage.scss';
 import categories from './categories';
-import { useSelector } from "react-redux";
+import { useSelector } from 'react-redux';
 
 
 const MainPage = () => {
@@ -39,8 +39,8 @@ const MainPage = () => {
                 setWindowDimensions(getWindowDimensions());
             }
         
-        window.addEventListener("resize", handleResize);
-            return () => window.removeEventListener("resize", handleResize);
+        window.addEventListener('resize', handleResize);
+            return () => window.removeEventListener('resize', handleResize);
         }, []);
       
         return windowDimensions;
@@ -65,7 +65,7 @@ const MainPage = () => {
             <div className='mainPage-content__leftside animate__animated animate__fadeIn'>
                 <CookieClicker/>
                 <div className='mainpage-categories-wrapper'>
-                    <div style={{display: "flex", justifyContent: "space-between", alignItems: "baseline"}}>
+                    <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'baseline'}}>
                         <h1 className='middleside-bottom-title animate__animated animate__fadeIn'>Categories</h1>
                         <button className='allCategories-button' onClick={openCategoriesHandler}>All</button>
                     </div>

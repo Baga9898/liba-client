@@ -25,7 +25,8 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
     const [searchParametrs, setSearchParametrs] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const [resourcesPerPage] = useState(pageSize || 5);
-    const [sortType, setSortType] = useState('newFirst');
+    const sortMode = localStorage.getItem('sortMode');
+    const [sortType, setSortType] = useState(sortMode);
     const [formIsValid, setFormIsValid] = useState(false);
     const [notificationIsOpen, setNotificationIsOpen] = useState('');
     const [notificationText, setNotificationText] = useState('');
@@ -197,6 +198,7 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
     const newResourcesIsFirst = () => {
         getNewResourcesFirst();
         setSortType('newFirst');
+        localStorage.setItem('sortMode', 'newFirst');
     }
 
     const getOldResourcesFirst = async () => {
@@ -216,6 +218,7 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
     const oldResourcesIsFirst = () => {
         getOldResourcesFirst();
         setSortType('oldFirst');
+        localStorage.setItem('sortMode', 'oldFirst');
     }
 
     const alphabetSorting = () => {
@@ -229,7 +232,27 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
     const alphabetSort = () => {
         alphabetSorting();
         setSortType('alphabet');
+        localStorage.setItem('sortMode', 'alphabet');
     }
+
+    useEffect(() => {
+        switch (sortMode) {
+            case 'newFirst':
+                newResourcesIsFirst();
+                break;
+
+            case 'oldFirst':
+                oldResourcesIsFirst();
+                break;
+
+            case 'alphabet':
+                alphabetSort();
+                break;
+        
+            default:
+                break;
+        }
+    }, [sortMode])
 
     const newDate = new Date();
     const date = (newDate.toLocaleString('en-US', { hour12: true }));
@@ -379,7 +402,7 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
                         {addResourceAction &&
                             <AddResourceComponent resourceName={resourceName} setResourceName={setResourceName} resourceLink={resourceLink} resourceLinkDirty={resourceLinkDirty} resourceLinkError={resourceLinkError} setResourceLink={setResourceLink} resourceCategory={resourceCategory} setResourceCategory={setResourceCategory} categoriesList={categoriesList} createResource={createResource} blurHandler={blurHandler} linkHandler={linkHandler} formIsValid={formIsValid} resourceNameDirty={resourceNameDirty} resourceNameError={resourceNameError} nameHandler={nameHandler}/>
                         }
-                        <SortComponent sortType={sortType} newResourcesIsFirst={newResourcesIsFirst} oldResourcesIsFirst={oldResourcesIsFirst} alphabetSort={alphabetSort}/>
+                        <SortComponent sortType={localStorage.getItem('sortMode')} newResourcesIsFirst={newResourcesIsFirst} oldResourcesIsFirst={oldResourcesIsFirst} alphabetSort={alphabetSort}/>
                     </div>
                 }
                 <div style={{width: '100%'}}>

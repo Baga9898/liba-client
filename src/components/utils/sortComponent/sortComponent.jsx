@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 const SortComponent = ({sortType, newResourcesIsFirst, oldResourcesIsFirst, alphabetSort}) => {
   return (
@@ -11,4 +11,4 @@ const SortComponent = ({sortType, newResourcesIsFirst, oldResourcesIsFirst, alph
   )
 }
 
-export default SortComponent
+export default SortComponent;

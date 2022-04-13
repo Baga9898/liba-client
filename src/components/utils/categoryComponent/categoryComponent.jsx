@@ -25,8 +25,7 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
     const [searchParametrs, setSearchParametrs] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const [resourcesPerPage] = useState(pageSize || 5);
-    const sortMode = localStorage.getItem('sortMode');
-    const [sortType, setSortType] = useState(sortMode);
+    const [sortType, setSortType] = useState(localStorage.getItem('sortMode'));
     const [formIsValid, setFormIsValid] = useState(false);
     const [notificationIsOpen, setNotificationIsOpen] = useState('');
     const [notificationText, setNotificationText] = useState('');
@@ -236,7 +235,7 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
     }
 
     useEffect(() => {
-        switch (sortMode) {
+        switch (sortType) {
             case 'newFirst':
                 newResourcesIsFirst();
                 break;
@@ -252,7 +251,7 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
             default:
                 break;
         }
-    }, [sortMode])
+    }, [sortType])
 
     const newDate = new Date();
     const date = (newDate.toLocaleString('en-US', { hour12: true }));

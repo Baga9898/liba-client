@@ -136,31 +136,17 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
 
     useEffect(() => {
         const getResources = async () => {
-            if (itemsToShow) {
-                try {
-                    await axios.get(baseURL, {params: getParams})
-                    .then((response) => {
-                        const newArray = response.data;
-                        const reverseArray = newArray.reverse().slice(0, itemsToShow);
-                        setAllResources(reverseArray);
-                        setIsLoading(false);
-                    })
-                } catch (error) {
-                    console.error(error);
-                }
-            } else {
-                try {
-                    await axios.get(baseURL, {params: getParams})
-                    .then((response) => {
-                        const newArray = response.data;
-                        const reverseArray = newArray.reverse();
-                        setAllResources(reverseArray);
-                        setIsLoading(false);
-                    })
-                } catch (error) {
-                    console.error(error);
-                }
-            } 
+            try {
+                await axios.get(baseURL, {params: getParams})
+                .then((response) => {
+                    const newArray = response.data;
+                    const reverseArray = itemsToShow ? newArray.reverse().slice(0, itemsToShow) : newArray.reverse();
+                    setAllResources(reverseArray);
+                    setIsLoading(false);
+                })
+            } catch (error) {
+                console.error(error);
+            }
         }
         getResources();
     }, [itemsToShow, baseURL, getParams]);
@@ -253,12 +239,13 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
         }
     }, [sortType])
 
-    const newDate = new Date();
-    const date = (newDate.toLocaleString('en-US', { hour12: true }));
-
     const createResource = async () => {
         if (!allResources.some(resource => resource.name === resourceName || resource.link === resourceLink)) {
+            const newDate = new Date();
+            const date = (newDate.toLocaleString('en-US', { hour12: true }));
+
             setRequestIsLoading(true);
+
             try {
                 await axios.post(baseURL, {
                     name: resourceName,

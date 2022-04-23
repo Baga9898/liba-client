@@ -27,6 +27,8 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
     const [resourcesPerPage] = useState(pageSize || 5);
     const [sortType, setSortType] = useState(localStorage.getItem('sortMode'));
     const [formIsValid, setFormIsValid] = useState(false);
+
+    const [notificationStatus, setNotificationStatus] = useState('success');
     const [notificationIsOpen, setNotificationIsOpen] = useState('');
     const [notificationText, setNotificationText] = useState('');
 
@@ -60,6 +62,15 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
     }
 
     const categoriesList = ['', 'books', 'soft', 'websites', 'posts'];
+
+    const showNHideNotification = (status, message) => {
+        setNotificationStatus(status);
+        setNotificationText(message);
+        setNotificationIsOpen(true);
+        setTimeout(() => {
+            setNotificationIsOpen(false);
+        }, 3000);
+    }
 
     const handleEnter = () => {
         if (editModalIsOpen) {
@@ -255,11 +266,7 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
                 })
                 .then((response) => {
                     setAllResources([response.data, ...allResources]);
-                    setNotificationText('Adding was successfully');
-                    setNotificationIsOpen(true);
-                    setTimeout(() => {
-                        setNotificationIsOpen(false);
-                    }, 3000);
+                    showNHideNotification('success', 'Adding was successfully');
                 })
                 setResourceName('');
                 setResourceLink('');
@@ -267,10 +274,7 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
             } catch (error) {
                 console.error(error);
                 setNotificationText('Adding failed');
-                setNotificationIsOpen(true);
-                setTimeout(() => {
-                    setNotificationIsOpen(false);
-                }, 3000);
+                showNHideNotification('error');
             }
             setRequestIsLoading(false);
             setResourceName('');
@@ -278,17 +282,9 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
             setResourceCategory('');
         } else {
             if (allResources.some(resource => resource.name === resourceName)) {
-                setNotificationText('Resource with the same name already exists');
-                setNotificationIsOpen(true);
-                setTimeout(() => {
-                    setNotificationIsOpen(false);
-                }, 3000);
+                showNHideNotification('warning', 'Resource with the same name already exists');
             } else if (allResources.some(resource => resource.link === resourceLink)) {
-                setNotificationText('Resource with the same link already exists');
-                setNotificationIsOpen(true);
-                setTimeout(() => {
-                    setNotificationIsOpen(false);
-                }, 3000);
+                showNHideNotification('warning', 'Resource with the same link already exists');
             }
         }
     }
@@ -314,18 +310,10 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
                     setAllResources(newArray);
                 })
                 setEditResourceName('');
-                setNotificationText('Editing was successfilly');
-                setNotificationIsOpen(true);
-                setTimeout(() => {
-                    setNotificationIsOpen(false);
-                }, 3000);
+                showNHideNotification('success', 'Editing was successfilly');
             } catch (error) {
                 console.error(error);
-                setNotificationText('Resource with the same name already exists');
-                setNotificationIsOpen(true);
-                setTimeout(() => {
-                    setNotificationIsOpen(false);
-                }, 3000);
+                showNHideNotification('error', 'Resource with the same name already exists');
             }
             setRequestIsLoading(false);
         } else {
@@ -354,18 +342,10 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
                 const newArray = allResources.filter((resource) => resource.id !== response.data.id);
                 setAllResources(newArray);
             })
-            setNotificationText('Removal was successfully');
-            setNotificationIsOpen(true);
-            setTimeout(() => {
-                setNotificationIsOpen(false);
-            }, 3000);
+            showNHideNotification('success', 'Removal was successfully');
         } catch (error) {
             console.error(error);
-            setNotificationText('Removal failed');
-            setNotificationIsOpen(true);
-            setTimeout(() => {
-                setNotificationIsOpen(false);
-            }, 3000);
+            showNHideNotification('error', 'Removal failed');
         }
         setRequestIsLoading(false);
         setDeleteModalIsOpen(false);
@@ -419,7 +399,7 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
                     </LibaModal>
                 }
                 {notificationIsOpen && 
-                    <LibaNotification>
+                    <LibaNotification status= {notificationStatus}>
                         <p className='libaNotification__body_text'>{notificationText}</p>
                     </LibaNotification>
                 }

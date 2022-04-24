@@ -12,10 +12,11 @@ const MainPage = () => {
     const countOfBooks = useSelector((state) => state.resourcesCount.countBooks);
     const websitesCount = useSelector((state) => state.resourcesCount.countWebsites);
     const postsCount = useSelector((state) => state.resourcesCount.countPosts);
+    const softsCount = useSelector((state) => state.resourcesCount.countSofts);
     const setCategoriesMenuIsOpen = useSelector(state => state.categoriesMenu.setCategoriesMenuIsOpen);
     const [countOfMainPageCategories, setCountOfMainPageCategories] = useState(6);
 
-    const allCounts = [countOfAllResources, countOfBooks, websitesCount, postsCount];
+    const allCounts = [countOfAllResources, countOfBooks, websitesCount, postsCount, softsCount];
 
     const openCategoriesHandler = () => {
         setCategoriesMenuIsOpen(true);

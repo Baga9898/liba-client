@@ -10,6 +10,7 @@ const AllResources = ({ actionSection=true, itemsToShow, searchInclude=true, pag
     const [countOfBooksResources, setCountOfBooksResources] = useState(null);
     const [countOfWebsitesResources, setCountOfWebsitesResources] = useState(null);
     const [countOfPostsResources, setCountOfPostsResources] = useState(null);
+    const [countOfSoftsResources, setCountOfSoftsResources] = useState(null);
     const dispatch = useDispatch();
 
     useMemo(() => {
@@ -55,6 +56,17 @@ const AllResources = ({ actionSection=true, itemsToShow, searchInclude=true, pag
     useEffect(() => {
         dispatch({ type: 'GET_COUNT_POSTS', payload: countOfPostsResources });
     }, [countOfPostsResources, dispatch])
+
+    useMemo(() => {
+        axios.get(`${baseURL}?category=soft`)
+        .then((response) => {
+            setCountOfSoftsResources(response.data.length);
+        })
+    }, [])
+
+    useEffect(() => {
+        dispatch({ type: 'GET_COUNT_SOFTS', payload: countOfSoftsResources });
+    }, [countOfSoftsResources, dispatch])
 
     return (
         <CategoryComponent 

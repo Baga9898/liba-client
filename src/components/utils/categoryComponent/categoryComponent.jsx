@@ -252,9 +252,7 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
 
     const createResource = async () => {
         if (!allResources.some(resource => resource.name === resourceName || resource.link === resourceLink)) {
-            const newDate = new Date();
-            const date = (newDate.toLocaleString('en-US', { hour12: true }));
-
+            const date = (new Date().toLocaleString('en-US', { hour12: true }));
             setRequestIsLoading(true);
 
             try {

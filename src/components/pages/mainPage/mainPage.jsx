@@ -8,11 +8,11 @@ import { useSelector } from 'react-redux';
 
 
 const MainPage = () => {
-    const countOfAllResources = useSelector((state) => state.resourcesCount.countAllResources);
-    const countOfBooks = useSelector((state) => state.resourcesCount.countBooks);
-    const websitesCount = useSelector((state) => state.resourcesCount.countWebsites);
-    const postsCount = useSelector((state) => state.resourcesCount.countPosts);
-    const softsCount = useSelector((state) => state.resourcesCount.countSofts);
+    const countOfAllResources = useSelector((state) => state.resourcesCount.countAllResources || 0);
+    const countOfBooks = useSelector((state) => state.resourcesCount.countBooks || 0);
+    const websitesCount = useSelector((state) => state.resourcesCount.countWebsites || 0);
+    const postsCount = useSelector((state) => state.resourcesCount.countPosts || 0);
+    const softsCount = useSelector((state) => state.resourcesCount.countSofts || 0);
     const setCategoriesMenuIsOpen = useSelector(state => state.categoriesMenu.setCategoriesMenuIsOpen);
     const [countOfMainPageCategories, setCountOfMainPageCategories] = useState(6);
 

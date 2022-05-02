@@ -157,6 +157,7 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
                 })
             } catch (error) {
                 console.error(error);
+                setIsLoading(false);
             }
         }
         getResources();
@@ -187,6 +188,7 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
             })
         } catch (error) {
             console.error(error);
+            setIsLoading(false);
         }
         setRequestIsLoading(false);
     }

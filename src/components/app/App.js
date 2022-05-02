@@ -5,7 +5,6 @@ import CategoriesMenu from '../utils/categoriesMenu/categoriesMenu';
 import Header from '../header/header';
 import Footer from '../footer/footer';
 import routes from './routes';
-import './App.scss';
 
 const App = () => {
 	const [categoriesMenuIsOpen, setCategoriesMenuIsOpen] = useState(false);

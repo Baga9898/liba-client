@@ -182,9 +182,6 @@
                     cursor: pointer;
                 }
             }
-            .edit-section-icon {
-
-            }
             .delete-section-icon {
                 margin: 0 0 0 15px;
             }
@@ -214,7 +211,7 @@
 .category-info-wrapper {
     display: flex;
     flex-direction: column;
-    justify-content: start;
+    justify-content: flex-start;
     min-width: 280px;
 }
 

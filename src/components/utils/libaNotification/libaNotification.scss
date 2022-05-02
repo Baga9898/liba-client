@@ -10,7 +10,7 @@
     }
     &__header {
         display: flex;
-        justify-content: end;
+        justify-content: flex-end;
         &_close {
             color: rgba(255, 255, 255, 0.65);
             position: absolute;

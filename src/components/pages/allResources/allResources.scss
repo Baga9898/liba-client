@@ -88,6 +88,14 @@
     transition: 0.5s;
 }
 
+.search-clear {
+    position: absolute;
+    top: 12px;
+    right: 70px;
+    font-size: 16px;
+    transition: 0.5s;
+}
+
 .categoryNameTitle {
     transform: rotate(270deg);
     position: absolute;

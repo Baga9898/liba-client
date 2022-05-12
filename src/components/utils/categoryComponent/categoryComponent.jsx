@@ -301,7 +301,6 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
             try {
                 await axios.put(`${baseURL}/${resourceId}`, {
                     name: editResourceName,
-                    date: Date.now,
                 })
                 .then((response) => {
                     const indexOfChangedResource = allResources.findIndex((resource) => resource.id === response.data.id);
@@ -359,7 +358,7 @@ const CategoryComponent = ({ categoryName, baseURL, getParams, actionInfoSection
         <>
             {requestIsLoading && <Preloader/>}
             {searchInclude && 
-                <ResourcesSearch setSearchParametrs={setSearchParametrs}/>
+                <ResourcesSearch searchParametrs={searchParametrs} setSearchParametrs={setSearchParametrs}/>
             }
             <div className={actionInfoSections ? 'action-info-wrapper' : ''}>
                 {actionSection && 

@@ -1,9 +1,9 @@
-import MainPage from '../pages/mainPage/mainPage';
-import AllResources from '../pages/allResources/allResources';
-import Websites from '../pages/websites/websites';
-import Books from '../pages/books/books';
-import Posts from '../pages/posts/posts';
-import Soft from '../pages/soft/soft';
+import MainPage from '../pages/mainPage/MainPage';
+import AllResources from '../pages/allResources/AllResources';
+import Websites from '../pages/websites/Websites';
+import Books from '../pages/books/Books';
+import Posts from '../pages/posts/Posts';
+import Soft from '../pages/soft/Soft';
 
 const routes = [
         { path: '/', element: <MainPage/> },

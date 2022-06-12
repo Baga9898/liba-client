@@ -1,20 +1,21 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { faPen } from '@fortawesome/free-solid-svg-icons';
+import ResourceType from '../../types/ResourceType';
 
 type ResourceWrapperType = {
-    dataSource: any,
-    actionSection: any,
-    openEditModal: any, 
-    openDeleteModal: any, 
-    createUpdate: any,
+    dataSource: ResourceType[],
+    actionSection: boolean,
+    openEditModal: (id: number) => void, 
+    openDeleteModal: (id: number) => void, 
+    createUpdate: boolean,
 }
 
 const ResourceWrapper: React.FC<ResourceWrapperType> = ({ dataSource, actionSection, openEditModal, openDeleteModal, createUpdate }) => {
     return (
         <>
-            {dataSource.map((resource: any) =>
-                <div key={Date.now + resource.id} className='section__wrapper animate__animated animate__fadeIn'>
+            {dataSource.map((resource: ResourceType) =>
+                <div key={`${resource.name}_${resource.id}`} className='section__wrapper animate__animated animate__fadeIn'>
                     <div className='section__leftside'>
                         <div className='section__leftside_top'>
                             <div className='section__leftside_name'>{resource.name}</div>

@@ -1,5 +1,5 @@
 type SortComponentType = {
-    sortType: any, 
+    sortType: string, 
     newResourcesIsFirst: () => void, 
     oldResourcesIsFirst: () => void, 
     alphabetSort: () => void,

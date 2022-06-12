@@ -3,7 +3,7 @@ const defaultState = {
     setCategoriesMenuIsOpen: null,
 }
 
-export const allCategoriesMenuIsOpenReducer = (state = defaultState, action: any) => {
+export const allCategoriesMenuIsOpenReducer = (state = defaultState, action: {type: string, payload: boolean | (() => void)}) => {
     switch (action.type) {
         case 'GET_CATEGORIES_MENU_STATUS':
             return ({...state, categoriesMenuIsOpen: action.payload});

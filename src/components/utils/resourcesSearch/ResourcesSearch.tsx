@@ -2,8 +2,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch, faTimes } from '@fortawesome/free-solid-svg-icons';
 
 type ResourcesSearchType = {
-    searchParametrs: any,
-    setSearchParametrs: any,
+    searchParametrs: string,
+    setSearchParametrs: (searchPerams: string) => void,
 }
 
 const ResourcesSearch: React.FC<ResourcesSearchType> = ({ searchParametrs, setSearchParametrs }) => {

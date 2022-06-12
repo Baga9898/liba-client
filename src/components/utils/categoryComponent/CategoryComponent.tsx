@@ -14,41 +14,42 @@ import SortComponent from '../sortComponent/SortComponent';
 import CountOfResourcesComponent from '../countOfResourcesComponent/CountOfResourcesComponent';
 import AddResourceComponent from '../addResourceComponent/AddResourceComponent';
 import ResourcesSearch from '../resourcesSearch/ResourcesSearch';
+import ResourceType from '../../types/ResourceType';
 import '../../pages/allResources/allResources.scss'
 import 'animate.css';
 
 type CategoryComponentType = {
     categoryName: string,
     baseURL: string,
-    getParams?: any,
+    getParams?: object,
     actionInfoSections: boolean, 
     actionSection: boolean, 
     itemsToShow?: number, 
     searchInclude: boolean, 
     pagination: boolean, 
     pageSize?: number, 
-    addResourceAction?: any, 
+    addResourceAction?: boolean, 
     createUpdate?: any, 
     isMainPage?: boolean,
 }
 
 const CategoryComponent: React.FC<CategoryComponentType> = ({ categoryName, baseURL, getParams, actionInfoSections=false, actionSection=false, itemsToShow, searchInclude=false, pagination=false, pageSize, addResourceAction, createUpdate, isMainPage=false }) => {
-    const [allResources, setAllResources] = useState<any>([]); // переписать на ресурс массив.
+    const [allResources, setAllResources] = useState<ResourceType[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [requestIsLoading, setRequestIsLoading] = useState(false);
-    const [idOfResource, setIdOfResource] = useState<any>(null);
+    const [idOfResource, setIdOfResource] = useState<number>(0);
     const [searchParametrs, setSearchParametrs] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const [resourcesPerPage] = useState(pageSize || 5);
     const [sortType, setSortType] = useState(localStorage.getItem('sortMode'));
     const [formIsValid, setFormIsValid] = useState(false);
 
-    const [notificationStatus, setNotificationStatus] = useState<any>('success');
+    const [notificationStatus, setNotificationStatus] = useState<string>('success');
     const [notificationIsOpen, setNotificationIsOpen] = useState(false);
     const [notificationText, setNotificationText] = useState('');
 
     const [resourceName, setResourceName] = useState('');
-    const [resourceLink, setResourceLink] = useState<any>('');
+    const [resourceLink, setResourceLink] = useState<string>('');
     const [resourceCategory, setResourceCategory] = useState('');
 
     const [resourceNameDirty, setResourceNameDirty] = useState(false);
@@ -61,7 +62,7 @@ const CategoryComponent: React.FC<CategoryComponentType> = ({ categoryName, base
     const [editResourceName, setEditResourceName] = useState('');
     const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
 
-    const searchArray = allResources.filter((resource: any) => resource.name.includes(searchParametrs));
+    const searchArray = allResources.filter((resource: ResourceType) => resource.name.includes(searchParametrs));
     const lastResourceIndex = currentPage * resourcesPerPage;
     const firstResourseIndex = lastResourceIndex - resourcesPerPage;
     const currentResources = searchArray.slice(firstResourseIndex, lastResourceIndex);
@@ -268,7 +269,7 @@ const CategoryComponent: React.FC<CategoryComponentType> = ({ categoryName, base
     }, [sortType])
 
     const createResource = async () => {
-        if (!allResources.some((resource: any) => resource.name === resourceName || resource.link === resourceLink)) {
+        if (!allResources.some((resource: ResourceType) => resource.name === resourceName || resource.link === resourceLink)) {
             const date = (new Date().toLocaleString('en-US', { hour12: true }));
             setRequestIsLoading(true);
 
@@ -295,9 +296,9 @@ const CategoryComponent: React.FC<CategoryComponentType> = ({ categoryName, base
             setResourceLink('');
             setResourceCategory('');
         } else {
-            if (allResources.some((resource: any) => resource.name === resourceName)) {
+            if (allResources.some((resource: ResourceType) => resource.name === resourceName)) {
                 showNHideNotification('warning', 'Resource with the same name already exists');
-            } else if (allResources.some((resource: any) => resource.link === resourceLink)) {
+            } else if (allResources.some((resource: ResourceType) => resource.link === resourceLink)) {
                 showNHideNotification('warning', 'Resource with the same link already exists');
             }
         }
@@ -310,14 +311,14 @@ const CategoryComponent: React.FC<CategoryComponentType> = ({ categoryName, base
     }
 
     const editResource = async (resourceId: number) => {
-        if (!allResources.some((resource: any) => resource.name === editResourceName)) {
+        if (!allResources.some((resource: ResourceType) => resource.name === editResourceName)) {
             setRequestIsLoading(true);
             try {
                 await axios.put(`${baseURL}/${resourceId}`, {
                     name: editResourceName,
                 })
                 .then((response) => {
-                    const indexOfChangedResource = allResources.findIndex((resource: any) => resource.id === response.data.id);
+                    const indexOfChangedResource = allResources.findIndex((resource: ResourceType) => resource.id === response.data.id);
                     const newArray = [...allResources];
                     newArray[indexOfChangedResource] = response.data;
                     setAllResources(newArray);
@@ -330,7 +331,7 @@ const CategoryComponent: React.FC<CategoryComponentType> = ({ categoryName, base
             }
             setRequestIsLoading(false);
         } else {
-            if (allResources.some((resource: any) => resource.name === editResourceName)) {
+            if (allResources.some((resource: ResourceType) => resource.name === editResourceName)) {
                 setNotificationText('');
                 setNotificationIsOpen(true);
                 setTimeout(() => {
@@ -352,7 +353,7 @@ const CategoryComponent: React.FC<CategoryComponentType> = ({ categoryName, base
         try {
             await axios.delete(`${baseURL}/${resourceId}`)
             .then((response) => {
-                const newArray = allResources.filter((resource: any) => resource.id !== response.data.id);
+                const newArray = allResources.filter((resource: ResourceType) => resource.id !== response.data.id);
                 setAllResources(newArray);
             })
             showNHideNotification('success', 'Removal was successfully');
@@ -381,7 +382,7 @@ const CategoryComponent: React.FC<CategoryComponentType> = ({ categoryName, base
                         {addResourceAction &&
                             <AddResourceComponent resourceName={resourceName} setResourceName={setResourceName} resourceLink={resourceLink} resourceLinkDirty={resourceLinkDirty} resourceLinkError={resourceLinkError} resourceCategory={resourceCategory} setResourceCategory={setResourceCategory} categoriesList={categoriesList} createResource={createResource} blurHandler={blurHandler} linkHandler={linkHandler} formIsValid={formIsValid} resourceNameDirty={resourceNameDirty} resourceNameError={resourceNameError} nameHandler={nameHandler}/>
                         }
-                        <SortComponent sortType={localStorage.getItem('sortMode')} newResourcesIsFirst={newResourcesIsFirst} oldResourcesIsFirst={oldResourcesIsFirst} alphabetSort={alphabetSort}/>
+                        <SortComponent sortType={localStorage.getItem('sortMode') || 'newFirst'} newResourcesIsFirst={newResourcesIsFirst} oldResourcesIsFirst={oldResourcesIsFirst} alphabetSort={alphabetSort}/>
                     </div>
                 }
                 <div style={{width: '100%'}}>

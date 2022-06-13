@@ -48,18 +48,16 @@ const CategoryComponent: React.FC<CategoryComponentType> = ({ categoryName, base
     const [notificationIsOpen, setNotificationIsOpen] = useState(false);
     const [notificationText, setNotificationText] = useState('');
 
-    const [resourceName, setResourceName] = useState('');
-    const [resourceLink, setResourceLink] = useState<string>('');
-    const [resourceCategory, setResourceCategory] = useState('');
-
-    const [resourceNameDirty, setResourceNameDirty] = useState(false);
-    const [resourceNameError, setResourceNameError] = useState('Cannot be empty');
-
-    const [resourceLinkDirty, setResourceLinkDirty] = useState(false);
-    const [resourceLinkError, setResourceLinkError] = useState('Cannot be empty');
+    const [resource, setResource] = useState({
+        id: 0,
+        name: '',
+        link: '',
+        description: '',
+        category: '',
+        date: '',
+    })
 
     const [editModalIsOpen, setEditModalIsOpen] = useState(false);
-    const [editResourceName, setEditResourceName] = useState('');
     const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
 
     const searchArray = allResources.filter((resource: ResourceType) => resource.name.includes(searchParametrs));
@@ -88,6 +86,17 @@ const CategoryComponent: React.FC<CategoryComponentType> = ({ categoryName, base
         }, 3000);
     }
 
+    const setDefaultResource = () => {
+        setResource({
+            id: 0,
+            name: '',
+            link: '',
+            description: '',
+            category: '',
+            date: '',
+        });
+    }
+
     const handleEnter = () => {
         if (editModalIsOpen) {
             editResource(idOfResource);
@@ -109,58 +118,6 @@ const CategoryComponent: React.FC<CategoryComponentType> = ({ categoryName, base
     UseKey('Enter', handleEnter);
     UseKey('Escape', handleEscape);
 
-    const blurHandler = (e: any) => {
-        switch (e.target.name) {
-            case 'link':
-                setResourceLinkDirty(true);
-                break;
-            case 'name':
-                setResourceNameDirty(true);
-                break;
-        
-            default:
-                break;
-        }
-    }
-
-    useEffect(() => {
-        if (resourceLinkError) {
-            setFormIsValid(false);
-        } else {
-            setFormIsValid(true);
-        }
-    }, [resourceLinkError]);
-
-    useMemo(() => {
-        if (resourceName === '' || resourceLink === '' || resourceCategory === '') {
-            setFormIsValid(false);
-        } else {
-            setFormIsValid(true);
-        }
-    }, [resourceName, resourceLink, resourceCategory])
-
-    const nameHandler = (e: any) => {
-        setResourceName(e.target.value);
-        if (!e.target.value) {
-            setResourceNameError('Cannot be empty');
-        } else {
-            setResourceNameError('');
-        }
-    }
-
-    const linkHandler = (e: any) => {
-        setResourceLink(e.target.value);
-        const regEx = /^(http|https)/;
-        if (!regEx.test(String(e.target.value).toLowerCase())) {
-            setResourceLinkError('Link is not correct');
-            if (!e.target.value) {
-                setResourceLinkError('Cannot be empty');
-            }
-        } else {
-            setResourceLinkError('');
-        }
-    }
-
     useEffect(() => {
         const getResources = async () => {
             try {
@@ -180,11 +137,12 @@ const CategoryComponent: React.FC<CategoryComponentType> = ({ categoryName, base
     }, [itemsToShow, baseURL, getParams]);
 
     const getOneResource = async (resourceId: number) => {
+        setDefaultResource();
         setRequestIsLoading(true);
         try {
             await axios.get(`${baseURL}/${resourceId}`)
             .then((response) => {
-                setEditResourceName(response.data.name);
+                setResource({...resource, name: response.data.name});
             })
         } catch (error) {
             console.error(error);
@@ -269,53 +227,50 @@ const CategoryComponent: React.FC<CategoryComponentType> = ({ categoryName, base
     }, [sortType])
 
     const createResource = async () => {
-        if (!allResources.some((resource: ResourceType) => resource.name === resourceName || resource.link === resourceLink)) {
+        if (!allResources.some((CheckResource: ResourceType) => CheckResource.name === resource.name || CheckResource.link === resource.link)) {
             const date = (new Date().toLocaleString('en-US', { hour12: true }));
             setRequestIsLoading(true);
 
             try {
                 await axios.post(baseURL, {
-                    name: resourceName,
-                    link: resourceLink,
-                    category: resourceCategory,
+                    name: resource.name,
+                    link: resource.link,
+                    category: resource.category,
                     date: date,
                 })
                 .then((response) => {
                     setAllResources([response.data, ...allResources]);
                     showNHideNotification('success', 'Adding was successfully');
                 })
-                setResourceName('');
-                setResourceLink('');
-                setResourceCategory('');
+                setDefaultResource();
             } catch (error) {
                 console.error(error);
                 showNHideNotification('error', 'Adding failed');
             }
             setRequestIsLoading(false);
-            setResourceName('');
-            setResourceLink('');
-            setResourceCategory('');
+            setDefaultResource();
         } else {
-            if (allResources.some((resource: ResourceType) => resource.name === resourceName)) {
+            if (allResources.some((CheckResource: ResourceType) => CheckResource.name === resource.name)) {
                 showNHideNotification('warning', 'Resource with the same name already exists');
-            } else if (allResources.some((resource: ResourceType) => resource.link === resourceLink)) {
+            } else if (allResources.some((CheckResource: ResourceType) => CheckResource.link === resource.link)) {
                 showNHideNotification('warning', 'Resource with the same link already exists');
             }
         }
     }
 
     const openEditModal = (resourceId: number) => {
+        setDefaultResource();
         getOneResource(resourceId);
         setEditModalIsOpen(true);
         setIdOfResource(resourceId)
     }
 
     const editResource = async (resourceId: number) => {
-        if (!allResources.some((resource: ResourceType) => resource.name === editResourceName)) {
+        if (!allResources.some((CheckResource: ResourceType) => CheckResource.name === resource.name)) {
             setRequestIsLoading(true);
             try {
                 await axios.put(`${baseURL}/${resourceId}`, {
-                    name: editResourceName,
+                    name: resource.name,
                 })
                 .then((response) => {
                     const indexOfChangedResource = allResources.findIndex((resource: ResourceType) => resource.id === response.data.id);
@@ -323,7 +278,7 @@ const CategoryComponent: React.FC<CategoryComponentType> = ({ categoryName, base
                     newArray[indexOfChangedResource] = response.data;
                     setAllResources(newArray);
                 })
-                setEditResourceName('');
+                setDefaultResource();
                 showNHideNotification('success', 'Editing was successfilly');
             } catch (error) {
                 console.error(error);
@@ -332,7 +287,7 @@ const CategoryComponent: React.FC<CategoryComponentType> = ({ categoryName, base
             setRequestIsLoading(false);
         } else {
             showNHideNotification('error', 'Resource with the same name already exists');
-            setEditResourceName('');
+            setDefaultResource();
         }
         setEditModalIsOpen(false);
     }
@@ -374,7 +329,7 @@ const CategoryComponent: React.FC<CategoryComponentType> = ({ categoryName, base
                     <div className='allResources__actions_wrapper animate__animated animate__fadeIn'>
                         <CountOfResourcesComponent categoryName={categoryName} count={allResources.length}/>
                         {addResourceAction &&
-                            <AddResourceComponent resourceName={resourceName} setResourceName={setResourceName} resourceLink={resourceLink} resourceLinkDirty={resourceLinkDirty} resourceLinkError={resourceLinkError} resourceCategory={resourceCategory} setResourceCategory={setResourceCategory} categoriesList={categoriesList} createResource={createResource} blurHandler={blurHandler} linkHandler={linkHandler} formIsValid={formIsValid} resourceNameDirty={resourceNameDirty} resourceNameError={resourceNameError} nameHandler={nameHandler}/>
+                            <AddResourceComponent resource={resource} setResource={setResource} categoriesList={categoriesList} createResource={createResource} formIsValid={formIsValid}/>
                         }
                         <SortComponent sortType={localStorage.getItem('sortMode') || 'newFirst'} newResourcesIsFirst={newResourcesIsFirst} oldResourcesIsFirst={oldResourcesIsFirst} alphabetSort={alphabetSort}/>
                     </div>
@@ -397,7 +352,7 @@ const CategoryComponent: React.FC<CategoryComponentType> = ({ categoryName, base
                     <LibaModal modalTitle='Edit resource' closeHandler={() => setEditModalIsOpen(false)} actionHandler={() => editResource(idOfResource)} actionName='Edit'>
                         <div className='addResource__content_wrapper'>
                             <label className='editModal__content_label'>Name</label>
-                            <input className='editModal__content_input' type='text' value={editResourceName} onChange={e => setEditResourceName(e.target.value)}/>
+                            <input className='editModal__content_input' type='text' value={resource.name} onChange={e => setResource({...resource, name: e.target.value})}/>
                         </div>
                     </LibaModal>
                 }

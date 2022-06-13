@@ -331,13 +331,7 @@ const CategoryComponent: React.FC<CategoryComponentType> = ({ categoryName, base
             }
             setRequestIsLoading(false);
         } else {
-            if (allResources.some((resource: ResourceType) => resource.name === editResourceName)) {
-                setNotificationText('');
-                setNotificationIsOpen(true);
-                setTimeout(() => {
-                    setNotificationIsOpen(false);
-                }, 3000);
-            }
+            showNHideNotification('error', 'Resource with the same name already exists');
             setEditResourceName('');
         }
         setEditModalIsOpen(false);
@@ -413,7 +407,7 @@ const CategoryComponent: React.FC<CategoryComponentType> = ({ categoryName, base
                     </LibaModal>
                 }
                 {notificationIsOpen && 
-                    <LibaNotification closeHandler={notificationIsOpen}>
+                    <LibaNotification closeHandler={() => setNotificationIsOpen(false)} status={notificationStatus}>
                         <p className='libaNotification__body_text'>{notificationText}</p>
                     </LibaNotification>
                 }

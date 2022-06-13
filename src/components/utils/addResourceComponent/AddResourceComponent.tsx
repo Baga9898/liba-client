@@ -6,23 +6,25 @@ type AddResourceComponentType ={
     categoriesList: string[], 
     createResource: any, 
     formIsValid: boolean,
+    resourceNameError: string,
+    resourceLinkError: string,
 }
 
-const AddResourceComponent: React.FC<AddResourceComponentType> = ({ resource, setResource, categoriesList, createResource, formIsValid }) => {
+const AddResourceComponent: React.FC<AddResourceComponentType> = ({ resource, setResource, categoriesList, createResource, formIsValid, resourceNameError, resourceLinkError }) => {
   return (
     <div className='addResourse__wrapper section__wrapper '>
         <h3 className='addResourse__wrapper_title'>Create new resource</h3>
         <div className='addResource__content_wrapper'>
-            <div style={{display: 'flex', justifyContent: 'space-between'}}>
+            <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
                 <label className='editModal__content_label'>NAME</label>
-                {/* {resourceNameError && <span className='resourceLinkError'>{resourceNameError}</span>} */}
+                {resourceNameError && <span className='resourceLinkError'>{resourceNameError}</span>}
             </div>
             <input className='editModal__content_input' name='name' type='text' value={resource.name} onChange={e => setResource({...resource, name: e.target.value})}/>
         </div>
         <div className='addResource__content_wrapper'>
             <div style={{display: 'flex', justifyContent: 'space-between'}}>
                 <label className='editModal__content_label'>LINK</label>
-                {/* {resourceLinkError && <span className='resourceLinkError'>{resourceLinkError}</span>} */}
+                {resourceLinkError && <span className='resourceLinkError'>{resourceLinkError}</span>}
             </div>
             <input className='editModal__content_input' name='link' type='text' value={resource.link} onChange={e => setResource({...resource, link: e.target.value})}/>
         </div>
@@ -32,8 +34,8 @@ const AddResourceComponent: React.FC<AddResourceComponentType> = ({ resource, se
                 {categoriesList.map((category: string, index: number) => <option key={`${category}_${index}`} style={{textTransform: 'uppercase'}}>{category}</option>)};
             </select>
         </div>
-        <button className='libaModal__footer_button' onClick={createResource}>Create</button>
-        {/* <button className='libaModal__footer_button' onClick={createResource} disabled={!formIsValid}>Create</button> */}
+        {/* <button className='libaModal__footer_button' onClick={createResource}>Create</button> */}
+        <button className='libaModal__footer_button' onClick={createResource} disabled={!formIsValid}>Create</button>
     </div>
   )
 }

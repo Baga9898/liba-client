@@ -48,6 +48,9 @@ const CategoryComponent: React.FC<CategoryComponentType> = ({ categoryName, base
     const [notificationIsOpen, setNotificationIsOpen] = useState(false);
     const [notificationText, setNotificationText] = useState('');
 
+    const [resourceNameError, setResourceNameError] = useState('');
+    const [resourceLinkError, setResourceLinkError] = useState('');
+
     const [resource, setResource] = useState({
         id: 0,
         name: '',
@@ -96,6 +99,16 @@ const CategoryComponent: React.FC<CategoryComponentType> = ({ categoryName, base
             date: '',
         });
     }
+
+    useEffect(() => {
+        /^\d*[a-zA-Z][a-zA-Z\d]*$/.test(resource.name) || resource.name.length === 0 ? setResourceNameError('') : setResourceNameError('Only characters or digits');
+        /^((ftp|http|https):\/\/)?(www\.)?([A-Za-zА-Яа-я0-9]{1}[A-Za-zА-Яа-я0-9\-]*\.?)*\.{1}[A-Za-zА-Яа-я0-9-]{2,8}(\/([\w#!:.?+=&%@!\-\/])*)?/
+            .test(resource.link) || resource.link.length === 0 
+            ? setResourceLinkError('') 
+            : setResourceLinkError('Incorrect link');
+
+        resourceNameError || resourceLinkError || resource.name.length === 0 || resource.link.length === 0 ? setFormIsValid(false) : setFormIsValid(true);
+    }, [resource])
 
     const handleEnter = () => {
         if (editModalIsOpen) {
@@ -233,9 +246,9 @@ const CategoryComponent: React.FC<CategoryComponentType> = ({ categoryName, base
 
             try {
                 await axios.post(baseURL, {
-                    name: resource.name,
-                    link: resource.link,
-                    category: resource.category,
+                    name: resource.name.toLowerCase(),
+                    link: resource.link.toLowerCase(),
+                    category: resource.category.toLowerCase(),
                     date: date,
                 })
                 .then((response) => {
@@ -270,7 +283,7 @@ const CategoryComponent: React.FC<CategoryComponentType> = ({ categoryName, base
             setRequestIsLoading(true);
             try {
                 await axios.put(`${baseURL}/${resourceId}`, {
-                    name: resource.name,
+                    name: resource.name.toLowerCase(),
                 })
                 .then((response) => {
                     const indexOfChangedResource = allResources.findIndex((resource: ResourceType) => resource.id === response.data.id);
@@ -329,7 +342,7 @@ const CategoryComponent: React.FC<CategoryComponentType> = ({ categoryName, base
                     <div className='allResources__actions_wrapper animate__animated animate__fadeIn'>
                         <CountOfResourcesComponent categoryName={categoryName} count={allResources.length}/>
                         {addResourceAction &&
-                            <AddResourceComponent resource={resource} setResource={setResource} categoriesList={categoriesList} createResource={createResource} formIsValid={formIsValid}/>
+                            <AddResourceComponent resource={resource} setResource={setResource} categoriesList={categoriesList} createResource={createResource} formIsValid={formIsValid} resourceNameError={resourceNameError} resourceLinkError={resourceLinkError}/>
                         }
                         <SortComponent sortType={localStorage.getItem('sortMode') || 'newFirst'} newResourcesIsFirst={newResourcesIsFirst} oldResourcesIsFirst={oldResourcesIsFirst} alphabetSort={alphabetSort}/>
                     </div>

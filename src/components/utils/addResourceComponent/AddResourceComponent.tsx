@@ -34,8 +34,7 @@ const AddResourceComponent: React.FC<AddResourceComponentType> = ({ resource, se
                 {categoriesList.map((category: string, index: number) => <option key={`${category}_${index}`} style={{textTransform: 'uppercase'}}>{category}</option>)};
             </select>
         </div>
-        {/* <button className='libaModal__footer_button' onClick={createResource}>Create</button> */}
-        <button className='libaModal__footer_button' onClick={createResource} disabled={!formIsValid}>Create</button>
+        <button className={formIsValid ? 'libaModal__footer_button' : 'libaModal__footer_button disabled-create '} onClick={createResource} disabled={!formIsValid}>Create</button>
     </div>
   )
 }

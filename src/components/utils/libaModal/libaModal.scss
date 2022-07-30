@@ -68,6 +68,11 @@
     }
 }
 
+.disabled-create {
+    color: rgb(133, 133, 133) !important;
+    transition: 0.5s;
+}
+
 .editModal__content{
     &_input {
         font-size: 22px;

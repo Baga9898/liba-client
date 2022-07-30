@@ -107,7 +107,7 @@ const CategoryComponent: React.FC<CategoryComponentType> = ({ categoryName, base
             ? setResourceLinkError('') 
             : setResourceLinkError('Incorrect link');
 
-        resourceNameError || resourceLinkError || resource.name.length === 0 || resource.link.length === 0 ? setFormIsValid(false) : setFormIsValid(true);
+        !resourceNameError && !resourceLinkError && resource.name.length !== 0 && resource.link.length !== 0 ? setFormIsValid(true) : setFormIsValid(false);
     }, [resource])
 
     const handleEnter = () => {

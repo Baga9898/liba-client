@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import ResourceType from "../../types/ResourceType";
 
 type AddResourceComponentType ={
@@ -5,12 +6,23 @@ type AddResourceComponentType ={
     setResource: any,
     categoriesList: string[], 
     createResource: any, 
-    formIsValid: boolean,
-    resourceNameError: string,
-    resourceLinkError: string,
 }
 
-const AddResourceComponent: React.FC<AddResourceComponentType> = ({ resource, setResource, categoriesList, createResource, formIsValid, resourceNameError, resourceLinkError }) => {
+const AddResourceComponent: React.FC<AddResourceComponentType> = ({ resource, setResource, categoriesList, createResource }) => {
+    const [formIsValid, setFormIsValid] = useState(false);
+    const [resourceNameError, setResourceNameError] = useState('');
+    const [resourceLinkError, setResourceLinkError] = useState('');
+
+    useEffect(() => {
+        /^\d*[a-zA-Z][a-zA-Z\d]*$/.test(resource.name) || resource.name.length === 0 ? setResourceNameError('') : setResourceNameError('Only characters or digits');
+        /^((ftp|http|https):\/\/)?(www\.)?([A-Za-zА-Яа-я0-9]{1}[A-Za-zА-Яа-я0-9\-]*\.?)*\.{1}[A-Za-zА-Яа-я0-9-]{2,8}(\/([\w#!:.?+=&%@!\-\/])*)?/
+            .test(resource.link) || resource.link.length === 0 
+            ? setResourceLinkError('') 
+            : setResourceLinkError('Incorrect link');
+
+        !resourceNameError && !resourceLinkError && resource.name.length !== 0 && resource.link.length !== 0 ? setFormIsValid(true) : setFormIsValid(false);
+    }, [resource, resourceLinkError, resourceNameError])
+    
   return (
     <div className='addResourse__wrapper section__wrapper '>
         <h3 className='addResourse__wrapper_title'>Create new resource</h3>

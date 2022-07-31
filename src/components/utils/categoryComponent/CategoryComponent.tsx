@@ -42,14 +42,10 @@ const CategoryComponent: React.FC<CategoryComponentType> = ({ categoryName, base
     const [currentPage, setCurrentPage] = useState(1);
     const [resourcesPerPage] = useState(pageSize || 5);
     const [sortType, setSortType] = useState(localStorage.getItem('sortMode'));
-    const [formIsValid, setFormIsValid] = useState(false);
 
     const [notificationStatus, setNotificationStatus] = useState<string>('success');
     const [notificationIsOpen, setNotificationIsOpen] = useState(false);
     const [notificationText, setNotificationText] = useState('');
-
-    const [resourceNameError, setResourceNameError] = useState('');
-    const [resourceLinkError, setResourceLinkError] = useState('');
 
     const [resource, setResource] = useState({
         id: 0,
@@ -99,16 +95,6 @@ const CategoryComponent: React.FC<CategoryComponentType> = ({ categoryName, base
             date: '',
         });
     }
-
-    useEffect(() => {
-        /^\d*[a-zA-Z][a-zA-Z\d]*$/.test(resource.name) || resource.name.length === 0 ? setResourceNameError('') : setResourceNameError('Only characters or digits');
-        /^((ftp|http|https):\/\/)?(www\.)?([A-Za-zА-Яа-я0-9]{1}[A-Za-zА-Яа-я0-9\-]*\.?)*\.{1}[A-Za-zА-Яа-я0-9-]{2,8}(\/([\w#!:.?+=&%@!\-\/])*)?/
-            .test(resource.link) || resource.link.length === 0 
-            ? setResourceLinkError('') 
-            : setResourceLinkError('Incorrect link');
-
-        !resourceNameError && !resourceLinkError && resource.name.length !== 0 && resource.link.length !== 0 ? setFormIsValid(true) : setFormIsValid(false);
-    }, [resource])
 
     const handleEnter = () => {
         if (editModalIsOpen) {
@@ -342,7 +328,7 @@ const CategoryComponent: React.FC<CategoryComponentType> = ({ categoryName, base
                     <div className='allResources__actions_wrapper animate__animated animate__fadeIn'>
                         <CountOfResourcesComponent categoryName={categoryName} count={allResources.length}/>
                         {addResourceAction &&
-                            <AddResourceComponent resource={resource} setResource={setResource} categoriesList={categoriesList} createResource={createResource} formIsValid={formIsValid} resourceNameError={resourceNameError} resourceLinkError={resourceLinkError}/>
+                            <AddResourceComponent resource={resource} setResource={setResource} categoriesList={categoriesList} createResource={createResource}/>
                         }
                         <SortComponent sortType={localStorage.getItem('sortMode') || 'newFirst'} newResourcesIsFirst={newResourcesIsFirst} oldResourcesIsFirst={oldResourcesIsFirst} alphabetSort={alphabetSort}/>
                     </div>

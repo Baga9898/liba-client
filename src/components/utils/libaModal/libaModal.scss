@@ -6,6 +6,7 @@
     left: 0;
     background: rgba(82, 82, 82, 0.5);
     overflow-y: hidden;
+    z-index: 999;
 }
 
 .libaModal-wrapper {
@@ -54,6 +55,10 @@
     display: flex;
 }
 
+.libaModal__footer-wrapper {
+    position: relative;
+}
+
 .libaModal__footer_button {
     background: transparent;
     width: 100%;
@@ -71,6 +76,37 @@
 .disabled-create {
     color: rgb(133, 133, 133) !important;
     transition: 0.5s;
+}
+
+.formErrorNotification {
+    position: absolute;
+    width: 200px;
+    height: 100px;
+    background: #ecf0f3;
+    -webkit-box-shadow: 4px 10px 24px 0px rgba(34, 60, 80, 0.3);
+    -moz-box-shadow: 4px 10px 24px 0px rgba(34, 60, 80, 0.3);
+    box-shadow: 4px 10px 24px 0px rgba(34, 60, 80, 0.3);
+    border-radius: 20px;
+    left: 120px;
+    top: -105px;
+    padding: 10px;
+    z-index: 999;
+    font-size: 20px;
+    font-weight: 500;
+    &:after {
+        top: 100%;
+        left: 25%;
+        border: solid transparent;
+        content: " ";
+        height: 0;
+        width: 0;
+        position: absolute;
+        pointer-events: none;
+        border-color: rgba(0, 151, 167, 0);
+        border-top-color: #ecf0f3;
+        border-width: 16px;
+        margin-left: -16px;
+    }
 }
 
 .editModal__content{

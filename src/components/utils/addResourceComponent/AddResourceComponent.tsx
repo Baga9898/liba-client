@@ -10,6 +10,7 @@ type AddResourceComponentType ={
 
 const AddResourceComponent: React.FC<AddResourceComponentType> = ({ resource, setResource, categoriesList, createResource }) => {
     const [formIsValid, setFormIsValid] = useState(false);
+    const [formErrorNotification, setFormErrorNotification] = useState<any>(false);
     const [resourceNameError, setResourceNameError] = useState('');
     const [resourceLinkError, setResourceLinkError] = useState('');
 
@@ -22,33 +23,50 @@ const AddResourceComponent: React.FC<AddResourceComponentType> = ({ resource, se
 
         !resourceNameError && !resourceLinkError && resource.name.length !== 0 && resource.link.length !== 0 ? setFormIsValid(true) : setFormIsValid(false);
     }, [resource, resourceLinkError, resourceNameError])
+
+    const openErrorNotification = () => {
+        setFormErrorNotification(true);
+    }
+
+    const closeErrorNotification = () => {
+        setFormErrorNotification(false);
+    }
+
+    const validationCheck = () => {
+        formIsValid && createResource();
+    }
     
-  return (
-    <div className='addResourse__wrapper section__wrapper '>
-        <h3 className='addResourse__wrapper_title'>Create new resource</h3>
-        <div className='addResource__content_wrapper'>
-            <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-                <label className='editModal__content_label'>NAME</label>
-                {resourceNameError && <span className='resourceLinkError'>{resourceNameError}</span>}
+    return (
+        <div className='addResourse__wrapper section__wrapper '>
+            <h3 className='addResourse__wrapper_title'>Create new resource</h3>
+            <div className='addResource__content_wrapper'>
+                <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+                    <label className='editModal__content_label'>NAME</label>
+                    {resourceNameError && <span className='resourceLinkError'>{resourceNameError}</span>}
+                </div>
+                <input className='editModal__content_input' name='name' type='text' value={resource.name} onChange={e => setResource({...resource, name: e.target.value})}/>
             </div>
-            <input className='editModal__content_input' name='name' type='text' value={resource.name} onChange={e => setResource({...resource, name: e.target.value})}/>
-        </div>
-        <div className='addResource__content_wrapper'>
-            <div style={{display: 'flex', justifyContent: 'space-between'}}>
-                <label className='editModal__content_label'>LINK</label>
-                {resourceLinkError && <span className='resourceLinkError'>{resourceLinkError}</span>}
+            <div className='addResource__content_wrapper'>
+                <div style={{display: 'flex', justifyContent: 'space-between'}}>
+                    <label className='editModal__content_label'>LINK</label>
+                    {resourceLinkError && <span className='resourceLinkError'>{resourceLinkError}</span>}
+                </div>
+                <input className='editModal__content_input' name='link' type='text' value={resource.link} onChange={e => setResource({...resource, link: e.target.value})}/>
             </div>
-            <input className='editModal__content_input' name='link' type='text' value={resource.link} onChange={e => setResource({...resource, link: e.target.value})}/>
+            <div className='addResource__content_wrapper'>
+                <label className='editModal__content_label' style={{marginBottom: '8px'}}>CATEGORY</label>
+                <select className='editModal__content_input' style={{marginBottom: '24px', textTransform: 'uppercase'}} value={resource.category} onChange={e => setResource({...resource, category: e.target.value})}>
+                    {categoriesList.map((category: string, index: number) => <option key={`${category}_${index}`} style={{textTransform: 'uppercase'}}>{category}</option>)};
+                </select>
+            </div>
+            <div className='libaModal__footer-wrapper'>
+                <button className={formIsValid ? 'libaModal__footer_button' : 'libaModal__footer_button disabled-create '} onClick={validationCheck} onMouseEnter={openErrorNotification} onMouseLeave={closeErrorNotification}>Create</button>
+                {!formIsValid && formErrorNotification &&
+                    <div className='formErrorNotification'>Fill in all fields with correct values</div>
+                }
+            </div>
         </div>
-        <div className='addResource__content_wrapper'>
-            <label className='editModal__content_label' style={{marginBottom: '8px'}}>CATEGORY</label>
-            <select className='editModal__content_input' style={{marginBottom: '24px', textTransform: 'uppercase'}} value={resource.category} onChange={e => setResource({...resource, category: e.target.value})}>
-                {categoriesList.map((category: string, index: number) => <option key={`${category}_${index}`} style={{textTransform: 'uppercase'}}>{category}</option>)};
-            </select>
-        </div>
-        <button className={formIsValid ? 'libaModal__footer_button' : 'libaModal__footer_button disabled-create '} onClick={createResource} disabled={!formIsValid}>Create</button>
-    </div>
-  )
+    )
 }
 
 export default AddResourceComponent;

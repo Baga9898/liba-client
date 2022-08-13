@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react";
-import ResourceType from "../../types/ResourceType";
+import { useState, useEffect } from 'react';
+import ResourceType from '../../types/ResourceType';
+import LibaInput from '../libaInput/libaInput';
 
 type AddResourceComponentType ={
     resource: ResourceType,
@@ -39,20 +40,8 @@ const AddResourceComponent: React.FC<AddResourceComponentType> = ({ resource, se
     return (
         <div className='addResourse__wrapper section__wrapper '>
             <h3 className='addResourse__wrapper_title'>Create new resource</h3>
-            <div className='addResource__content_wrapper'>
-                <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-                    <label className='editModal__content_label'>NAME</label>
-                    {resourceNameError && <span className='resourceLinkError'>{resourceNameError}</span>}
-                </div>
-                <input className='editModal__content_input' name='name' type='text' value={resource.name} onChange={e => setResource({...resource, name: e.target.value})}/>
-            </div>
-            <div className='addResource__content_wrapper'>
-                <div style={{display: 'flex', justifyContent: 'space-between'}}>
-                    <label className='editModal__content_label'>LINK</label>
-                    {resourceLinkError && <span className='resourceLinkError'>{resourceLinkError}</span>}
-                </div>
-                <input className='editModal__content_input' name='link' type='text' value={resource.link} onChange={e => setResource({...resource, link: e.target.value})}/>
-            </div>
+            <LibaInput inputName='name' resourceError={resourceNameError} value={resource.name} changeFunction={(e: any) => setResource({...resource, name: e.target.value})}/>
+            <LibaInput inputName='link' resourceError={resourceLinkError} value={resource.link} changeFunction={(e: any) => setResource({...resource, link: e.target.value})}/>
             <div className='addResource__content_wrapper'>
                 <label className='editModal__content_label' style={{marginBottom: '8px'}}>CATEGORY</label>
                 <select className='editModal__content_input' style={{marginBottom: '24px', textTransform: 'uppercase'}} value={resource.category} onChange={e => setResource({...resource, category: e.target.value})}>

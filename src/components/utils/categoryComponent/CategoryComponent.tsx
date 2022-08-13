@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
@@ -17,6 +17,7 @@ import ResourcesSearch from '../resourcesSearch/ResourcesSearch';
 import ResourceType from '../../types/ResourceType';
 import '../../pages/allResources/allResources.scss'
 import 'animate.css';
+import LibaInput from '../libaInput/libaInput';
 
 type CategoryComponentType = {
     categoryName: string,
@@ -349,10 +350,7 @@ const CategoryComponent: React.FC<CategoryComponentType> = ({ categoryName, base
                 </div>
                 {editModalIsOpen &&
                     <LibaModal modalTitle='Edit resource' closeHandler={() => setEditModalIsOpen(false)} actionHandler={() => editResource(idOfResource)} actionName='Edit'>
-                        <div className='addResource__content_wrapper'>
-                            <label className='editModal__content_label'>Name</label>
-                            <input className='editModal__content_input' type='text' value={resource.name} onChange={e => setResource({...resource, name: e.target.value})}/>
-                        </div>
+                        <LibaInput inputName='name' value={resource.name} changeFunction={(e: any) => setResource({...resource, name: e.target.value})}/>
                     </LibaModal>
                 }
                 {deleteModalIsOpen && 

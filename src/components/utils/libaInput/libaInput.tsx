@@ -2,7 +2,7 @@ import React from "react";
 
 type libaInputProps = {
     inputName: string,
-    resourceError: string,
+    resourceError?: string,
     value: any,
     changeFunction: (e: any) => void;
 }

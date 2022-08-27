@@ -1,15 +1,17 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState } from 'react';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { faUser } from '@fortawesome/free-regular-svg-icons';
 import { Link } from 'react-router-dom';
 
 import LibaModal from './../utils/libaModal/LibaModal';
 import LibaInput from './../utils/libaInput/libaInput';
+import LibaNotification from '../utils/libaNotification/LibaNotification';
 import axios, { AxiosError } from 'axios';
 
 import './header.scss';
-import LibaNotification from '../utils/libaNotification/LibaNotification';
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import { RootStateOrAny, useDispatch, useSelector } from 'react-redux';
+import { setUser } from '../../redux/reducers/userReducer';
 
 const Header = () => {
     const [authModalOpen, setAuthModalOpen] = useState(false);
@@ -19,11 +21,17 @@ const Header = () => {
         username: '',
         password: '',
     });
+
     const [registerUser, setRegisterUser] = useState('');
+    const dispatch = useDispatch();
+    const isAuth = useSelector((state: RootStateOrAny) => state.user.isAuth);
+    const user = useSelector((state: RootStateOrAny) => state.user.currentUser)
+    console.log(user);
 
     const [notificationStatus, setNotificationStatus] = useState<string>('success');
     const [notificationIsOpen, setNotificationIsOpen] = useState(false);
     const [notificationText, setNotificationText] = useState('');
+
 
     const headerContent = (
         <div className='authHeader'>
@@ -68,21 +76,25 @@ const Header = () => {
         }
     }
 
-    const authorization = async() => {
-        try {
-            await axios.post('http://localhost:5000/auth/login/', {
-                ...authForm,
-            }).then((response) => {
-                showNHideNotification('success', response.data.message);
-            })
-        } catch (error) {
-            const err = error as AxiosError;
-            console.error(error);
-            err.response && showNHideNotification('error', err.response.data.message);
+    const authorization = () => {
+        return async (dispatch: any) => {
+            try {
+                await axios.post('http://localhost:5000/auth/login/', {
+                    ...authForm,
+                }).then((response) => {
+                    showNHideNotification('success', response.data.message);
+                    dispatch(setUser(response.data.user));
+                    localStorage.setItem('token', response.data.token);
+                })
+            } catch (error) {
+                const err = error as AxiosError;
+                console.error(error);
+                err.response && showNHideNotification('error', err.response.data.message);
+            }
+            setAfterAuth(false);
+            setAuthModalOpen(false);
+            setDefaultAuthForm();
         }
-        setAfterAuth(false);
-        setAuthModalOpen(false);
-        setDefaultAuthForm();
     }
 
     return (
@@ -94,7 +106,10 @@ const Header = () => {
                             <Link to='/'><div className='logo'>Liba_</div></Link>
                         </div>
                         <div className='header__rightside'>
+                            {isAuth ? 
+                            <span>{user.username}</span> : 
                             <FontAwesomeIcon icon={faUser} className='userIcon' onClick={() => setAuthModalOpen(true)}/>
+                            }
                         </div>
                     </div>
                 </div>
@@ -104,7 +119,7 @@ const Header = () => {
                 headerType='custom' 
                 customHeaderContent={headerContent} 
                 closeHandler={() => setAuthModalOpen(false)} 
-                actionHandler={authTabType === 'reg'? registration : authorization} 
+                actionHandler={authTabType === 'reg'? registration : () => dispatch(authorization())} 
                 actionName={authTabType === 'reg' ? 'Signup' : 'Login'} 
                 isWide>
                     {afterAuth &&

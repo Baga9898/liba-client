@@ -23,6 +23,12 @@
     justify-content: space-between;
 }
 
+.wide {
+    width: 700px;
+    top: 100px;
+    left: calc(50% - 350px);
+}
+
 .libaModal__header {
     display: flex;
     justify-content: space-between;

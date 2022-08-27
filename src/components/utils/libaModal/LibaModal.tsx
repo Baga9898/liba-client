@@ -3,20 +3,28 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import './libaModal.scss';
 
 type LibaModalType = {
-    modalTitle: string,
+    headerType?: string,
+    customHeaderContent?: React.ReactNode,
+    modalTitle?: string,
     closeHandler: () => void,
     actionHandler: () => void,
     actionName: string,
     children: React.ReactNode,
+    isWide?: boolean,
 }
 
-const LibaModal: React.FC<LibaModalType> = ({modalTitle, closeHandler, actionHandler, actionName, children }) => {
+const LibaModal: React.FC<LibaModalType> = ({ headerType, customHeaderContent, modalTitle, closeHandler, actionHandler, actionName, children, isWide }) => {
     return (
         <div className='libaModal-overlay'>
-            <div className='libaModal-wrapper'>
+            <div className={isWide ? 'libaModal-wrapper wide' : 'libaModal-wrapper'}>
                 <div className='libaModal__header'>
-                    <p className='libaModal__header_title'>{modalTitle}</p>
-                    <FontAwesomeIcon icon={faTimes} className='libaModal__header_closeButton' onClick={closeHandler}/>
+                    {headerType === 'custom' ? 
+                        customHeaderContent :
+                        <>
+                            <p className='libaModal__header_title'>{modalTitle}</p>
+                            <FontAwesomeIcon icon={faTimes} className='libaModal__header_closeButton' onClick={closeHandler} />
+                        </>
+                    }
                 </div>
                 <div className='libaModal__content'>
                     {children}

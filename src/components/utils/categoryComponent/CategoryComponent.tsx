@@ -122,7 +122,7 @@ const CategoryComponent: React.FC<CategoryComponentType> = ({ categoryName, base
         const getResources = async () => {
             try {
                 await axios.get(baseURL, {params: getParams})
-                .then((response) => {
+                .then((response: any) => {
                     const newArray = response.data;
                     const reverseArray = itemsToShow ? newArray.reverse().slice(0, itemsToShow) : newArray.reverse();
                     setAllResources(reverseArray);
@@ -141,7 +141,7 @@ const CategoryComponent: React.FC<CategoryComponentType> = ({ categoryName, base
         setRequestIsLoading(true);
         try {
             await axios.get(`${baseURL}/${resourceId}`)
-            .then((response) => {
+            .then((response: any) => {
                 setResource({...resource, name: response.data.name});
             })
         } catch (error) {
@@ -154,7 +154,7 @@ const CategoryComponent: React.FC<CategoryComponentType> = ({ categoryName, base
         setRequestIsLoading(true);
         try {
             await axios.get(baseURL, {params: getParams})
-            .then((response) => {
+            .then((response: any) => {
                 const newArray = response.data;
                 const reverseArray = newArray.reverse();
                 setAllResources(reverseArray);
@@ -177,7 +177,7 @@ const CategoryComponent: React.FC<CategoryComponentType> = ({ categoryName, base
         setRequestIsLoading(true);
         try {
             await axios.get(baseURL, {params: getParams})
-            .then((response) => {
+            .then((response: any) => {
                 setAllResources(response.data);
                 setIsLoading(false);
             })
@@ -195,7 +195,7 @@ const CategoryComponent: React.FC<CategoryComponentType> = ({ categoryName, base
 
     const alphabetSorting = () => {
         axios.get(baseURL, {params: getParams})
-        .then((response) => {
+        .then((response: any) => {
             const newArray = response.data.sort((a: any, b: any) => a.name.localeCompare(b.name));
             setAllResources(newArray);
         })
@@ -238,7 +238,7 @@ const CategoryComponent: React.FC<CategoryComponentType> = ({ categoryName, base
                     category: resource.category.toLowerCase(),
                     date: date,
                 })
-                .then((response) => {
+                .then((response: any) => {
                     setAllResources([response.data, ...allResources]);
                     showNHideNotification('success', 'Adding was successfully');
                 })
@@ -272,7 +272,7 @@ const CategoryComponent: React.FC<CategoryComponentType> = ({ categoryName, base
                 await axios.put(`${baseURL}/${resourceId}`, {
                     name: resource.name.toLowerCase(),
                 })
-                .then((response) => {
+                .then((response: any) => {
                     const indexOfChangedResource = allResources.findIndex((resource: ResourceType) => resource.id === response.data.id);
                     const newArray = [...allResources];
                     newArray[indexOfChangedResource] = response.data;
@@ -301,7 +301,7 @@ const CategoryComponent: React.FC<CategoryComponentType> = ({ categoryName, base
         setRequestIsLoading(true);
         try {
             await axios.delete(`${baseURL}/${resourceId}`)
-            .then((response) => {
+            .then((response: any) => {
                 const newArray = allResources.filter((resource: ResourceType) => resource.id !== response.data.id);
                 setAllResources(newArray);
             })

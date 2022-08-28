@@ -2,6 +2,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState } from 'react';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { faUser } from '@fortawesome/free-regular-svg-icons';
+import { faArrowAltCircleRight } from '@fortawesome/free-regular-svg-icons';
 import { Link } from 'react-router-dom';
 
 import LibaModal from './../utils/libaModal/LibaModal';
@@ -12,6 +13,7 @@ import axios, { AxiosError } from 'axios';
 import './header.scss';
 import { RootStateOrAny, useDispatch, useSelector } from 'react-redux';
 import { setUser } from '../../redux/reducers/userReducer';
+import { logout } from './../../redux/reducers/userReducer';
 
 const Header = () => {
     const [authModalOpen, setAuthModalOpen] = useState(false);
@@ -23,10 +25,9 @@ const Header = () => {
     });
 
     const [registerUser, setRegisterUser] = useState('');
-    const dispatch = useDispatch();
     const isAuth = useSelector((state: RootStateOrAny) => state.user.isAuth);
     const user = useSelector((state: RootStateOrAny) => state.user.currentUser)
-    console.log(user);
+    const dispatch = useDispatch();
 
     const [notificationStatus, setNotificationStatus] = useState<string>('success');
     const [notificationIsOpen, setNotificationIsOpen] = useState(false);
@@ -107,7 +108,11 @@ const Header = () => {
                         </div>
                         <div className='header__rightside'>
                             {isAuth ? 
-                            <span>{user.username}</span> : 
+                            <>
+                                <span>{user.username}</span>
+                                <FontAwesomeIcon icon={faArrowAltCircleRight} className='logoutIcon' onClick={() => dispatch(logout())}/>
+                            </>
+                            : 
                             <FontAwesomeIcon icon={faUser} className='userIcon' onClick={() => setAuthModalOpen(true)}/>
                             }
                         </div>

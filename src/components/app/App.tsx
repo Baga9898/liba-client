@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import { verification } from '../../api/actions/user'
+
 import CategoriesMenu from '../utils/categoriesMenu/CategoriesMenu';
 import Header from '../header/Header';
 import Footer from '../footer/Footer';
@@ -22,6 +24,10 @@ const App: React.FC = () => {
 	useEffect(() => {
         dispatch({ type: 'CHANGE_CATEGORIES_MENU_STATUS', payload: setCategoriesMenuIsOpen });
     }, [setCategoriesMenuIsOpen, dispatch]);
+
+	useEffect(() => {
+		dispatch(verification())
+	}, [])
 
   	return (
   	    <div className='App'>

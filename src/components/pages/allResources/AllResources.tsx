@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import axios from 'axios';
 import CategoryComponent from '../../utils/categoryComponent/CategoryComponent';
 import { useDispatch } from 'react-redux';
@@ -15,67 +15,42 @@ type AllResourcesType = {
 const AllResources: React.FC<AllResourcesType> = ({ actionSection=true, itemsToShow, searchInclude=true, pagination=true, pageSize, isMainPage=false }) => {
     const categoryName = 'All resources';
     const baseURL = 'https://61c03bd033f24c00178231de.mockapi.io/resources';
-    const [countOfResources, setCountOfResources] = useState(null);
-    const [countOfBooksResources, setCountOfBooksResources] = useState(null);
-    const [countOfWebsitesResources, setCountOfWebsitesResources] = useState(null);
-    const [countOfPostsResources, setCountOfPostsResources] = useState(null);
-    const [countOfSoftsResources, setCountOfSoftsResources] = useState(null);
     const dispatch = useDispatch();
 
     useMemo(() => {
         axios.get(baseURL)
         .then((response) => {
-            setCountOfResources(response.data.length);
+            dispatch({ type: 'GET_COUNT_ALLRESOURCES', payload: response.data.length });
         })
-    }, []);
-
-    useEffect(() => {
-        dispatch({ type: 'GET_COUNT_ALLRESOURCES', payload: countOfResources });
-    }, [countOfResources, dispatch])
+    }, [dispatch]);
     
     useMemo(() => {
         axios.get(`${baseURL}?category=books`)
         .then((response) => {
-            setCountOfBooksResources(response.data.length);
+            dispatch({ type: 'GET_COUNT_BOOKS', payload: response.data.length});
         })
-      }, []);
-
-    useEffect(() => {
-        dispatch({ type: 'GET_COUNT_BOOKS', payload: countOfBooksResources });
-    }, [countOfBooksResources, dispatch])
+      }, [dispatch]);
 
     useMemo(() => {
         axios.get(`${baseURL}?category=websites`)
         .then((response) => {
-            setCountOfWebsitesResources(response.data.length);
+            dispatch({ type: 'GET_COUNT_WEBSITES', payload: response.data.length });
         })
-    }, []);
-  
-    useEffect(() => {
-        dispatch({ type: 'GET_COUNT_WEBSITES', payload: countOfWebsitesResources });
-    }, [countOfWebsitesResources, dispatch])
+    }, [dispatch]);
 
     useMemo(() => {
         axios.get(`${baseURL}?category=posts`)
         .then((response) => {
-            setCountOfPostsResources(response.data.length);
+            dispatch({ type: 'GET_COUNT_POSTS', payload: response.data.length });
         })
-    }, []);
-    
-    useEffect(() => {
-        dispatch({ type: 'GET_COUNT_POSTS', payload: countOfPostsResources });
-    }, [countOfPostsResources, dispatch])
+    }, [dispatch]);
 
     useMemo(() => {
         axios.get(`${baseURL}?category=soft`)
         .then((response) => {
-            setCountOfSoftsResources(response.data.length);
+            dispatch({ type: 'GET_COUNT_SOFTS', payload: response.data.length });
         })
-    }, [])
-
-    useEffect(() => {
-        dispatch({ type: 'GET_COUNT_SOFTS', payload: countOfSoftsResources });
-    }, [countOfSoftsResources, dispatch])
+    }, [dispatch])
 
     return (
         <CategoryComponent 

@@ -1,20 +1,18 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useState } from 'react';
 import { faTimes, faPowerOff } from '@fortawesome/free-solid-svg-icons';
 import { faUser } from '@fortawesome/free-regular-svg-icons';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { logout } from './../../redux/reducers/userReducer';
+import { authorization, registration } from '../../api/actions/user';
+import { RootStateOrAny, useDispatch, useSelector } from 'react-redux';
+import { setDefaultAuthForm } from '../../utils/helpers';
 
 import LibaModal from './../utils/libaModal/LibaModal';
 import LibaInput from './../utils/libaInput/libaInput';
 import LibaNotification from '../utils/libaNotification/LibaNotification';
-import axios, { AxiosError } from 'axios';
 
 import './header.scss';
-import { RootStateOrAny, useDispatch, useSelector } from 'react-redux';
-import { setUser } from '../../redux/reducers/userReducer';
-import { logout } from './../../redux/reducers/userReducer';
-import { setDefaultAuthForm, showNHideNotification } from '../../utils/helpers';
-import { authorization, registration } from '../../api/actions/user';
 
 const Header = () => {
     const [authModalOpen, setAuthModalOpen] = useState(false);

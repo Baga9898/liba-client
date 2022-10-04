@@ -19,3 +19,14 @@ export const setDefaultAuthForm = (setAuthForm: any) => {
         password: '',
     });
 }
+
+export const setDefaultResource = (setResource: any) => {
+    setResource({
+        id: 0,
+        name: '',
+        link: '',
+        description: '',
+        category: '',
+        date: '',
+    });
+}

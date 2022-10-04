@@ -18,6 +18,7 @@ import ResourceType from '../../types/ResourceType';
 import '../../pages/allResources/allResources.scss'
 import 'animate.css';
 import LibaInput from '../libaInput/libaInput';
+import { setDefaultResource, showNHideNotification } from '../../../utils/helpers';
 
 type CategoryComponentType = {
     categoryName: string,
@@ -77,27 +78,7 @@ const CategoryComponent: React.FC<CategoryComponentType> = ({ categoryName, base
 
     const categoriesList = ['', 'books', 'soft', 'websites', 'posts'];
 
-    const showNHideNotification = (status: string, message: string) => {
-        setNotificationStatus(status);
-        setNotificationText(message);
-        setNotificationIsOpen(true);
-        setTimeout(() => {
-            setNotificationIsOpen(false);
-        }, 3000);
-    }
-
-    const setDefaultResource = () => {
-        setResource({
-            id: 0,
-            name: '',
-            link: '',
-            description: '',
-            category: '',
-            date: '',
-        });
-    }
-
-    const handleEnter = () => {
+    const modalHandleEnter = () => {
         if (editModalIsOpen) {
             editResource(idOfResource);
             setEditModalIsOpen(false);
@@ -107,7 +88,7 @@ const CategoryComponent: React.FC<CategoryComponentType> = ({ categoryName, base
         }
     }
 
-    const handleEscape = () => {
+    const modalHandleEscape = () => {
         if (editModalIsOpen) {
             setEditModalIsOpen(false);
         } else if (deleteModalIsOpen) {
@@ -115,8 +96,8 @@ const CategoryComponent: React.FC<CategoryComponentType> = ({ categoryName, base
         }
     }
 
-    UseKey('Enter', handleEnter);
-    UseKey('Escape', handleEscape);
+    UseKey('Enter', modalHandleEnter);
+    UseKey('Escape', modalHandleEscape);
 
     useEffect(() => {
         const getResources = async () => {
@@ -137,7 +118,7 @@ const CategoryComponent: React.FC<CategoryComponentType> = ({ categoryName, base
     }, [itemsToShow, baseURL, getParams]);
 
     const getOneResource = async (resourceId: number) => {
-        setDefaultResource();
+        setDefaultResource(setResource);
         setRequestIsLoading(true);
         try {
             await axios.get(`${baseURL}/${resourceId}`)
@@ -240,26 +221,50 @@ const CategoryComponent: React.FC<CategoryComponentType> = ({ categoryName, base
                 })
                 .then((response: any) => {
                     setAllResources([response.data, ...allResources]);
-                    showNHideNotification('success', 'Adding was successfully');
+                    showNHideNotification(
+                        'success', 
+                        'Adding was successfully',
+                        setNotificationStatus,
+                        setNotificationText,
+                        setNotificationIsOpen,
+                    );
                 })
-                setDefaultResource();
+                setDefaultResource(setResource);
             } catch (error) {
                 console.error(error);
-                showNHideNotification('error', 'Adding failed');
+                showNHideNotification(
+                    'error', 
+                    'Adding failed',
+                    setNotificationStatus,
+                    setNotificationText,
+                    setNotificationIsOpen,
+                );
             }
             setRequestIsLoading(false);
-            setDefaultResource();
+            setDefaultResource(setResource);
         } else {
             if (allResources.some((CheckResource: ResourceType) => CheckResource.name === resource.name)) {
-                showNHideNotification('warning', 'Resource with the same name already exists');
+                showNHideNotification(
+                    'warning', 
+                    'Resource with the same name already exists',
+                    setNotificationStatus,
+                    setNotificationText,
+                    setNotificationIsOpen,
+                );
             } else if (allResources.some((CheckResource: ResourceType) => CheckResource.link === resource.link)) {
-                showNHideNotification('warning', 'Resource with the same link already exists');
+                showNHideNotification(
+                    'warning', 
+                    'Resource with the same link already exists',
+                    setNotificationStatus,
+                    setNotificationText,
+                    setNotificationIsOpen,
+                );
             }
         }
     }
 
     const openEditModal = (resourceId: number) => {
-        setDefaultResource();
+        setDefaultResource(setResource);
         getOneResource(resourceId);
         setEditModalIsOpen(true);
         setIdOfResource(resourceId)
@@ -278,16 +283,34 @@ const CategoryComponent: React.FC<CategoryComponentType> = ({ categoryName, base
                     newArray[indexOfChangedResource] = response.data;
                     setAllResources(newArray);
                 })
-                setDefaultResource();
-                showNHideNotification('success', 'Editing was successfilly');
+                setDefaultResource(setResource);
+                showNHideNotification(
+                    'success', 
+                    'Editing was successfilly',
+                    setNotificationStatus,
+                    setNotificationText,
+                    setNotificationIsOpen,
+                );
             } catch (error) {
                 console.error(error);
-                showNHideNotification('error', 'Resource with the same name already exists');
+                showNHideNotification(
+                    'error', 
+                    'Resource with the same name already exists',
+                    setNotificationStatus,
+                    setNotificationText,
+                    setNotificationIsOpen,
+                );
             }
             setRequestIsLoading(false);
         } else {
-            showNHideNotification('error', 'Resource with the same name already exists');
-            setDefaultResource();
+            showNHideNotification(
+                'error', 
+                'Resource with the same name already exists',
+                setNotificationStatus,
+                setNotificationText,
+                setNotificationIsOpen,
+            );
+            setDefaultResource(setResource);
         }
         setEditModalIsOpen(false);
     }
@@ -305,10 +328,22 @@ const CategoryComponent: React.FC<CategoryComponentType> = ({ categoryName, base
                 const newArray = allResources.filter((resource: ResourceType) => resource.id !== response.data.id);
                 setAllResources(newArray);
             })
-            showNHideNotification('success', 'Removal was successfully');
+            showNHideNotification(
+                'success', 
+                'Removal was successfully',
+                setNotificationStatus,
+                setNotificationText,
+                setNotificationIsOpen,
+            );
         } catch (error) {
             console.error(error);
-            showNHideNotification('error', 'Removal failed');
+            showNHideNotification(
+                'error', 
+                'Removal failed',
+                setNotificationStatus,
+                setNotificationText,
+                setNotificationIsOpen,
+            );
         }
         setRequestIsLoading(false);
         setDeleteModalIsOpen(false);

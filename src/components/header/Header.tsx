@@ -1,8 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState } from 'react';
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faTimes, faPowerOff } from '@fortawesome/free-solid-svg-icons';
 import { faUser } from '@fortawesome/free-regular-svg-icons';
-import { faArrowAltCircleRight } from '@fortawesome/free-regular-svg-icons';
 import { Link } from 'react-router-dom';
 
 import LibaModal from './../utils/libaModal/LibaModal';
@@ -14,6 +13,8 @@ import './header.scss';
 import { RootStateOrAny, useDispatch, useSelector } from 'react-redux';
 import { setUser } from '../../redux/reducers/userReducer';
 import { logout } from './../../redux/reducers/userReducer';
+import { setDefaultAuthForm, showNHideNotification } from '../../utils/helpers';
+import { authorization, registration } from '../../api/actions/user';
 
 const Header = () => {
     const [authModalOpen, setAuthModalOpen] = useState(false);
@@ -43,61 +44,6 @@ const Header = () => {
         </div>
     );
 
-    const showNHideNotification = (status: string, message: string) => {
-        setNotificationStatus(status);
-        setNotificationText(message);
-        setNotificationIsOpen(true);
-        setTimeout(() => {
-            setNotificationIsOpen(false);
-        }, 3000);
-    }
-
-    const setDefaultAuthForm = () => {
-        setAuthForm({
-            username: '',
-            password: '',
-        });
-    }
-
-    const registration = async() => {
-        try {
-            await axios.post('http://localhost:5000/auth/registration/', {
-                ...authForm,
-            }).then((response) => {
-                showNHideNotification('success', response.data.message);
-                setAuthTabType('auth');
-                setAfterAuth(true);
-                setRegisterUser(response.data.user);
-                setDefaultAuthForm();
-            })
-        } catch (error) {
-            const err = error as AxiosError;
-            console.error(error);
-            err.response && showNHideNotification('error', err.response.data.message);
-        }
-    }
-
-    const authorization = () => {
-        return async (dispatch: any) => {
-            try {
-                await axios.post('http://localhost:5000/auth/login/', {
-                    ...authForm,
-                }).then((response) => {
-                    showNHideNotification('success', response.data.message);
-                    dispatch(setUser(response.data.user));
-                    localStorage.setItem('token', response.data.token);
-                })
-            } catch (error) {
-                const err = error as AxiosError;
-                console.error(error);
-                err.response && showNHideNotification('error', err.response.data.message);
-            }
-            setAfterAuth(false);
-            setAuthModalOpen(false);
-            setDefaultAuthForm();
-        }
-    }
-
     return (
         <>
             <header className='header'>
@@ -110,7 +56,7 @@ const Header = () => {
                             {isAuth ? 
                             <>
                                 <span>{user.username}</span>
-                                <FontAwesomeIcon icon={faArrowAltCircleRight} className='logoutIcon' onClick={() => dispatch(logout())}/>
+                                <FontAwesomeIcon icon={faPowerOff} className='logoutIcon' onClick={() => dispatch(logout())}/>
                             </>
                             : 
                             <FontAwesomeIcon icon={faUser} className='userIcon' onClick={() => setAuthModalOpen(true)}/>
@@ -124,7 +70,29 @@ const Header = () => {
                 headerType='custom' 
                 customHeaderContent={headerContent} 
                 closeHandler={() => setAuthModalOpen(false)} 
-                actionHandler={authTabType === 'reg'? registration : () => dispatch(authorization())} 
+                actionHandler={authTabType === 'reg'? 
+                    () => registration(
+                        authForm,
+                        setNotificationStatus,
+                        setNotificationText,
+                        setNotificationIsOpen,
+                        setAuthTabType,
+                        setAfterAuth,
+                        setRegisterUser,
+                        setDefaultAuthForm,
+                        setAuthForm,
+                    ) 
+                    : 
+                    () => dispatch(authorization(
+                        authForm,
+                        setNotificationStatus,
+                        setNotificationText,
+                        setNotificationIsOpen,
+                        setAfterAuth,
+                        setDefaultAuthForm,
+                        setAuthModalOpen,
+                        setAuthForm,
+                    ))} 
                 actionName={authTabType === 'reg' ? 'Signup' : 'Login'} 
                 isWide>
                     {afterAuth &&

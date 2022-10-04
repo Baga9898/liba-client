@@ -26,8 +26,9 @@
         }
     }
     &__rightside {
-        .userIcon,
-        .logoutIcon {
+        display: flex;
+        align-items: center;
+        .userIcon {
             cursor: pointer;
             color: #bbb;
             font-size: 24px;
@@ -36,6 +37,21 @@
                 color: #000;
             }
         }
+        .logoutIcon {
+            cursor: pointer;
+            color: #bbb;
+            font-size: 20px;
+            transition: 0.5s;
+            margin-left: 15px;
+            &:hover {
+                color: #000;
+            }
+        }
+        span {
+            font-size: 22px;
+            font-weight: 600;
+        }
+
     }
 }
 

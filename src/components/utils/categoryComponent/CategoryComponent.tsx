@@ -19,6 +19,7 @@ import '../../pages/allResources/allResources.scss'
 import 'animate.css';
 import LibaInput from '../libaInput/libaInput';
 import { setDefaultResource, showNHideNotification } from '../../../utils/helpers';
+import { getOneResource } from '../../../api/actions/resource';
 
 type CategoryComponentType = {
     categoryName: string,
@@ -36,14 +37,16 @@ type CategoryComponentType = {
 }
 
 const CategoryComponent: React.FC<CategoryComponentType> = ({ categoryName, baseURL, getParams, actionInfoSections=false, actionSection=false, itemsToShow, searchInclude=false, pagination=false, pageSize, addResourceAction, createUpdate, isMainPage=false }) => {
-    const [allResources, setAllResources] = useState<ResourceType[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [requestIsLoading, setRequestIsLoading] = useState(false);
+    
+    const [allResources, setAllResources] = useState<ResourceType[]>([]);
     const [idOfResource, setIdOfResource] = useState<number>(0);
     const [searchParametrs, setSearchParametrs] = useState('');
+    const [sortType, setSortType] = useState(localStorage.getItem('sortMode'));
+
     const [currentPage, setCurrentPage] = useState(1);
     const [resourcesPerPage] = useState(pageSize || 5);
-    const [sortType, setSortType] = useState(localStorage.getItem('sortMode'));
 
     const [notificationStatus, setNotificationStatus] = useState<string>('success');
     const [notificationIsOpen, setNotificationIsOpen] = useState(false);
@@ -116,20 +119,6 @@ const CategoryComponent: React.FC<CategoryComponentType> = ({ categoryName, base
         }
         getResources();
     }, [itemsToShow, baseURL, getParams]);
-
-    const getOneResource = async (resourceId: number) => {
-        setDefaultResource(setResource);
-        setRequestIsLoading(true);
-        try {
-            await axios.get(`${baseURL}/${resourceId}`)
-            .then((response: any) => {
-                setResource({...resource, name: response.data.name});
-            })
-        } catch (error) {
-            console.error(error);
-        }
-        setRequestIsLoading(false);
-    }
 
     const getNewResourcesFirst = async () => {
         setRequestIsLoading(true);
@@ -265,7 +254,14 @@ const CategoryComponent: React.FC<CategoryComponentType> = ({ categoryName, base
 
     const openEditModal = (resourceId: number) => {
         setDefaultResource(setResource);
-        getOneResource(resourceId);
+        getOneResource(
+            resourceId, 
+            setDefaultResource, 
+            setResource, 
+            setRequestIsLoading, 
+            baseURL, 
+            resource,
+        );
         setEditModalIsOpen(true);
         setIdOfResource(resourceId)
     }

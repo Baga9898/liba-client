@@ -20,3 +20,26 @@ export const getOneResource = async (
     }
     setRequestIsLoading(false);
 }
+
+export const getNewResourcesFirst = async (
+    setRequestIsLoading: any,
+    baseURL: string,
+    getParams: any,
+    setAllResources: any,
+    setIsLoading: any,
+) => {
+    setRequestIsLoading(true);
+    try {
+        await axios.get(baseURL, {params: getParams})
+        .then((response: any) => {
+            const newArray = response.data;
+            const reverseArray = newArray.reverse();
+            setAllResources(reverseArray);
+            setIsLoading(false);
+        })
+    } catch (error) {
+        console.error(error);
+        setIsLoading(false);
+    }
+    setRequestIsLoading(false);
+}

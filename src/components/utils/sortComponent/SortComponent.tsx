@@ -1,8 +1,8 @@
 type SortComponentType = {
     sortType: string, 
-    newResourcesIsFirst: () => void, 
-    oldResourcesIsFirst: () => void, 
-    alphabetSort: () => void,
+    newResourcesIsFirst: any, 
+    oldResourcesIsFirst: any, 
+    alphabetSort: any,
 }
 
 const SortComponent: React.FC<SortComponentType> = ({sortType, newResourcesIsFirst, oldResourcesIsFirst, alphabetSort}) => {

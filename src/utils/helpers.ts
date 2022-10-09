@@ -1,5 +1,3 @@
-import { getNewResourcesFirst } from "../api/actions/resource";
-
 export const showNHideNotification = (
     status: string, 
     message: string,
@@ -31,23 +29,4 @@ export const setDefaultResource = (setResource: any) => {
         category: '',
         date: '',
     });
-}
-
-export const newResourcesIsFirst = (
-    setRequestIsLoading: any, 
-    baseURL: string, 
-    getParams: any, 
-    setAllResources: any, 
-    setIsLoading: any, 
-    setSortType: any
-) => {
-    getNewResourcesFirst(
-        setRequestIsLoading,
-        baseURL,
-        getParams,
-        setAllResources,
-        setIsLoading,
-    );
-    setSortType('newFirst');
-    localStorage.setItem('sortMode', 'newFirst');
 }

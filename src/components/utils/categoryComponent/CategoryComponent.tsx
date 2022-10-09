@@ -18,8 +18,8 @@ import ResourceType from '../../types/ResourceType';
 import '../../pages/allResources/allResources.scss'
 import 'animate.css';
 import LibaInput from '../libaInput/libaInput';
-import { newResourcesIsFirst, setDefaultResource, showNHideNotification } from '../../../utils/helpers';
-import { getNewResourcesFirst, getOneResource } from '../../../api/actions/resource';
+import { setDefaultResource, showNHideNotification } from '../../../utils/helpers';
+import { getOneResource } from '../../../api/actions/resource';
 
 type CategoryComponentType = {
     categoryName: string,
@@ -120,6 +120,29 @@ const CategoryComponent: React.FC<CategoryComponentType> = ({ categoryName, base
         getResources();
     }, [itemsToShow, baseURL, getParams]);
 
+    const getNewResourcesFirst = async () => {
+        setRequestIsLoading(true);
+        try {
+            await axios.get(baseURL, {params: getParams})
+            .then((response: any) => {
+                const newArray = response.data;
+                const reverseArray = newArray.reverse();
+                setAllResources(reverseArray);
+                setIsLoading(false);
+            })
+        } catch (error) {
+            console.error(error);
+            setIsLoading(false);
+        }
+        setRequestIsLoading(false);
+    }
+
+    const newResourcesIsFirst = () => {
+        getNewResourcesFirst();
+        setSortType('newFirst');
+        localStorage.setItem('sortMode', 'newFirst');
+    }
+
     const getOldResourcesFirst = async () => {
         setRequestIsLoading(true);
         try {
@@ -157,7 +180,7 @@ const CategoryComponent: React.FC<CategoryComponentType> = ({ categoryName, base
     useEffect(() => {
         switch (sortType) {
             case 'newFirst':
-                newResourcesIsFirst(setRequestIsLoading, baseURL, getParams, setAllResources, setIsLoading, setSortType);
+                newResourcesIsFirst();
                 break;
 
             case 'oldFirst':

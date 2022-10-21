@@ -171,6 +171,10 @@
             font-weight: bold;
             color: rgb(155, 155, 155);
         }
+        &_top {
+            display: flex;
+            align-items: center;
+        }
         &_bottom {
             .edit-section-icon,
             .delete-section-icon {
@@ -186,6 +190,40 @@
                 margin: 0 0 0 15px;
             }
         }
+        &_circle {
+            width: 10px;
+            height: 10px;
+            border-radius: 5px;
+            margin-left: 10px;
+            background: rgba(207, 127, 22, 0.5);
+            transition: 0.5s;
+            &:hover {
+                background: rgba(207, 127, 22, 0.8);
+            }
+        }
+    }
+}
+
+.resource__item_wrapper {
+    width: 100%;
+    position: relative;
+}
+
+.changeModal {
+    position: absolute;
+    right: 60px;
+    top: -10px;
+    min-width: 150px;
+    min-height: 50px;
+    padding: 8px 10px;
+    background: #ecf0f3;
+    border-radius: 8px;
+    z-index: 999;
+    -webkit-box-shadow: 0px 6px 15px 2px rgba(34, 60, 80, 0.2);
+    -moz-box-shadow: 0px 6px 15px 2px rgba(34, 60, 80, 0.2);
+    box-shadow: 0px 6px 15px 2px rgba(34, 60, 80, 0.2);
+    p {
+        margin-bottom: 5px;
     }
 }
 

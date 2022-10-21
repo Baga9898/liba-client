@@ -5,8 +5,8 @@ type ChangeModalProps = {
 const ChangeModal: React.FC<ChangeModalProps> = ({ resource }) => {
   return (
     <div className='changeModal'>
-        <p>{`Changed: ${resource.name}`}</p>
-        <p>{`When: 21.10.2022`}</p>
+        <p>Changed: <span>Name here</span></p>
+        <p>When: <span>21.10.2022</span></p>
     </div>
   )
 }

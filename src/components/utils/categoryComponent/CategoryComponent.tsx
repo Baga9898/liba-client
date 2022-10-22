@@ -57,10 +57,10 @@ const CategoryComponent: React.FC<CategoryComponentType> = ({ categoryName, base
         name: '',
         link: '',
         description: '',
-        createDate: '',
+        date: '',
         changedBy: '',
         modifiedDate: '',
-        categories: '',
+        category: '',
     })
 
     const [editModalIsOpen, setEditModalIsOpen] = useState(false);
@@ -207,7 +207,7 @@ const CategoryComponent: React.FC<CategoryComponentType> = ({ categoryName, base
                 await axios.post(baseURL, {
                     name: resource.name.toLowerCase(),
                     link: resource.link.toLowerCase(),
-                    category: resource.categories.toLowerCase(),
+                    category: resource.category.toLowerCase(),
                     date: date,
                 })
                 .then((response: any) => {

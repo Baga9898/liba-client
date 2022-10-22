@@ -10,10 +10,10 @@ type ResourceItemProps = {
         name: string,
         link: string,
         description: string,
-        createDate: any,
+        date: any,
         changedBy: string,
         modifiedDate: string,
-        categories: string,
+        category: string,
     },
     actionSection: boolean,
     createUpdate: boolean,
@@ -33,12 +33,12 @@ const ResourceItem: React.FC<ResourceItemProps> = ({ resource, actionSection, cr
                     <a href={resource.link} target='_blank' className='section__leftside_link' rel='noreferrer'>{resource.link}</a>
                 </div>
                 <div className='section__leftside_down'>
-                    <div className='section__leftside_date'>{resource.createDate}</div>
+                    <div className='section__leftside_date'>{resource.date}</div>
                 </div>
             </div>
             <div className='section__rightside'>
                 <div className='section__rightside_top'>
-                    <div className='section__rightside_category'>{resource.categories}</div>
+                    <div className='section__rightside_category'>{resource.category}</div>
                     <div 
                         className='section__rightside_circle' 
                         onMouseEnter={() => setChangeModalIsOpen(true)}

@@ -3,10 +3,10 @@ type ResourceType = {
     name: string,
     link: string,
     description: string,
-    createDate: any,
+    date: any,
     changedBy: string,
     modifiedDate: string,
-    categories: string,
+    category: string,
 }
 
 export default ResourceType;

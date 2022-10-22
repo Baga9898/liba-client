@@ -1,12 +1,15 @@
 type ChangeModalProps = {
-    resource: {name: string};
+    resource: {
+      changedBy: string,
+      modifiedDate: any,
+    };
 }
 
 const ChangeModal: React.FC<ChangeModalProps> = ({ resource }) => {
   return (
     <div className='changeModal animate__animated animate__fadeInUp'>
-        <p>Changed: <span>Name here</span></p>
-        <p>When: <span>21.10.2022</span></p>
+        <p>Changed: <span>{resource.changedBy}</span></p>
+        <p>When: <span>{resource.modifiedDate}</span></p>
     </div>
   )
 }

@@ -14,7 +14,8 @@ type AllResourcesType = {
 
 const AllResources: React.FC<AllResourcesType> = ({ actionSection=true, itemsToShow, searchInclude=true, pagination=true, pageSize, isMainPage=false }) => {
     const categoryName = 'All resources';
-    const baseURL = 'https://61c03bd033f24c00178231de.mockapi.io/resources';
+    // const baseURL = 'https://61c03bd033f24c00178231de.mockapi.io/resources';
+    const baseURL = 'http://localhost:5000/api/resources';
     const dispatch = useDispatch();
 
     useMemo(() => {

@@ -2,8 +2,11 @@ type ResourceType = {
     id: number,
     name: string,
     link: string,
-    category: string,
-    date: string,
+    description: string,
+    createDate: any,
+    changedBy: string,
+    modifiedDate: string,
+    categories: string,
 }
 
 export default ResourceType;
